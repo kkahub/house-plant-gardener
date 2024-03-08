@@ -16,5 +16,15 @@ export default defineConfig({
   },
   build: {
     outDir: 'firebase/dist'
+  },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `
+          @import "./src/assets/styles/_variables";
+          @import "./src/assets/styles/_mixins";
+        `
+      }
+    }
   }
 })

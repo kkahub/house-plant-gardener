@@ -1,3 +1,6 @@
+// SCSS
+import './assets/styles/styles.scss'
+
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 

@@ -1,0 +1,135 @@
+/* 믹스인 */
+// 컨텐츠 박스 기본 설정
+@mixin area {
+    position: relative;
+    min-width: 1900px;
+    width: 100%;
+}
+@mixin con {
+    width: $full-w - 300px;
+}
+@mixin shadow-box {
+    margin: 30px 30px 20px 0;
+    padding: 20px;
+    box-shadow: $c-box-shadow;
+    background: #fff;
+}
+
+// clearfix
+@mixin clearfix {
+    &::before,
+    &::after {
+        content: " ";
+        display: table;
+        box-sizing: border-box;
+    }
+    &::after {
+        clear: both;
+    }
+}
+
+// 한 줄로 아이템 정렬
+@mixin inline-group {
+    font-size: 0;
+    letter-spacing: 0;
+    word-spacing: 0;
+}
+@mixin inline-item {
+    display: inline-block;
+}
+
+// ... 말줄임
+@mixin ellipsis {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    display: inline-block;
+}
+
+// transition 벤더프리픽스
+@mixin prefix-transi($value) {
+    -o-transition: $value;
+    -ms-transition: $value;
+    -moz-transition: $value;
+    -webkit-transition: $value;
+    transition: $value;
+}
+
+// 버튼
+@mixin btn-common {
+    cursor: pointer;
+    text-decoration: none;
+}
+@mixin btn($name) {
+    @include btn-common;
+
+    @if $name == point {
+        @include btn-point;
+    } @else if $name == main {
+        @include btn-main;
+    } @else if $name == sub {
+        @include btn-sub;
+    } @else if $name == disabled {
+        @include btn-disabled;
+    }
+}
+@mixin btn-point {
+    border: 1px solid $c-key;
+    background-color: $c-key;
+    color: #fff;
+}
+@mixin btn-main {
+    border: 1px solid $c-main;
+    background-color: $c-main;
+    color: #fff;
+}
+@mixin btn-sub {
+    border: 1px solid $c-sub;
+    background-color: $c-sub;
+    color: #fff;
+}
+@mixin btn-disabled {
+    cursor: default !important;
+    border: 1px solid $c-sub !important;
+    background-color: $c-sub !important;
+    color: #fff !important;
+}
+
+@mixin btn-line($name) {
+    @include btn-common;
+
+    @if $name == point {
+        @include btn-line-point;
+    } @else if $name == main {
+        @include btn-line-main;
+    } @else if $name == sub {
+        @include btn-line-sub;
+    } @else if $name == light {
+        @include btn-line-light;
+    }
+}
+@mixin btn-line-point {
+    border: 1px solid $c-key;
+    background: #fff;
+    color: $c-key;
+
+    &:hover {
+        border: 1px solid $c-key;
+        color: $c-key;
+    }
+}
+@mixin btn-line-main {
+    border: 1px solid $c-main;
+    background: #fff;
+    color: $c-title;
+}
+@mixin btn-line-sub {
+    border: 1px solid $c-sub;
+    background: #fff;
+    color: $c-txt;
+}
+@mixin btn-line-light {
+    border: 1px solid $c-line;
+    background: #fff;
+    color: $c-txt;
+}
