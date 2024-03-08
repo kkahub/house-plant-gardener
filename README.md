@@ -32,13 +32,13 @@ House Plant Gardeners Project
 
 [vite-plugin-pages](https://github.com/hannoeru/vite-plugin-pages)
 
-- **page 구성 : ** layout > page 구조로 구성 도움.
+- **page 구성 :** layout > page 구조로 구성 도움.
 
 ### vite-plugin-vue-layouts
 
 [vite-plugin-vue-layouts](https://github.com/JohnCampionJr/vite-plugin-vue-layouts)
 
-- **page 구성 : ** layout > page 구조로 구성 도움.
+- **page 구성 :** layout > page 구조로 구성 도움.
 
 ### VueUse
 
@@ -56,4 +56,4 @@ House Plant Gardeners Project
 
 ## Open API
 
-[식물 데이터>>](https://www.data.go.kr/data/15059042/openapi.do)
+**농촌진흥청\_실내정원용 식물 :** [API 소개>>](https://www.data.go.kr/data/15059042/openapi.do)
