@@ -15,10 +15,30 @@
         </ul>
       </nav>
     </header>
+    <div v-for="item in plantList" :key="item">
+      <!-- <h2>{{ item.cntntsSj[0] }}</h2> -->
+      <!-- <img :src="toArr(item.rtnFileUrl[0])" alt="" /> -->
+    </div>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref, computed, inject, onMounted, toRef } from 'vue'
+import { useConvertJson } from '@/composables/useConvertJson'
+
+import getPlantList from '../service/plants'
+
+const { toArr } = useConvertJson()
+
+const plantList = ref()
+onMounted(async () => {
+  const response = await getPlantList()
+  // console.log(response)
+  plantList.value = toArr(response)
+  // console.log(plantList.value)
+  // plantList.value = response.map()
+})
+</script>
 
 <style lang="scss" scoped>
 #header {

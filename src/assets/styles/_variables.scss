@@ -1,19 +1,20 @@
 // 폰트
-$f-basic: "Noto Sans KR", "돋움", sans-serif;
+$f-basic: 'Noto Sans KR', sans-serif;
 
 // 컬러표
-$c-key: #da291c;
-$c-main: #54585a;
-$c-sub: #8d9090;
-$c-title: #2a2a2a;
-$c-txt: $c-main;
-$c-txt-sub: $c-sub;
-$c-warn: $c-key;
+$c-key: #07c566;
+$c-main: #0d5226;
+$c-sub: #80c28b;
+$c-warn: #f74222;
+
+$c-title: #000;
+$c-txt: #333;
+$c-txt-sub: #666;
 
 $c-dim: rgba(0, 0, 0, 0.6);
 
-$c-line: rgba(0, 0, 0, 0.125);
-$c-tb-line: #dee2e6;
+$c-line: #d6d6d6;
+$c-th-line: #999;
 
-$c-bg: #f2f2f2;
+$c-bg: #eaeaea;
 $c-bg-light: #f2f2f2;

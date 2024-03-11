@@ -2,6 +2,7 @@
   "name": "house-plant-gardener",
   "version": "0.0.0",
   "private": true,
+  "proxy": "http://api.nongsaro.go.kr/service/garden",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -20,6 +21,7 @@
     "axios": "^1.6.7",
     "eslint": "^8.57.0",
     "eslint-config-google": "^0.14.0",
+    "events": "^3.3.0",
     "firebase": "^10.8.1",
     "firebase-tools": "^13.4.1",
     "pinia": "^2.1.7",
