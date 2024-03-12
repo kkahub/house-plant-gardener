@@ -1,8 +1,6 @@
 import axios from 'axios'
-// import xm12js from 'xml2js'
-import xm12js, { parseString } from 'xml2js'
-
-const URL = 'lightList'
+import xm12js from 'xml2js'
+import { type PlantShotData, type PlantShotCovert } from '@/types/plants'
 
 const getPlantList = async () => {
   const params = {
@@ -11,16 +9,31 @@ const getPlantList = async () => {
 
   try {
     const response = await axios.get('/service/garden/gardenList', { params: params })
-    let gardenList = null
+    const gardenShotList: PlantShotCovert[] = []
+
     xm12js.parseString(response.data, (err, result) => {
       if (err) {
         throw err
       }
+      const gardenList = result.response.body[0].items[0].item
 
-      // gardenList = JSON.stringify(result.response.body[0].items[0].item, null, 4)
-      gardenList = result.response.body[0].items[0].item
+      gardenList.map((item: PlantShotData) => {
+        const {
+          rtnFileCours,
+          rtnFileSeCode,
+          rtnFileSn,
+          rtnImageDc,
+          rtnImgSeCode,
+          rtnOrginlFileNm,
+          rtnStreFileNm,
+          rtnThumbFileNm,
+          rtnThumbFileUrl,
+          ...gardenShot
+        } = item
+        gardenShotList.push(gardenShot)
+      })
     })
-    return gardenList
+    return gardenShotList
   } catch (error) {
     return 'error'
   }

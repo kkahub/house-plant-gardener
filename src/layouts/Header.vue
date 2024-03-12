@@ -9,36 +9,17 @@
       </a>
       <nav>
         <ul id="gnb">
-          <li><a href="/">링크1</a></li>
-          <li><a href="/">링크2</a></li>
-          <li><a href="/">링크3</a></li>
+          <li><a href="/">Home</a></li>
+          <li><a href="/">식물도감</a></li>
+          <li><a href="/">태그분류</a></li>
+          <li><a href="/">자유게시판</a></li>
         </ul>
       </nav>
     </header>
-    <div v-for="item in plantList" :key="item">
-      <!-- <h2>{{ item.cntntsSj[0] }}</h2> -->
-      <!-- <img :src="toArr(item.rtnFileUrl[0])" alt="" /> -->
-    </div>
   </div>
 </template>
 
-<script setup lang="ts">
-import { ref, computed, inject, onMounted, toRef } from 'vue'
-import { useConvertJson } from '@/composables/useConvertJson'
-
-import getPlantList from '../service/plants'
-
-const { toArr } = useConvertJson()
-
-const plantList = ref()
-onMounted(async () => {
-  const response = await getPlantList()
-  // console.log(response)
-  plantList.value = toArr(response)
-  // console.log(plantList.value)
-  // plantList.value = response.map()
-})
-</script>
+<script setup lang="ts"></script>
 
 <style lang="scss" scoped>
 #header {

@@ -1,6 +1,5 @@
 <template>
   <Header />
-  <div>레이아웃</div>
   <router-view />
 </template>
 

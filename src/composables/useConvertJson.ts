@@ -1,22 +1,26 @@
-export const useConvertJson = () => {
-  //   const item = str || []
+import _ from 'lodash'
+import { type PlantShotData, type PlantShotCovert } from '@/types/plants'
 
-  //   const toArr = (str) => str.split('|')
-  const toArr = (o) => {
-    const obj = o
-    const result = obj.map((item) => {
-      const entries = Object.entries(item)
+export const useConvertJson = () => {
+  const toArr = (o: PlantShotData[]) => {
+    const obj: PlantShotData[] = _.cloneDeep(o)
+    // console.log(obj)
+    const resultObj: PlantShotCovert[] = []
+
+    obj.map((item: PlantShotData) => {
+      const keys = Object.keys(item)
       const values = Object.values(item)
-      values.map((val) => {
-        console.log(val)
+      const arrVal = values.map((val) => {
+        return val[0].includes('|') === false ? val[0] : val[0].split('|')
       })
-      //   for (let i = 0; i < entries.length; i++) {
-      //     if (values[i][0].includes('|')) {
-      //       values[i][0].split('|')
-      //     }
-      //   }
+
+      const convertObj = {} as PlantShotCovert
+      for (let i = 0; i < keys.length; i++) {
+        convertObj[keys[i]] = arrVal[i]
+      }
+      resultObj.push(convertObj)
     })
-    return result
+    return resultObj
   }
 
   return {
