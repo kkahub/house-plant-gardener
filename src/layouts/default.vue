@@ -1,6 +1,10 @@
 <template>
-  <Header />
-  <router-view />
+  <div id="wrap">
+    <Header />
+    <div id="container">
+      <router-view />
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">

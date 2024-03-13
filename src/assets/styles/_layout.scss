@@ -1,0 +1,44 @@
+// Header Layout 및 NAV
+#header {
+  display: flex;
+  justify-content: space-between;
+  height: 70px;
+  padding: 0 30px;
+  border-bottom: 1px solid $c-line;
+
+  > a {
+    display: block;
+    font-size: 36px;
+    font-weight: 700;
+  }
+  //   로고 이미지 - 지울 예정
+  .wrap_temp {
+    overflow: hidden;
+    display: inline-block;
+    width: 45px;
+    height: 37px;
+
+    img {
+      width: 120px;
+    }
+  }
+  nav {
+    height: inherit;
+  }
+  #gnb {
+    display: flex;
+    height: inherit;
+
+    > li {
+      display: flex;
+
+      a {
+        display: block;
+        padding: 5px 20px;
+      }
+    }
+  }
+}
+#container {
+  min-height: 100vhd;
+}
