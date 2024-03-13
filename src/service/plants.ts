@@ -1,6 +1,6 @@
 import axios from 'axios'
 import xm12js from 'xml2js'
-import { type PlantShotData, type PlantShotCovert } from '@/types/plants'
+import { type PlantShotData, type PlantShotConvert } from '@/types/plants'
 
 const getPlantList = async () => {
   const params = {
@@ -9,7 +9,7 @@ const getPlantList = async () => {
 
   try {
     const response = await axios.get('/service/garden/gardenList', { params: params })
-    const gardenShotList: PlantShotCovert[] = []
+    const gardenShotList: PlantShotConvert[] = []
 
     xm12js.parseString(response.data, (err, result) => {
       if (err) {

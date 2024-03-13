@@ -16,11 +16,12 @@ export interface PlantShotData {
   cntntsSj: string[]
   rtnFileUrl: string[]
 }
-export interface PlantShotCovert {
+export interface PlantShotConvert {
   cntntsNo: string | string[]
   cntntsSj: string | string[]
   rtnFileUrl: string[]
 }
-export interface Test {
-  PlantShotCovert
+export interface PlantShotIndex {
+  [index: number]: PlantShotConvert
+  [index: string]: PlantShotConvert
 }

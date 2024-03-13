@@ -38,7 +38,7 @@ House Plant Gardeners Project
 
 [vite-plugin-vue-layouts](https://github.com/JohnCampionJr/vite-plugin-vue-layouts)
 
-- **page 구성 :** layout > page 구조로 구성 도움.
+- **layout 구성 :** layout > page 구조로 구성 도움.
 
 ### VueUse
 
@@ -52,11 +52,14 @@ House Plant Gardeners Project
 
 - 텍스트 에디터
 
-### xml2js
+### xml2js, events
 
 [xml2js](https://github.com/Leonidas-from-XIV/node-xml2js)
+[events](https://www.npmjs.com/package/events)
 
 - xml 데이터를 json 데이터로 변환
+- Typescript 사용 시 @types/xml2js 같이 설치
+- events는 Node.js에 포함되어 있지만 없을 경우 설치 필요
 
   <br/><br/>
 

@@ -13,7 +13,6 @@
 import { ref, onMounted } from 'vue'
 import getPlantList from '../service/plants'
 import { useConvertJson } from '@/composables/useConvertJson'
-import { type Test } from '@/types/plants'
 
 const { toArr } = useConvertJson()
 const plantShortInfo = ref()
