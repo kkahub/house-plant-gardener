@@ -2,7 +2,10 @@
   "name": "house-plant-gardener",
   "version": "0.0.0",
   "private": true,
-  "proxy": "http://api.nongsaro.go.kr/service/garden",
+  "proxy": [
+    "http://api.nongsaro.go.kr/service/garden",
+    "http://openapi.nature.go.kr/openapi/service/rest/PlantService"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",

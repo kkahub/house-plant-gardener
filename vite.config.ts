@@ -17,6 +17,13 @@ export default defineConfig({
         rewrite: (path) => path.replace(/^\/service^\/garden/, ''),
         secure: false,
         ws: true
+      },
+      '/openapi/service/rest/PlantService': {
+        target: 'http://openapi.nature.go.kr',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/openapi^\/service^\/rest^\/PlantService/, ''),
+        secure: false,
+        ws: true
       }
     }
   },
