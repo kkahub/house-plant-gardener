@@ -1,29 +1,32 @@
-import axios from 'axios'
-// import xm12js from 'xml2js'
-import { type PlantListData, type PlantList } from '@/types/plants'
+import {
+  type PlantListData,
+  type PlantList,
+  type PlantDetailData,
+  type PlantDetail
+} from '@/types/plants'
 import * as xmlToJson from '../plugin/xmlToJson'
 
 const getPlantGuideList = async () => {
-  const params = {
+  const listParams = {
     serviceKey: import.meta.env.VITE_PLANT_API_KEY,
     numOfRows: '12'
   }
 
   try {
     const res = await fetch(
-      `/openapi/service/rest/PlantService/plntIlstrSearch?serviceKey=${params.serviceKey}?numOfRows=${params.numOfRows}`
+      `/openapi/service/rest/PlantService/plntIlstrSearch?serviceKey=${listParams.serviceKey}&numOfRows=${listParams.numOfRows}`
     )
 
     // 식물 기본 정보 json변환
-    const xmlString = await res.text()
-    const xmlNode = new DOMParser().parseFromString(xmlString, 'text/xml')
+    const listString = await res.text()
+    const listNode = new DOMParser().parseFromString(listString, 'text/xml')
 
-    const data = xmlToJson.convertJson(xmlNode)
-    const plantData = data.response.body.items.item
+    const listObject: any = xmlToJson.convertJson(listNode)
+    const listData = listObject.response.body.items.item
     const plantInfoList: PlantList[] = []
 
     // 가든 기본 정보 편집
-    plantData.map((item: PlantListData) => {
+    listData.map((item: PlantListData) => {
       const {
         detailYn,
         frstRgstnDtm,
@@ -43,3 +46,92 @@ const getPlantGuideList = async () => {
 }
 
 export default getPlantGuideList
+
+export const getPlantDetail = async (code: string | string[]) => {
+  const params = {
+    serviceKey: import.meta.env.VITE_PLANT_API_KEY,
+    q1: code
+  }
+
+  try {
+    const res = await fetch(
+      `/openapi/service/rest/PlantService/plntIlstrInfo?serviceKey=${params.serviceKey}&q1=${params.q1}`
+    )
+
+    // 식물 상세 정보 json변환
+    const detailString = await res.text()
+
+    const detailNode = new DOMParser().parseFromString(detailString, 'text/xml')
+
+    const detailObject: any = xmlToJson.convertJson(detailNode)
+    const detailData = detailObject.response.body.item
+
+    // 가든 상세 정보 편집
+    const {
+      bfofMthod,
+      branchDesc,
+      bugInfo,
+      flwrInfo01,
+      flwrInfo02,
+      flwrInfo03,
+      flwrInfo04,
+      flwrInfo05,
+      flwrInfo06,
+      flwrInfo07,
+      flwrInfo08,
+      flwrInfo09,
+      fritInfo01,
+      frstRgstnDtm,
+      gemmaDesc,
+      grwEvrntDesc,
+      inductionDesc,
+      lastUpdtDtm,
+      leafInfo01,
+      leafInfo02,
+      leafInfo03,
+      leafInfo04,
+      leafInfo05,
+      leafInfo06,
+      leafInfo07,
+      leafInfo08,
+      leafInfo09,
+      leafInfo10,
+      osDstrb,
+      peltDesc,
+      plantPilbkNo,
+      plantScnmId,
+      prtcPlnDesc,
+      ramentumDesc,
+      ramentumInfo01,
+      ramentumInfo02,
+      rootDesc,
+      rrngGubun,
+      rrngType,
+      sporeInfo01,
+      sporeInfo02,
+      sporeInfo03,
+      sporeInfo04,
+      sporeInfo05,
+      sporeInfo06,
+      sporeInfo07,
+      sporeInfo08,
+      sporeInfo09,
+      stemInfo01,
+      stemInfo02,
+      stemInfo03,
+      stemInfo04,
+      stemInfo05,
+      stemInfo06,
+      stemInfo07,
+      stemInfo08,
+      woodDesc,
+      ...info
+    } = detailData
+
+    const plantDetail: PlantDetail = info
+
+    return plantDetail
+  } catch (error) {
+    return 'error'
+  }
+}

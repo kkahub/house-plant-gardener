@@ -9,12 +9,61 @@
 
     a {
       display: block;
-      border: 1px solid $c-line;
+    }
+  }
+  .info_gallery {
+    padding: 15px 0 20px;
+
+    .gallery_title {
+      font-size: 22px;
+    }
+    .family_genus {
+      padding: 10px 0 20px;
+
+      dfn {
+        display: block;
+        font-size: 14px;
+      }
+      .orignal_name {
+        color: $c-txt-sub;
+        letter-spacing: -0.02em;
+      }
+    }
+  }
+  .count_info {
+    display: flex;
+    justify-content: flex-start;
+
+    > span {
+      padding-right: 15px;
+      font-size: 14px;
+      color: $c-txt-sub;
+    }
+    .fa-comment-dots {
+      transform: scaleX(-100%);
     }
   }
 }
 .thum_wrap {
-  img {
-    width: 100%;
+  overflow: hidden;
+  position: relative;
+  border-radius: 10px;
+
+  &::after {
+    content: '';
+    display: block;
+    padding-bottom: 100%;
   }
+  img {
+    position: absolute;
+    min-width: 100%;
+    max-width: 100%;
+    min-height: 100%;
+  }
+}
+
+// 이미지 없음
+.no_img {
+  position: absolute;
+  border: 1px solid $c-line-sub;
 }
