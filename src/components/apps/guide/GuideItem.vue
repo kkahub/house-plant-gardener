@@ -3,7 +3,12 @@
     <router-link :to="`/guide/${item?.plantPilbkNo}`">
       <div class="thum_wrap">
         <img v-if="noImg" :src="item?.imgUrl" />
-        <div v-else class="no_img">이미지없음</div>
+        <div v-else class="no_img">
+          <div class="msg">
+            <font-awesome-icon :icon="['fas', 'seedling']" />
+            도감에 등록된 이미지가 없습니다.
+          </div>
+        </div>
       </div>
       <div class="info_gallery">
         <h3 class="gallery_title">{{ item?.plantGnrlNm }}</h3>

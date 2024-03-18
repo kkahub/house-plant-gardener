@@ -56,14 +56,17 @@ export interface PlantListRes {
  * 식물도감 상세페이지
  *
  * brdMthdDesc:	번식방법
+ * grwEvrntDesc: 생육환경
+ * rrngType: 생육형
  * cprtCtnt:	저작권
  * dstrb:	분포정보
- * engNm:	영문명
+ * osDstrb: 해외 분포
  * familyKorNm:	과국명
  * familyNm:	과명
  * farmSpftDesc: 재배특성
  * flwrDesc:	꽃설명
  * fritDesc:	열매설명
+ * rootDesc: 뿌리설명
  * genusKorNm:	속국명
  * genusNm:	속명
  * imgUrl:	이미지url
@@ -84,14 +87,17 @@ export interface PlantListRes {
 
 export interface PlantDetail {
   brdMthdDesc: string
+  grwEvrntDesc: string
+  rrngType: string
   cprtCtnt: string
   dstrb: string
-  engNm: string
+  osDstrb: string
   familyKorNm: string
   familyNm: string
   farmSpftDesc: string
   flwrDesc: string
   fritDesc: string
+  rootDesc: string
   genusKorNm: string
   genusNm: string
   imgUrl: string

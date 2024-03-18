@@ -68,6 +68,7 @@ export const getPlantDetail = async (code: string | string[]) => {
 
     // 가든 상세 정보 편집
     const {
+      engNm,
       bfofMthod,
       branchDesc,
       bugInfo,
@@ -83,7 +84,6 @@ export const getPlantDetail = async (code: string | string[]) => {
       fritInfo01,
       frstRgstnDtm,
       gemmaDesc,
-      grwEvrntDesc,
       inductionDesc,
       lastUpdtDtm,
       leafInfo01,
@@ -96,7 +96,6 @@ export const getPlantDetail = async (code: string | string[]) => {
       leafInfo08,
       leafInfo09,
       leafInfo10,
-      osDstrb,
       peltDesc,
       plantPilbkNo,
       plantScnmId,
@@ -104,9 +103,7 @@ export const getPlantDetail = async (code: string | string[]) => {
       ramentumDesc,
       ramentumInfo01,
       ramentumInfo02,
-      rootDesc,
       rrngGubun,
-      rrngType,
       sporeInfo01,
       sporeInfo02,
       sporeInfo03,

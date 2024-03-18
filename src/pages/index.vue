@@ -30,12 +30,15 @@ import getPlantGuideList from '../service/guide'
 import { useConvertJson } from '@/composables/useConvertJson'
 import SwiperCore from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/vue'
+import { useRoute } from 'vue-router/auto'
 
 import GuideList from '@/components/apps/guide/GuideList.vue'
 
 const { toArr } = useConvertJson()
 const houseItems = ref()
 const plantItems = ref()
+
+const route = useRoute()
 
 const onSwiper = (swiper: SwiperCore) => {
   // console.log(swiper)
@@ -48,10 +51,10 @@ onMounted(async () => {
   // const [...housePlantList] = await getHousePlantList()
   // houseItems.value = toArr(housePlantList)
 
+  // 식물 기본정보 데이터 가져오기
   const [...plantInfoList] = await getPlantGuideList()
   plantItems.value = plantInfoList
 })
 </script>
 
 <style scoped></style>
-../service/guide
