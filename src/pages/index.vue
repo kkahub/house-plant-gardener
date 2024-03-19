@@ -24,7 +24,7 @@ import 'swiper/css'
 // import SwiperCore from 'swiper'
 // import { Swiper, SwiperSlide } from 'swiper/vue'
 
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 // import getHousePlantList from '../service/plants'
 import getPlantGuideList from '../service/guide'
 import { useConvertJson } from '@/composables/useConvertJson'
@@ -33,6 +33,7 @@ import { Swiper, SwiperSlide } from 'swiper/vue'
 import { useRoute } from 'vue-router/auto'
 
 import GuideList from '@/components/apps/guide/GuideList.vue'
+import { useAsyncState } from '@vueuse/core'
 
 const { toArr } = useConvertJson()
 const houseItems = ref()
@@ -47,13 +48,11 @@ const onSlideChange = () => {
   // console.log('slide change')
 }
 
-onMounted(async () => {
-  // const [...housePlantList] = await getHousePlantList()
-  // houseItems.value = toArr(housePlantList)
-
-  // 식물 기본정보 데이터 가져오기
-  const [...plantInfoList] = await getPlantGuideList()
-  plantItems.value = plantInfoList
+// 식물 기본정보 데이터 가져오기
+const { error } = useAsyncState(() => getPlantGuideList(), null, {
+  onSuccess: (result) => {
+    plantItems.value = result
+  }
 })
 </script>
 

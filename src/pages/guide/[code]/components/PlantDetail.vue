@@ -3,7 +3,13 @@
     <div class="inner">
       <div class="card_gallery">
         <div class="wrap_img">
-          <img :src="info?.imgUrl" :alt="info?.familyKorNm + ' 사진'" />
+          <img v-if="info?.imgUrl !== ' '" :src="info?.imgUrl" :alt="info?.familyKorNm + ' 사진'" />
+          <div v-else class="no_img">
+            <div class="msg">
+              <font-awesome-icon :icon="['fas', 'seedling']" />
+              도감에 등록된 이미지가 없습니다.
+            </div>
+          </div>
         </div>
         <!-- 기본 정보 -->
         <div class="short_info">
@@ -43,88 +49,170 @@
       </div>
       <div class="card_detail">
         <!-- 재배 정보 -->
-        <div class="card detail_info">
-          <h3 class="content_title">재배 정보</h3>
-          <div class="info_item" v-if="isShow(info?.grwEvrntDesc)">
-            <h4 class="sub_title">생육환경</h4>
-            <p class="desc">{{ info?.grwEvrntDesc }}</p>
+        <details
+          class="card detail_info"
+          v-if="
+            isShow(info?.grwEvrntDesc) ||
+            isShow(info?.rrngType) ||
+            isShow(info?.farmSpftDesc) ||
+            isShow(info?.brdMthdDesc)
+          "
+          open
+        >
+          <summary class="content_title">
+            재배 정보<font-awesome-icon :icon="['fas', 'chevron-up']" />
+          </summary>
+          <div class="wrap_info_item">
+            <div class="info_item" v-if="isShow(info?.grwEvrntDesc)">
+              <h4 class="sub_title">
+                <span class="icon_wrap">
+                  <span class="material-symbols-rounded">landscape</span>
+                </span>
+                생육환경
+              </h4>
+              <p class="desc">{{ info?.grwEvrntDesc }}</p>
+            </div>
+            <div class="info_item" v-if="isShow(info?.rrngType)">
+              <h4 class="sub_title">
+                <span class="icon_wrap">
+                  <span class="material-symbols-rounded">grass</span>
+                </span>
+                생육형
+              </h4>
+              <p class="desc">{{ info?.rrngType }}</p>
+            </div>
+            <div class="info_item" v-if="isShow(info?.farmSpftDesc)">
+              <h4 class="sub_title">
+                <span class="icon_wrap">
+                  <span class="material-symbols-rounded">solar_power</span>
+                </span>
+                재배특성
+              </h4>
+              <p class="desc">{{ info?.farmSpftDesc }}</p>
+            </div>
+            <div class="info_item" v-if="isShow(info?.brdMthdDesc)">
+              <h4 class="sub_title">
+                <span class="icon_wrap">
+                  <span class="material-symbols-rounded">forest</span>
+                </span>
+                번식방법
+              </h4>
+              <p class="desc">{{ info?.brdMthdDesc }}</p>
+            </div>
           </div>
-          <div class="info_item" v-if="isShow(info?.rrngType)">
-            <h4 class="sub_title">생육형</h4>
-            <p class="desc">{{ info?.rrngType }}</p>
-          </div>
-          <div class="info_item" v-if="isShow(info?.farmSpftDesc)">
-            <h4 class="sub_title">재배특성</h4>
-            <p class="desc">{{ info?.farmSpftDesc }}</p>
-          </div>
-          <div class="info_item" v-if="isShow(info?.brdMthdDesc)">
-            <h4 class="sub_title">번식방법</h4>
-            <p class="desc">{{ info?.brdMthdDesc }}</p>
-          </div>
-        </div>
+        </details>
         <!-- // 재배 정보 -->
         <!-- 외형 -->
-        <div class="card detail_info">
-          <h3 class="content_title">외형</h3>
-          <div class="info_item" v-if="isShow(info?.shpe)">
-            <h4 class="sub_title">형태</h4>
-            <p class="desc">{{ info?.shpe }}</p>
+        <details class="card detail_info" open>
+          <summary class="content_title">
+            외형<font-awesome-icon :icon="['fas', 'chevron-up']" />
+          </summary>
+          <div class="wrap_info_item">
+            <div class="info_item" v-if="isShow(info?.shpe)">
+              <h4 class="sub_title">형태</h4>
+              <p class="desc">{{ info?.shpe }}</p>
+            </div>
+            <div class="info_item" v-if="isShow(info?.leafDesc)">
+              <h4 class="sub_title">
+                <span class="icon_wrap">
+                  <span class="material-symbols-rounded">psychiatry</span>
+                </span>
+                잎
+              </h4>
+              <p class="desc">{{ info?.leafDesc }}</p>
+            </div>
+            <div class="info_item" v-if="isShow(info?.flwrDesc)">
+              <h4 class="sub_title">
+                <span class="icon_wrap">
+                  <span class="material-symbols-rounded">filter_vintage</span>
+                </span>
+                꽃
+              </h4>
+              <p class="desc">{{ info?.flwrDesc }}</p>
+            </div>
+            <div class="info_item" v-if="isShow(info?.fritDesc)">
+              <h4 class="sub_title"><font-awesome-icon :icon="['far', 'lemon']" /> 열매</h4>
+              <p class="desc">{{ info?.fritDesc }}</p>
+            </div>
+            <div class="info_item" v-if="isShow(info?.stemDesc)">
+              <h4 class="sub_title"><font-awesome-icon :icon="['fas', 'plant-wilt']" /> 줄기</h4>
+              <p class="desc">{{ info?.stemDesc }}</p>
+            </div>
+            <div class="info_item" v-if="isShow(info?.rootDesc)">
+              <h4 class="sub_title"><font-awesome-icon :icon="['far', 'snowflake']" /> 뿌리</h4>
+              <p class="desc">{{ info?.rootDesc }}</p>
+            </div>
+            <div class="info_item" v-if="isShow(info?.sz)">
+              <h4 class="sub_title">
+                <font-awesome-icon :icon="['fas', 'arrows-up-down']" /> 크기
+              </h4>
+              <p class="desc">{{ info?.sz }}</p>
+            </div>
+            <div class="info_item" v-if="isShow(info?.sporeDesc)">
+              <h4 class="sub_title">
+                <span class="material-symbols-rounded">snowing</span>
+                포자
+              </h4>
+              <p class="desc">{{ info?.sporeDesc }}</p>
+            </div>
           </div>
-          <div class="info_item" v-if="isShow(info?.leafDesc)">
-            <h4 class="sub_title">잎</h4>
-            <p class="desc">{{ info?.leafDesc }}</p>
-          </div>
-          <div class="info_item" v-if="isShow(info?.flwrDesc)">
-            <h4 class="sub_title">꽃</h4>
-            <p class="desc">{{ info?.flwrDesc }}</p>
-          </div>
-          <div class="info_item" v-if="isShow(info?.fritDesc)">
-            <h4 class="sub_title">열매</h4>
-            <p class="desc">{{ info?.fritDesc }}</p>
-          </div>
-          <div class="info_item" v-if="isShow(info?.stemDesc)">
-            <h4 class="sub_title">줄기</h4>
-            <p class="desc">{{ info?.stemDesc }}</p>
-          </div>
-          <div class="info_item" v-if="isShow(info?.rootDesc)">
-            <h4 class="sub_title">뿌리</h4>
-            <p class="desc">{{ info?.rootDesc }}</p>
-          </div>
-          <div class="info_item" v-if="isShow(info?.sz)">
-            <h4 class="sub_title">크기</h4>
-            <p class="desc">{{ info?.sz }}</p>
-          </div>
-          <div class="info_item" v-if="isShow(info?.sporeDesc)">
-            <h4 class="sub_title">포자</h4>
-            <p class="desc">{{ info?.sporeDesc }}</p>
-          </div>
-        </div>
+        </details>
         <!-- // 외형 -->
         <!-- 특징 -->
-        <div class="card detail_info">
-          <h3 class="content_title">특징</h3>
-          <div class="info_item" v-if="isShow(info?.spft)">
-            <h4 class="sub_title">특징</h4>
-            <p class="desc">{{ info?.spft }}</p>
+        <details
+          class="card detail_info"
+          open
+          v-if="isShow(info?.spft) || isShow(info?.note) || isShow(info?.useMthdDesc)"
+        >
+          <summary class="content_title">
+            특징<font-awesome-icon :icon="['fas', 'chevron-up']" />
+          </summary>
+          <div class="wrap_info_item">
+            <div class="info_item" v-if="isShow(info?.spft)">
+              <h4 class="sub_title">
+                <span class="icon_wrap">
+                  <span class="material-symbols-rounded">asterisk</span>
+                </span>
+                특징
+              </h4>
+              <p class="desc">{{ info?.spft }}</p>
+            </div>
+            <div class="info_item" v-if="isShow(info?.useMthdDesc)">
+              <h4 class="sub_title">
+                <span class="icon_wrap">
+                  <span class="material-symbols-rounded">book_2</span>
+                </span>
+                사용법
+              </h4>
+              <p class="desc">{{ info?.useMthdDesc }}</p>
+            </div>
+            <div class="info_item" v-if="isShow(info?.note)">
+              <h4 class="sub_title">
+                <span class="icon_wrap">
+                  <span class="material-symbols-rounded">sticky_note_2</span>
+                </span>
+                노트
+              </h4>
+              <p class="desc">{{ info?.note }}</p>
+            </div>
           </div>
-          <div class="info_item" v-if="isShow(info?.note)">
-            <h4 class="sub_title">노트</h4>
-            <p class="desc">{{ info?.note }}</p>
-          </div>
-          <div class="info_item" v-if="isShow(info?.useMthdDesc)">
-            <h4 class="sub_title">사용법</h4>
-            <p class="desc">{{ info?.useMthdDesc }}</p>
-          </div>
-        </div>
+        </details>
         <!-- // 특징 -->
         <!-- 유사식물 -->
-        <div class="card detail_info">
-          <h3 class="content_title">유사식물</h3>
-          <div class="info_item" v-if="isShow(info?.smlrPlntDesc)">
-            <h4 class="sub_title">유사식물설명</h4>
-            <p class="desc">{{ info?.smlrPlntDesc }}</p>
+        <details class="card detail_info" v-if="isShow(info?.smlrPlntDesc)" open>
+          <summary class="content_title">
+            유사식물<font-awesome-icon :icon="['fas', 'chevron-up']" />
+          </summary>
+          <div class="wrap_info_item">
+            <div class="info_item">
+              <h4 class="sub_title">
+                <font-awesome-icon :icon="['fas', 'equals']" />
+                유사식물설명
+              </h4>
+              <p class="desc">{{ info?.smlrPlntDesc }}</p>
+            </div>
           </div>
-        </div>
+        </details>
         <!-- //유사식물 -->
       </div>
     </div>
@@ -132,7 +220,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { getPlantDetail } from '@/service/guide'
 import { useAsyncState } from '@vueuse/core'

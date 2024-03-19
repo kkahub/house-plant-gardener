@@ -125,28 +125,145 @@
 // 식물 기본 정보
 .card_gallery {
   display: flex;
+  align-items: flex-start;
+  padding-bottom: 10px;
 
   .wrap_img {
-    width: 40%;
+    overflow: hidden;
+    width: 450px;
+    max-height: 450px;
+    border: 1px solid $c-line-sub;
+    border-radius: 10px;
+    background: $c-bg-light;
+    font-size: 0;
+    text-align: center;
 
     img {
-      width: 100%;
+      max-width: 100%;
+      max-height: 450px;
+    }
+    .no_img {
+      position: relative;
+      border: 0;
     }
   }
   .short_info {
+    width: 1080 - 450px;
     padding-left: 30px;
 
     .name_info {
+      padding-bottom: 20px;
       font-size: 22px;
+    }
+    .original_name {
+      font-size: 18px;
+    }
+    .explain_table {
+      width: 100%;
+      border-top: 1px solid $c-line;
+      border-bottom: 1px solid $c-line;
+      text-align: left;
+
+      tr {
+        &:last-of-type {
+          th,
+          td {
+            border-bottom: 1px solid $c-line;
+          }
+        }
+        th,
+        td {
+          border-bottom: 1px solid $c-line-sub;
+        }
+      }
+      th,
+      td {
+        padding: 7px 0;
+        line-height: 160%;
+      }
+      th {
+        width: 120px;
+        color: $c-title;
+        font-weight: 600;
+      }
+      td {
+        white-space: pre-line;
+      }
+    }
+    .notice_copy {
+      padding-top: 15px;
+      font-size: 14px;
+      color: $c-txt-sub;
+      text-align: right;
     }
   }
 }
 
 // 식물 상세 정보
 .card_detail {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  padding: 10px 0;
+
   .detail_info {
+    position: relative;
+    width: 100%;
     border: 1px solid $c-line;
     border-radius: 8px;
-    padding: 10px;
+
+    &[open] {
+      .fa-chevron-up {
+        transform: rotate(0);
+      }
+    }
+    .fa-chevron-up {
+      position: absolute;
+      top: 17px;
+      right: 15px;
+      color: $c-main;
+      transform: rotate(-180deg);
+      transition: all 0.2s ease-in-out;
+    }
+    summary {
+      cursor: pointer;
+      display: block;
+      padding: 15px;
+      font-size: 22px;
+      color: $c-title;
+      font-weight: 600;
+    }
+    .wrap_info_item {
+      border-top: 1px solid $c-line;
+    }
+    .desc {
+      white-space: pre-line;
+    }
+  }
+  .info_item {
+    padding: 10px 15px;
+
+    .sub_title {
+      padding-bottom: 7px;
+      font-size: 18px;
+    }
+    .icon_wrap {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: top;
+      width: 19px;
+      height: 19px;
+    }
+    .material-symbols-rounded {
+      margin-top: -2px;
+      margin-left: -2px;
+      font-size: 23px;
+      color: $c-main;
+    }
+    .svg-inline--fa {
+      margin-right: 2px;
+      font-size: 19px;
+      color: $c-main;
+    }
   }
 }

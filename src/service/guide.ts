@@ -1,9 +1,4 @@
-import {
-  type PlantListData,
-  type PlantList,
-  type PlantDetailData,
-  type PlantDetail
-} from '@/types/plants'
+import { type PlantListData, type PlantList, type PlantDetail } from '@/types/plants'
 import * as xmlToJson from '../plugin/xmlToJson'
 
 const getPlantGuideList = async () => {

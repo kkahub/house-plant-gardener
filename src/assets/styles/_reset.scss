@@ -484,6 +484,10 @@ a {
 li {
   list-style: none;
 }
+table {
+  border-collapse: collapse;
+}
+
 /* reset custom */
 p {
   line-height: 130%;
@@ -508,17 +512,8 @@ h3,
 h4,
 h5,
 h6 {
-  font-weight: bold;
-}
-
-// Custom Reset
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
   color: $c-title;
+  font-weight: 600;
 
   a {
     color: inherit;
