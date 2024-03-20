@@ -20,4 +20,3 @@ defineProps({
 </script>
 
 <style scoped></style>
-./GuideItem.vue

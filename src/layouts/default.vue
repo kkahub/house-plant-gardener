@@ -8,17 +8,25 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch, watchEffect } from 'vue'
 import Header from './Header.vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
+const router = useRouter()
 const isMain = ref()
 
-onMounted(() => {
-  // 메인 라우터 일 때 main 클래스 추가
-  if (route.path === '/') isMain.value = true
-})
+// 메인 라우터 일 때 main 클래스 추가
+watch(
+  () => route,
+  (to) => {
+    to.path === '/' ? (isMain.value = true) : (isMain.value = false)
+  },
+  {
+    immediate: true,
+    deep: true
+  }
+)
 </script>
 
 <style lang="scss" scoped></style>

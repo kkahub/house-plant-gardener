@@ -1,9 +1,20 @@
 // 메인 페이지
 .main {
+  &#wrap {
+    background: #fff;
+  }
+
+  #header {
+    border-bottom: 0;
+    background: transparent;
+  }
   .page_title {
     font-size: 38px;
   }
   h2.title {
     font-size: 30px;
+  }
+  .no_img {
+    height: 250px;
   }
 }

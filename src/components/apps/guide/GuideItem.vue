@@ -11,7 +11,15 @@
         </div>
       </div>
       <div class="info_gallery">
-        <h3 class="gallery_title">{{ item?.plantGnrlNm }}</h3>
+        <div class="wrap_title">
+          <h3 class="gallery_title">
+            {{ item?.plantGnrlNm }}
+          </h3>
+          <div class="wrap_btn">
+            <button type="button"><font-awesome-icon :icon="['far', 'heart']" /></button>
+            <button type="button"><font-awesome-icon :icon="['far', 'bookmark']" /></button>
+          </div>
+        </div>
         <div class="family_genus">
           <dfn>{{ item?.familyKorNm + ' ' + item?.genusKorNm }}</dfn>
           <dfn class="orignal_name">{{ item?.familyNm + ' ' + item?.genusNm }}</dfn>

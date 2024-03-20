@@ -1,3 +1,7 @@
+#wrap {
+  background: $c-bg-light;
+}
+
 // Header Layout 및 NAV
 #header {
   display: flex;
@@ -5,6 +9,7 @@
   height: 70px;
   padding: 0 30px;
   border-bottom: 1px solid $c-line;
+  background: #fff;
 
   .logo {
     display: block;
@@ -94,4 +99,5 @@
 .inner {
   max-width: 1080px;
   margin: 0 auto;
+  padding: 0 20px;
 }
