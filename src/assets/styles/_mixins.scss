@@ -50,8 +50,8 @@
 @mixin btn-common {
   cursor: pointer;
   text-decoration: none;
-  padding: 6px 20px;
-  border-radius: 8px;
+  padding: 8px 24px;
+  border-radius: 9px;
 }
 @mixin btn($name) {
   @include btn-common;

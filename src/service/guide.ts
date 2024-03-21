@@ -1,15 +1,23 @@
 import { type PlantListData, type PlantList, type PlantDetail } from '@/types/plants'
 import * as xmlToJson from '../plugin/xmlToJson'
 
-const getPlantGuideList = async () => {
+// const getPlantGuideList = async (size: number, rows: number) => {
+const getPlantGuideList = async ({
+  currentPage,
+  currentPageSize
+}: {
+  currentPage: number
+  currentPageSize: number
+}) => {
   const listParams = {
     serviceKey: import.meta.env.VITE_PLANT_API_KEY,
-    numOfRows: '12'
+    pageNo: currentPage,
+    numOfRows: currentPageSize
   }
 
   try {
     const res = await fetch(
-      `/openapi/service/rest/PlantService/plntIlstrSearch?serviceKey=${listParams.serviceKey}&numOfRows=${listParams.numOfRows}`
+      `/openapi/service/rest/PlantService/plntIlstrSearch?serviceKey=${listParams.serviceKey}&numOfRows=${listParams.numOfRows}&pageNo=${listParams.pageNo}`
     )
 
     // 식물 기본 정보 json변환
@@ -32,7 +40,9 @@ const getPlantGuideList = async () => {
         ...plantList
       } = item
 
-      plantInfoList.push(plantList)
+      const list: any = plantList
+      list.total = Number(listObject.response.body.totalCount)
+      plantInfoList.push(list)
     })
     return plantInfoList
   } catch (error) {

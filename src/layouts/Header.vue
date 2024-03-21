@@ -8,7 +8,7 @@
     <nav>
       <ul id="gnb">
         <li><a href="/">Home</a></li>
-        <li><a href="/">식물도감</a></li>
+        <li><a href="/guide">식물도감</a></li>
         <li><a href="/">태그분류</a></li>
         <li><a href="/">자유게시판</a></li>
       </ul>

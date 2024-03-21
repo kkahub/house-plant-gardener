@@ -13,8 +13,15 @@
     </swiper> -->
   </section>
   <section class="plant_guide">
-    <GuideList :plant-items="plantItems" />
-    <!-- <BookList :house-items="houseItems" /> -->
+    <div class="inner">
+      <div class="title_wrap">
+        <h2 class="page_title">식물 도감</h2>
+        <p class="title_desc">국립수목원에서 제공하는 식물의 정보를 자세히 소개합니다.</p>
+        <router-link to="/guide" class="btn btn_lg btn_point">MORE</router-link>
+      </div>
+      <GuideList :plant-items="plantItems" />
+      <!-- <BookList :house-items="houseItems" /> -->
+    </div>
   </section>
 </template>
 
@@ -49,11 +56,15 @@ const onSlideChange = () => {
 }
 
 // 식물 기본정보 데이터 가져오기
-const { error } = useAsyncState(() => getPlantGuideList(), null, {
-  onSuccess: (result) => {
-    plantItems.value = result
+const { error } = useAsyncState(
+  () => getPlantGuideList({ currentPage: 1, currentPageSize: 8 }),
+  null,
+  {
+    onSuccess: (result) => {
+      plantItems.value = result
+    }
   }
-})
+)
 </script>
 
 <style scoped></style>

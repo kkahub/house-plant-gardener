@@ -1,9 +1,19 @@
-// 버튼 Button
+// Form
+input {
+  padding: 8px 20px;
+  border: 1px solid $c-line;
+  border-radius: 22px;
+  font-size: 18px;
+  font-weight: 300;
+}
 
-// Button
+// 버튼 Button
+.btn_group {
+  display: flex;
+  justify-content: flex-end;
+}
 .btn {
   min-width: 90px;
-  font-size: 1.05rem;
 
   &.btn_point {
     @include btn('point');
@@ -85,6 +95,14 @@
       @include btn('disabled');
     }
   }
+  &.btn_lg {
+    display: inline-block;
+    width: 150px;
+    margin-top: 20px;
+    border-radius: 22px;
+    font-size: 22px;
+    font-weight: 700;
+  }
 }
 
 // 이미지 없음
@@ -112,12 +130,39 @@
   }
 }
 
+// 검색바
+.wrap_search {
+  display: flex;
+  justify-content: center;
+
+  .inner_search {
+    position: relative;
+  }
+  input {
+    width: 350px;
+    padding: 10px 45px 10px 20px;
+  }
+  .btn_search {
+    position: absolute;
+    right: 0;
+    width: 48px;
+    height: 42px;
+    padding: 8px 10px;
+
+    .material-symbols-rounded {
+      font-size: 26px;
+      color: $c-title;
+    }
+  }
+}
+
 /* 리스트 */
 // 갤러리형 리스트
 .list_gallery {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
+  padding-top: 30px;
 
   > li {
     width: 245px;
@@ -130,26 +175,6 @@
         .gallery_title {
           position: relative;
           color: $c-main;
-
-          // &::before,
-          // &::after {
-          //   content: '';
-          //   display: block;
-          //   position: absolute;
-          //   background: $c-main;
-          // }
-          // &::before {
-          //   top: 12px;
-          //   right: 8px;
-          //   width: 18px;
-          //   height: 2px;
-          // }
-          // &::after {
-          //   top: 4px;
-          //   right: 16px;
-          //   width: 2px;
-          //   height: 18px;
-          // }
         }
       }
     }
@@ -160,6 +185,8 @@
     .wrap_title {
       display: flex;
       justify-content: space-between;
+      position: relative;
+      width: 100%;
     }
     .gallery_title {
       @include ellipsis;
@@ -167,6 +194,9 @@
       font-size: 22px;
     }
     .wrap_btn {
+      position: absolute;
+      right: 0;
+
       button {
         margin-left: 10px;
         font-size: 21px;
@@ -206,6 +236,8 @@
 .thum_wrap {
   overflow: hidden;
   position: relative;
+  width: 245px;
+  height: 245px;
   border-radius: 10px;
 
   &::after {
@@ -216,8 +248,9 @@
   img {
     position: absolute;
     min-width: 100%;
-    max-width: 100%;
     min-height: 100%;
+    max-width: 370px;
+    max-height: 370px;
   }
 }
 
@@ -278,8 +311,7 @@
       position: relative;
 
       button {
-        position: absolute;
-        margin-left: 12px;
+        margin-left: 14px;
         font-size: 25px;
         color: $c-txt-sub;
       }
@@ -309,7 +341,7 @@
   flex-wrap: wrap;
   gap: 20px;
   padding: 10px 0;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 
   .card {
     border: 1px solid $c-line;
