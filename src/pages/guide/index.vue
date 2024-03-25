@@ -17,7 +17,21 @@
           </div>
         </form>
       </div>
+
+      <!-- <div v-for="item in plants" :key="item.plantPilbkNo">{{ item.plantGnrlNm }}</div> -->
       <GuideList :plant-items="plantItems" />
+
+      <Pagination
+        :get-page="getPage"
+        :page-array="pageArray"
+        :prev-page="prevPage"
+        :next-page="nextPage"
+        :start-page="startPage"
+        :current-page="currentPage"
+        :is-prev="isPrev"
+        :is-next="isNext"
+        :execute-page="executePage"
+      />
     </div>
   </section>
 </template>
@@ -25,47 +39,45 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useAsyncState } from '@vueuse/core'
-import { useOffsetPagination } from '@vueuse/core'
-// import Paginate from 'vuejs-paginate'
 import getPlantGuideList from '@/service/guide'
+import { usePagination } from '@/composables/usePagination'
 import GuideList from '@/components/apps/guide/GuideList.vue'
+import Pagination from '@/components/pagination/Pagination.vue'
 
 const plantItems = ref()
 
-const page = ref(1)
-const pageSize = ref(16)
-const total = ref(0)
+// Pagination
+const {
+  pageArray,
+  prevPage,
+  nextPage,
+  getPage,
+  currentPage,
+  pageSize,
+  total,
+  startPage,
+  isPrev,
+  isNext
+} = usePagination()
 
 // 식물 기본정보 데이터 가져오기
-const { execute: getPage } = useAsyncState(
-  () => getPlantGuideList({ currentPage: page.value, currentPageSize: pageSize.value }),
+const { isLoading, execute } = useAsyncState(
+  () => getPlantGuideList({ currentPage: currentPage.value, currentPageSize: pageSize.value }),
   null,
   {
     throwError: true,
     onSuccess: (result) => {
       plantItems.value = result
       if (result) {
-        console.log(result)
+        total.value = result[0].total
       }
     }
   }
 )
 
-// Pagination
-// const { currentPage, currentPageSize, pageCount, isFirstPage, isLastPage, prev, next } =
-//   useOffsetPagination({
-//     total: 100,
-//     page: 1,
-//     pageSize,
-//     onPageChange: getPage(0, { currentPage: page.value, currentPageSize: pageSize.value })
-//   })
-// useOffsetPagination({
-//   total: 100,
-//   page: 1,
-//   pageSize: 16,
-//   onPageChange: plantItems,
-//   onPageSizeChange: plantItems
-// })
+const executePage = () => {
+  execute(0, { currentPage: currentPage, currentPageSize: pageSize })
+}
 </script>
 
 <style scoped></style>

@@ -21,7 +21,7 @@ export interface PlantList {
   imgUrl: string[]
   plantGnrlNm: string[]
   plantPilbkNo: string[]
-  total: number
+  total: number | number[]
 }
 export interface PlantListData {
   cprtCtnt: string[]

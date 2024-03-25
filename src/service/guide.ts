@@ -1,7 +1,6 @@
 import { type PlantListData, type PlantList, type PlantDetail } from '@/types/plants'
 import * as xmlToJson from '../plugin/xmlToJson'
 
-// const getPlantGuideList = async (size: number, rows: number) => {
 const getPlantGuideList = async ({
   currentPage,
   currentPageSize
