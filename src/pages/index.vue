@@ -57,7 +57,7 @@ const onSlideChange = () => {
 
 // 식물 기본정보 데이터 가져오기
 const { error } = useAsyncState(
-  () => getPlantGuideList({ currentPage: 1, currentPageSize: 8 }),
+  () => getPlantGuideList({ currentPage: 1, currentPageSize: 8, searchWord: '' }),
   null,
   {
     onSuccess: (result) => {

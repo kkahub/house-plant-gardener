@@ -82,7 +82,7 @@
       </div>
       <!-- // 상세 정보 -->
       <div class="btn_group right">
-        <router-link to="/" class="btn btn_dark">목록으로</router-link>
+        <router-link to="/guide" class="btn btn_dark">목록으로</router-link>
       </div>
     </div>
   </section>

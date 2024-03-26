@@ -1,7 +1,11 @@
 import { ref, watch } from 'vue'
+import { useGuideStore } from '@/stores/guide'
+import { storeToRefs } from 'pinia'
 
 export const usePagination = () => {
-  const currentPage = ref(1)
+  const guideStore = useGuideStore()
+  const { guideCurrentPage } = storeToRefs(guideStore)
+
   const pageSize = ref(16)
   const total = ref(0)
   const startPage = ref(1)
@@ -13,9 +17,9 @@ export const usePagination = () => {
   // 전체 페이지 수
   const totalComputed = () => {
     if (total.value % pageSize.value == 0) {
-      totalPage.value = total.value / pageSize.value - 1
+      totalPage.value = total.value / pageSize.value
     } else {
-      totalPage.value = Math.ceil(total.value / pageSize.value) - 1
+      totalPage.value = Math.ceil(total.value / pageSize.value)
     }
   }
 
@@ -24,12 +28,11 @@ export const usePagination = () => {
     const arr = []
 
     totalComputed()
-    if (total.value !== 0) {
+    if (totalPage.value !== 0) {
       for (let i = start; i < Math.min(totalPage.value + 1, start + pageCount.value); i++) {
         arr.push(i)
       }
       startPage.value = arr[0]
-      console.log('pageNum: ', arr, 'startPage: ', startPage.value)
     }
     return arr
   }
@@ -45,7 +48,7 @@ export const usePagination = () => {
       }
 
       // 마지막 페이지 체크
-      if (total.value !== 0) {
+      if (totalPage.value <= pageCount.value) {
         if (startPage.value + pageCount.value <= totalPage.value) {
           isNext.value = false
         } else {
@@ -72,7 +75,7 @@ export const usePagination = () => {
 
   // 페이지 리스트 호출
   const getPage = async (num: number, execute: any) => {
-    currentPage.value = num
+    guideCurrentPage.value = num
     await execute()
   }
 
@@ -81,7 +84,6 @@ export const usePagination = () => {
     prevPage,
     nextPage,
     getPage,
-    currentPage,
     pageSize,
     total,
     startPage,

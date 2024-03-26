@@ -10,6 +10,9 @@
     </li>
     <template v-for="(item, index) in pageArray(startPage)" :key="`list-${index}`">
       <li class="page-item" :class="{ active: item === currentPage }">
+        <!-- <router-link :to="`/guide/${item}`" @click="getPage(item, executePage)" class="page-link">
+          {{ item }}
+        </router-link> -->
         <a class="page-link" href="#" @click="getPage(item, executePage)">{{ item }}</a>
       </li>
     </template>

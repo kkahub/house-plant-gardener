@@ -3,20 +3,23 @@ import * as xmlToJson from '../plugin/xmlToJson'
 
 const getPlantGuideList = async ({
   currentPage,
-  currentPageSize
+  currentPageSize,
+  searchWord
 }: {
   currentPage: number
   currentPageSize: number
+  searchWord: string
 }) => {
   const listParams = {
     serviceKey: import.meta.env.VITE_PLANT_API_KEY,
     pageNo: currentPage,
-    numOfRows: currentPageSize
+    numOfRows: currentPageSize,
+    searchWord: searchWord
   }
 
   try {
     const res = await fetch(
-      `/openapi/service/rest/PlantService/plntIlstrSearch?serviceKey=${listParams.serviceKey}&numOfRows=${listParams.numOfRows}&pageNo=${listParams.pageNo}`
+      `/openapi/service/rest/PlantService/plntIlstrSearch?serviceKey=${listParams.serviceKey}&numOfRows=${listParams.numOfRows}&pageNo=${listParams.pageNo}&sw=${listParams.searchWord}`
     )
 
     // 식물 기본 정보 json변환
