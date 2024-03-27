@@ -5,8 +5,52 @@
   }
 
   #header {
+    position: fixed;
     border-bottom: 0;
     background: transparent;
+
+    .logo {
+      color: #fff;
+    }
+    .members li {
+      a {
+        color: $c-txt-light;
+
+        &:hover {
+          color: #fff;
+        }
+      }
+    }
+    #gnb {
+      > li {
+        &.active {
+          a {
+            color: #fff;
+          }
+          &::after {
+            content: '';
+            background: $c-main;
+          }
+        }
+        a {
+          color: $c-txt-light;
+
+          &:hover {
+            color: #fff;
+          }
+        }
+        &:hover {
+          &::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            height: 3px;
+            background: $c-main;
+          }
+        }
+      }
+    }
   }
   .page_title {
     font-size: 38px;
@@ -18,7 +62,56 @@
     height: 250px;
   }
   .list_gallery {
-    padding-top: 45px;
+    padding-top: 40px;
+  }
+  .main_slider {
+    padding: 0;
+
+    .img_wrap {
+      display: flex;
+      align-items: center;
+      position: relative;
+      height: 100dvh;
+      background-size: cover;
+      background-repeat: no-repeat;
+
+      &::after {
+        content: '';
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 50%;
+        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.5), transparent);
+      }
+      .slide_content {
+        position: relative;
+        z-index: 2;
+        display: flex;
+        flex-wrap: wrap;
+        width: 1080px;
+        margin: 0 auto;
+      }
+      .slide_title {
+        white-space: pre-line;
+        font-size: 46px;
+        color: #fff;
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.8);
+        line-height: 130%;
+      }
+      .slide_desc {
+        width: 100%;
+        padding-top: 40px;
+        font-size: 22px;
+        color: #fff;
+        text-shadow: 0 0 12px rgba(0, 0, 0, 1);
+      }
+      .btn {
+        margin-top: 40px;
+        text-align: center;
+      }
+    }
   }
 }
 

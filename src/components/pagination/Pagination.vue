@@ -1,28 +1,27 @@
 <template>
   <ul class="pagination">
-    <!-- <li class="page-item" :class="{ disabled: isBtnFirst }">
-          <a class="page-link" href="#" @click.prevent="pageArrow('first')">First</a>
+    <!-- <li class="page_item" :class="{ disabled: isBtnFirst }">
+          <a class="page_btn" href="#" @click.prevent="pageArrow('first')">First</a>
         </li> -->
-    <li class="page-item" :class="{ disabled: isPrev }">
-      <a class="page-link" href="#" @click="prevPage(executePage)">
+    <li class="page_item" :class="{ disabled: isPrev }">
+      <a class="page_btn" href="#" @click="prevPage(executePage)">
         <font-awesome-icon :icon="['fas', 'chevron-left']" />
       </a>
     </li>
     <template v-for="(item, index) in pageArray(startPage)" :key="`list-${index}`">
-      <li class="page-item" :class="{ active: item === currentPage }">
-        <!-- <router-link :to="`/guide/${item}`" @click="getPage(item, executePage)" class="page-link">
+      <li class="page_item" :class="{ active: item === currentPage }">
+        <button class="page_btn" @click="getPage(item, executePage)" type="button">
           {{ item }}
-        </router-link> -->
-        <a class="page-link" href="#" @click="getPage(item, executePage)">{{ item }}</a>
+        </button>
       </li>
     </template>
-    <li class="page-item" :class="{ disabled: isNext }">
-      <a class="page-link" href="#" @click="nextPage(executePage)">
+    <li class="page_item" :class="{ disabled: isNext }">
+      <a class="page_btn" href="#" @click="nextPage(executePage)">
         <font-awesome-icon :icon="['fas', 'chevron-right']" />
       </a>
     </li>
-    <!--<li class="page-item" :class="{ disabled: isBtnLast }">
-          <a class="page-link" href="#" @click.prevent="pageArrow('last')">Last</a>
+    <!--<li class="page_item" :class="{ disabled: isBtnLast }">
+          <a class="page_btn" href="#" @click.prevent="pageArrow('last')">Last</a>
         </li> -->
   </ul>
 </template>

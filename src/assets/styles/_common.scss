@@ -414,20 +414,20 @@ input {
   justify-content: center;
   gap: 3px;
 
-  li {
+  .page_item {
     &:hover {
-      a {
+      .page_btn {
         background: $c-bg;
         color: $c-sub;
       }
     }
     &.active {
-      a {
+      .page_btn {
         color: $c-main;
         font-weight: 700;
       }
     }
-    a {
+    .page_btn {
       display: block;
       padding: 7px;
       min-width: 32px;
@@ -435,15 +435,76 @@ input {
       border: 1px solid $c-line-sub;
       border-radius: 5px;
       background: #fff;
+      color: $c-txt;
       line-height: 1;
       text-align: center;
     }
     &.disabled {
-      a {
+      .page_btn {
         opacity: 0.5;
         background: transparent;
         color: $c-txt;
       }
     }
+  }
+}
+
+// 데이터 없음 No Data
+.no_data {
+  padding: 200px;
+  text-align: center;
+}
+
+// 슬라이더
+.swiper_wrap {
+  position: relative;
+
+  .swiper_prev,
+  .swiper_next {
+    opacity: 0.5;
+    cursor: pointer;
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    margin-top: -25px;
+    width: 50px;
+    height: 50px;
+    font-size: 45px;
+    color: #fff;
+
+    &:hover {
+      opacity: 1;
+    }
+    .material-symbols-rounded {
+      font-size: 50px;
+      color: #fff;
+    }
+  }
+  .swiper_prev {
+    left: 30px;
+  }
+  .swiper_next {
+    right: 30px;
+  }
+  .swiper-horizontal > .swiper-pagination-bullets,
+  .swiper-pagination-bullets.swiper-pagination-horizontal {
+    bottom: 20px;
+  }
+  .swiper-pagination {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    z-index: 1;
+    width: 100%;
+  }
+  .swiper-pagination-bullet {
+    opacity: 0.5;
+    width: 12px;
+    height: 12px;
+    border-radius: 6px;
+    background: #fff;
+  }
+  .swiper-pagination-bullet-active {
+    opacity: 1;
   }
 }

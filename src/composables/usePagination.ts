@@ -75,8 +75,12 @@ export const usePagination = () => {
 
   // 페이지 리스트 호출
   const getPage = async (num: number, execute: any) => {
+    console.log(total.value)
     guideCurrentPage.value = num
     await execute()
+    setTimeout(() => {
+      window.scrollTo(0, 0)
+    }, 1000)
   }
 
   return {

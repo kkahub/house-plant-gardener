@@ -2,7 +2,7 @@
   <form @submit.prevent="handleSubmit">
     <div class="wrap_search">
       <div class="inner_search">
-        <input v-model="keywordModel" type="text" placeholder="식물 검색해주세요." />
+        <input v-model="keywordModel" type="text" placeholder="식물 이름으로 검색해주세요." />
         <button type="submit" class="btn_search">
           <span class="material-symbols-rounded">search</span>
         </button>
@@ -17,6 +17,9 @@ import { computed } from 'vue'
 const props = defineProps({
   keyword: {
     type: String
+  },
+  prevKeyword: {
+    type: String
   }
 })
 const emit = defineEmits(['update:keyword', 'submit'])
@@ -27,7 +30,7 @@ const keywordModel = computed({
 })
 
 const handleSubmit = async () => {
-  if (!keywordModel.value) {
+  if (props.prevKeyword === props.keyword) {
     return
   }
   emit('submit')

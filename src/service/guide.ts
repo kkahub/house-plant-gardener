@@ -28,24 +28,26 @@ const getPlantGuideList = async ({
 
     const listObject: any = xmlToJson.convertJson(listNode)
     const listData = listObject.response.body.items.item
-    const plantInfoList: PlantList[] = []
+    const plantInfoList: PlantList[] | null = []
 
-    // 가든 기본 정보 편집
-    listData.map((item: PlantListData) => {
-      const {
-        detailYn,
-        frstRgstnDtm,
-        lastUpdtDtm,
-        notRcmmGnrlNm,
-        plantSpecsScnm,
-        snnmScnm,
-        ...plantList
-      } = item
+    if (listData !== undefined) {
+      // 가든 기본 정보 편집
+      listData.map((item: PlantListData) => {
+        const {
+          detailYn,
+          frstRgstnDtm,
+          lastUpdtDtm,
+          notRcmmGnrlNm,
+          plantSpecsScnm,
+          snnmScnm,
+          ...plantList
+        } = item
 
-      const list: any = plantList
-      list.total = Number(listObject.response.body.totalCount)
-      plantInfoList.push(list)
-    })
+        const list: any = plantList
+        list.total = Number(listObject.response.body.totalCount)
+        plantInfoList.push(list)
+      })
+    }
     return plantInfoList
   } catch (error) {
     return 'error'

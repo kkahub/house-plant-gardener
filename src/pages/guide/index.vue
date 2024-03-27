@@ -6,23 +6,30 @@
           <h2 class="page_title">식물 도감</h2>
           <p class="title_desc">국립수목원에서 제공하는 식물의 정보를 자세히 소개합니다.</p>
         </div>
-        <SearchBar v-model:keyword="guideKeyword" :loading="isLoading" @submit="handleSearch" />
+        <SearchBar
+          v-model:keyword="guideKeyword"
+          :prev-keyword="prevKeyword"
+          :loading="isLoading"
+          @submit="handleSearch"
+        />
       </div>
 
-      <GuideList :plant-items="plantItems" />
-
-      <Pagination
-        :get-page="getPage"
-        :page-array="pageArray"
-        :prev-page="prevPage"
-        :next-page="nextPage"
-        :start-page="startPage"
-        :current-page="guideCurrentPage"
-        :is-prev="isPrev"
-        :is-next="isNext"
-        :execute-page="executePage"
-        :loading="isLoading"
-      />
+      <div v-if="!isNoData" class="guide_list_wrap">
+        <GuideList :plant-items="plantItems" />
+        <Pagination
+          :get-page="getPage"
+          :page-array="pageArray"
+          :prev-page="prevPage"
+          :next-page="nextPage"
+          :start-page="startPage"
+          :current-page="guideCurrentPage"
+          :is-prev="isPrev"
+          :is-next="isNext"
+          :execute-page="executePage"
+          :loading="isLoading"
+        />
+      </div>
+      <div v-else class="no_data">검색된 식물이 없습니다.</div>
     </div>
   </section>
 </template>
@@ -42,6 +49,8 @@ const guideStore = useGuideStore()
 const { guideKeyword, guideCurrentPage } = storeToRefs(guideStore)
 
 const plantItems = ref()
+const prevKeyword = ref('')
+const isNoData = ref(false)
 
 // Pagination
 const { pageArray, prevPage, nextPage, getPage, pageSize, total, startPage, isPrev, isNext } =
@@ -59,9 +68,16 @@ const { isLoading, execute } = useAsyncState(
   {
     throwError: true,
     onSuccess: (result) => {
-      plantItems.value = result
-      if (result) {
-        total.value = result[0].total
+      console.log('itemCount: ', result?.length)
+      if (result?.length === 0) {
+        isNoData.value = true
+      } else {
+        isNoData.value = false
+        plantItems.value = result
+
+        if (result) {
+          total.value = result[0].total
+        }
       }
     }
   }
@@ -78,6 +94,7 @@ const executePage = () => {
 const handleSearch = () => {
   guideCurrentPage.value = 1
   executePage()
+  prevKeyword.value = guideKeyword.value
 }
 </script>
 
