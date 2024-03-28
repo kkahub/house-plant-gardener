@@ -8,11 +8,27 @@ body,
   background: $c-bg-light;
 }
 
+// 맴버 레이아웃(회원가입, 로그인 등)
+#wrap_member {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100dvh;
+  background: $c-bg-light;
+
+  .member_box {
+    padding: 30px 20px 30px 20px;
+    border: 1px solid $c-line;
+    border-radius: 10px;
+    background: #fff;
+  }
+}
+
 // Header Layout 및 NAV
 #header {
   display: flex;
   justify-content: space-between;
-  position: relative;
+  position: fixed;
   z-index: 100;
   width: 100%;
   min-width: 1080px;
@@ -20,6 +36,7 @@ body,
   padding: 0 30px;
   border-bottom: 1px solid $c-line;
   background: #fff;
+  transition: all 0.1s ease-in;
 
   .logo {
     display: block;
@@ -115,8 +132,11 @@ body,
     }
   }
 }
+
+// Container
 #container {
   min-height: 100dvh;
+  padding-top: 80px;
 }
 section {
   padding: 80px 0;

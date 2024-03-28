@@ -19,6 +19,7 @@ declare module 'vue-router/auto-routes' {
    */
   export interface RouteNamedMap {
     '/': RouteRecordInfo<'/', '/', Record<never, never>, Record<never, never>>,
+    '/[...path]': RouteRecordInfo<'/[...path]', '/:path(.*)', { path: ParamValue<true> }, { path: ParamValue<false> }>,
     '/components/details/Features': RouteRecordInfo<'/components/details/Features', '/components/details/Features', Record<never, never>, Record<never, never>>,
     '/components/details/Growing': RouteRecordInfo<'/components/details/Growing', '/components/details/Growing', Record<never, never>, Record<never, never>>,
     '/components/details/SearchBar': RouteRecordInfo<'/components/details/SearchBar', '/components/details/SearchBar', Record<never, never>, Record<never, never>>,
@@ -30,5 +31,8 @@ declare module 'vue-router/auto-routes' {
     '/guide/': RouteRecordInfo<'/guide/', '/guide', Record<never, never>, Record<never, never>>,
     '/guide/[code]/': RouteRecordInfo<'/guide/[code]/', '/guide/:code', { code: ParamValue<true> }, { code: ParamValue<false> }>,
     '/guide/[code]/components/PlantDetail': RouteRecordInfo<'/guide/[code]/components/PlantDetail', '/guide/:code/components/PlantDetail', { code: ParamValue<true> }, { code: ParamValue<false> }>,
+    '/member': RouteRecordInfo<'/member', '/member', Record<never, never>, Record<never, never>>,
+    '/member/join/': RouteRecordInfo<'/member/join/', '/member/join', Record<never, never>, Record<never, never>>,
+    '/member/login/': RouteRecordInfo<'/member/login/', '/member/login', Record<never, never>, Record<never, never>>,
   }
 }

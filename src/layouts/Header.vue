@@ -1,16 +1,16 @@
 <template>
-  <header id="header" class="zero: !isZero">
+  <header id="header" :class="{ zero: isZero }">
     <h1>
       <a class="logo" href="/">
-        <img src="@/assets/images/logo.png" alt="로고" />House Plant Gardeners
+        <img src="@/assets/images/logo.png" alt="로고" />Gardeners Guide
       </a>
     </h1>
     <nav>
       <div class="menu_wrap">
         <div class="top_menu">
           <ul class="members">
-            <li><a href="/">로그인</a></li>
-            <li><a href="/">회원가입</a></li>
+            <li><a href="/member/login">로그인</a></li>
+            <li><a href="/member/join">회원가입</a></li>
           </ul>
         </div>
       </div>
