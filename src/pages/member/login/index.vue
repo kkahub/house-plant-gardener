@@ -77,6 +77,8 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+console.log(import.meta)
+</script>
 
 <style scoped></style>

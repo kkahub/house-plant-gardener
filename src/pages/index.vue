@@ -17,8 +17,8 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-// import getHousePlantList from '../service/plants'
-import getPlantGuideList from '../service/guide'
+// import getHousePlantList from '@/services/plants'
+import getPlantGuideList from '@/services/guide'
 import { useConvertJson } from '@/composables/useConvertJson'
 import { useRoute } from 'vue-router/auto'
 import MainSlider from '@/pages/components/main/MainSlider.vue'

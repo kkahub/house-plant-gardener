@@ -91,7 +91,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
-import { getPlantDetail } from '@/service/guide'
+import { getPlantDetail } from '@/services/guide'
 import { useAsyncState } from '@vueuse/core'
 import { useIsShow } from '@/composables/useIsShow'
 import DetailsCard from '@/components/base/DetailsCard.vue'
