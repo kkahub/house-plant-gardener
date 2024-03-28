@@ -44,7 +44,7 @@
     </div>
 
     <div class="auth_login">
-      <button type="submit" class="btn btn_full btn_line_light">
+      <button type="submit" class="btn btn_full btn_line_light" @click="handleSignInGoogle">
         <svg
           class="google_icon"
           height="100%"
@@ -78,7 +78,13 @@
 </template>
 
 <script setup lang="ts">
-console.log(import.meta)
+import { signInWithGoogle } from '@/services/auth'
+
+// 구글 로그인
+const handleSignInGoogle = async () => {
+  await signInWithGoogle()
+  console.log('구글 로그인 성공!')
+}
 </script>
 
 <style scoped></style>
