@@ -10,14 +10,15 @@
       <h2 class="page_title">로그인</h2>
     </div>
     <div class="member_box">
-      <form>
+      <form @submit.prevent="handleSignInEmail">
         <div class="form_group ipt_email">
-          <input type="text" placeholder="이메일" />
+          <input v-model="form.email" type="text" placeholder="이메일" />
           <font-awesome-icon :icon="['far', 'envelope']" />
           <span class="form_notice"></span>
         </div>
         <div class="form_group">
           <input
+            v-model="form.password"
             type="password"
             name="password"
             placeholder="비밀번호(문자, 숫자조합 8자 이상)"
@@ -26,7 +27,7 @@
           <font-awesome-icon :icon="['fas', 'lock']" />
           <span class="form_notice"></span>
         </div>
-        <button type="submit" class="btn btn_full btn_main">로그인</button>
+        <button type="submit" class="btn btn_full btn_main" :loading="isLoading">로그인</button>
       </form>
     </div>
     <div class="member_footer">
@@ -78,13 +79,38 @@
 </template>
 
 <script setup lang="ts">
-import { signInWithGoogle } from '@/services/auth'
+import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAsyncState } from '@vueuse/core'
+import { signInWithGoogle, signInWithEmail } from '@/services/auth'
+import { getErrorMessage } from '@/utils/firebase/error-message'
+
+const router = useRouter()
 
 // 구글 로그인
 const handleSignInGoogle = async () => {
   await signInWithGoogle()
-  console.log('구글 로그인 성공!')
+  router.push('/')
 }
+
+// 이메일 로그인
+const form = ref({
+  email: '',
+  password: ''
+})
+
+const { isLoading, error, execute } = useAsyncState(signInWithEmail, null, {
+  immediate: false,
+  throwError: true,
+  onSuccess: () => {
+    alert('로그인 하셨습니다.')
+    router.push('/')
+  },
+  onError: (err: any) => {
+    alert(`${getErrorMessage(err.code)}`)
+  }
+})
+const handleSignInEmail = () => execute(0, form.value)
 </script>
 
 <style scoped></style>

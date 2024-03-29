@@ -1,7 +1,8 @@
 // Form
 input {
   width: 100%;
-  padding: 8px 12px;
+  height: 36px;
+  padding: 0 12px;
   border: 1px solid $c-line;
   border-radius: 8px;
   background: transparent;
@@ -22,6 +23,7 @@ input {
 .btn_group {
   display: flex;
   justify-content: flex-end;
+  gap: 5px;
 }
 .btn {
   min-width: 90px;
@@ -106,9 +108,12 @@ input {
       @include btn('disabled');
     }
   }
+  &.btn_r {
+    border-radius: 30px;
+  }
   &.btn_lg {
     display: inline-block;
-    width: 150px;
+    min-width: 150px;
     margin-top: 20px;
     border-radius: 22px;
     font-size: 22px;
@@ -525,4 +530,33 @@ input {
   .swiper-pagination-bullet-active {
     opacity: 1;
   }
+}
+
+// 회원가입 관련 - 헤더
+.member_header {
+  text-align: center;
+
+  h1 {
+    display: inline-block;
+  }
+  .logo {
+    display: inline-block;
+    padding-bottom: 10px;
+    font-size: 27px;
+    font-weight: 700;
+
+    img {
+      width: 34px;
+    }
+  }
+  .page_title {
+    display: inline-block;
+    padding-left: 15px;
+    padding-bottom: 30px;
+    font-size: 26px;
+    text-align: center;
+  }
+}
+.member_content {
+  padding: 30px 0;
 }

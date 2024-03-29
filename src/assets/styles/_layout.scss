@@ -76,7 +76,8 @@ body,
           background: $c-line;
         }
       }
-      a {
+      a,
+      button {
         display: block;
         padding: 3px 15px;
         color: $c-title;

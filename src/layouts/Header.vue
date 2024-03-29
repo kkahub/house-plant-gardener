@@ -8,9 +8,18 @@
     <nav>
       <div class="menu_wrap">
         <div class="top_menu">
-          <ul class="members">
+          <ul v-if="!authStore.isAuthenticated" class="members">
             <li><a href="/member/login">로그인</a></li>
             <li><a href="/member/join">회원가입</a></li>
+          </ul>
+          <ul v-if="authStore.isAuthenticated" class="members">
+            <li>
+              <button type="button" @click="handleLogout">로그아웃</button>
+            </li>
+            <li>
+              <a v-if="authStore.user.emailVerified" href="/">마이페이지</a>
+              <a v-else href="/member/verify">메일 인증하기</a>
+            </li>
           </ul>
         </div>
       </div>
@@ -26,12 +35,17 @@
 
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
+import { logout } from '@/services/auth'
 import { useRoute } from 'vue-router'
+import { useAuthStore } from '@/stores/auth'
 
-const route = useRoute()
-const path = ref('')
 const position = ref(0)
 const isZero = ref(true)
+const route = useRoute()
+const path = ref('')
+const authStore = useAuthStore()
+
+console.log(authStore.isAuthenticated)
 
 path.value = route.matched[0].path
 position.value = window.scrollY
@@ -43,13 +57,16 @@ const mainScrollHandler = () => {
   } else {
     isZero.value = false
   }
-
-  console.log(isZero.value)
 }
 
 onMounted(() => {
   document.addEventListener('scroll', mainScrollHandler)
 })
+
+const handleLogout = async () => {
+  await logout()
+  alert('로그아웃 하셨습니다.')
+}
 </script>
 
 <style lang="scss" scoped></style>
