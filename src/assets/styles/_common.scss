@@ -5,7 +5,7 @@ input {
   padding: 0 12px;
   border: 1px solid $c-line;
   border-radius: 8px;
-  background: transparent;
+  background: #fff;
   font-size: 16px;
   font-weight: 300;
 }
@@ -161,6 +161,7 @@ input {
     position: relative;
   }
   input {
+    height: 42px;
     width: 350px;
     padding: 10px 45px 10px 20px;
     border-radius: 22px;

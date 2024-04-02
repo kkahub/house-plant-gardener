@@ -50,6 +50,10 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useAuthStore } from '@/stores/auth'
+import { storeToRefs } from 'pinia'
+
+const { uid, isAuthenticated } = storeToRefs(useAuthStore())
 
 const props = defineProps({
   item: Object,

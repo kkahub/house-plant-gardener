@@ -68,7 +68,6 @@ const { isLoading, execute } = useAsyncState(
   {
     throwError: true,
     onSuccess: (result) => {
-      console.log('itemCount: ', result?.length)
       if (result?.length === 0) {
         isNoData.value = true
       } else {
