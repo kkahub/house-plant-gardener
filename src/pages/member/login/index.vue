@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap_join">
+  <div class="wrap_login">
     <div class="member_header">
       <h1>
         <a class="logo" href="/">
@@ -10,25 +10,25 @@
       <h2 class="page_title">로그인</h2>
     </div>
     <div class="member_box">
-      <form @submit.prevent="handleSignInEmail">
+      <Form :validation-schema="schema" @submit="handleSignInEmail">
         <div class="form_group ipt_email">
-          <input v-model="form.email" type="text" placeholder="이메일" />
+          <Field v-model="form.email" name="email" type="email" placeholder="이메일" />
           <font-awesome-icon :icon="['far', 'envelope']" />
-          <span class="form_notice"></span>
+          <ErrorMessage name="email" class="form_notice" />
         </div>
         <div class="form_group">
-          <input
+          <Field
             v-model="form.password"
-            type="password"
             name="password"
+            type="password"
             placeholder="비밀번호(문자, 숫자조합 8자 이상)"
             autocomplete="off"
           />
           <font-awesome-icon :icon="['fas', 'lock']" />
-          <span class="form_notice"></span>
+          <ErrorMessage name="password" class="form_notice" />
         </div>
         <button type="submit" class="btn btn_full btn_main" :loading="isLoading">로그인</button>
-      </form>
+      </Form>
     </div>
     <div class="member_footer">
       <ul class="footer_link">
@@ -84,6 +84,16 @@ import { useRouter } from 'vue-router'
 import { useAsyncState } from '@vueuse/core'
 import { signInWithGoogle, signInWithEmail } from '@/services/auth'
 import { getErrorMessage } from '@/utils/firebase/error-message'
+import { Field, Form, ErrorMessage } from 'vee-validate'
+import * as yup from 'yup'
+
+const schema = yup.object().shape({
+  email: yup.string().email('올바른 이메일 형식이 아닙니다.').required('이메일을 입력해주세요.'),
+  password: yup
+    .string()
+    .required('비밀번호를 입력해주세요.')
+    .min(8, '비밀번호는 최소 8자 이상, 16자 이하입니다.')
+})
 
 const router = useRouter()
 
@@ -107,10 +117,14 @@ const { isLoading, error, execute } = useAsyncState(signInWithEmail, null, {
     router.push('/')
   },
   onError: (err: any) => {
-    alert(`${getErrorMessage(err.code)}`)
+    console.log(`잘못입력! ${error}`)
+    // alert(`${getErrorMessage(err.code)}`)
+    alert(`이메일이나 비밀번호를 잘못 입력하셨습니다.`)
   }
 })
-const handleSignInEmail = () => execute(0, form.value)
+const handleSignInEmail = () => {
+  return execute(0, form.value)
+}
 </script>
 
 <style scoped></style>

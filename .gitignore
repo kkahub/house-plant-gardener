@@ -30,3 +30,5 @@ coverage
 *.tsbuildinfo
 
 .env
+
+/firebase/functions/serviceAccountKey.json

@@ -142,10 +142,8 @@
   }
 }
 
-// 회원가입
-.wrap_join {
-  width: 350px;
-
+// 맴버 관련 공통
+#wrap_member {
   .member_box {
     .form_group {
       position: relative;
@@ -165,6 +163,7 @@
         position: absolute;
         top: 13px;
         left: 12px;
+        z-index: 2;
         font-size: 19px;
         color: $c-txt;
         transition: all 0.2s ease-in;
@@ -178,14 +177,6 @@
     .btn_full {
       margin: 15px 0 8px;
     }
-  }
-  .google_icon {
-    display: inline-block;
-    vertical-align: top;
-    width: 20px;
-  }
-  .auth_login {
-    margin-top: 40px;
   }
   .footer_link {
     display: flex;
@@ -213,6 +204,20 @@
         }
       }
     }
+  }
+}
+
+// 회원가입
+.wrap_login {
+  width: 350px;
+
+  .google_icon {
+    display: inline-block;
+    vertical-align: top;
+    width: 20px;
+  }
+  .auth_login {
+    margin-top: 40px;
   }
 }
 

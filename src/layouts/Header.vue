@@ -45,8 +45,6 @@ const route = useRoute()
 const path = ref('')
 const authStore = useAuthStore()
 
-console.log(authStore.isAuthenticated)
-
 path.value = route.matched[0].path
 position.value = window.scrollY
 
