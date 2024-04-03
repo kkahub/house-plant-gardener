@@ -2,6 +2,7 @@ import { initializeApp } from 'firebase/app'
 import { getAnalytics } from 'firebase/analytics'
 import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { useAuthStore } from '@/stores/auth'
+import { getFirestore } from 'firebase/firestore'
 
 // TODO: Replace the following with your app's Firebase project configuration
 // See: https://firebase.google.com/docs/web/learn-more#config-object
@@ -20,6 +21,7 @@ const app = initializeApp(firebaseConfig)
 const analytics = getAnalytics(app)
 
 const auth = getAuth(app)
+const db = getFirestore(app)
 const authStore = useAuthStore()
 onAuthStateChanged(auth, (user) => {
   authStore.setUser(user)
