@@ -1,5 +1,5 @@
 // 식물 도감 스토어
-import { db } from '/firebase'
+import { db } from '@/firebase/firebase'
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 

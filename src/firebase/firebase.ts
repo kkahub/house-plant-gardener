@@ -27,6 +27,6 @@ onAuthStateChanged(auth, (user) => {
   authStore.setUser(user)
 })
 
-export { auth }
+export { auth, db }
 
 // export default
