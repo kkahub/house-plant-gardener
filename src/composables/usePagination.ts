@@ -16,7 +16,7 @@ export const usePagination = () => {
 
   // 전체 페이지 수
   const totalComputed = () => {
-    if (total.value % pageSize.value == 0) {
+    if (total.value % pageSize.value === 0) {
       totalPage.value = total.value / pageSize.value
     } else {
       totalPage.value = Math.ceil(total.value / pageSize.value)
@@ -75,7 +75,6 @@ export const usePagination = () => {
 
   // 페이지 리스트 호출
   const getPage = async (num: number, execute: any) => {
-    console.log(total.value)
     guideCurrentPage.value = num
     await execute()
     setTimeout(() => {

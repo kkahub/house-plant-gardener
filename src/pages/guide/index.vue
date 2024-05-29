@@ -68,7 +68,7 @@ const { isLoading, execute } = useAsyncState(
   {
     throwError: true,
     onSuccess: (result) => {
-      if (result?.length === 0) {
+      if (result?.length === 0 || result === null) {
         isNoData.value = true
       } else {
         isNoData.value = false
@@ -82,8 +82,8 @@ const { isLoading, execute } = useAsyncState(
   }
 )
 
-const executePage = () => {
-  execute(0, {
+const executePage = async () => {
+  await execute(0, {
     currentPage: guideCurrentPage.value,
     currentPageSize: pageSize,
     searchWord: guideKeyword.value
