@@ -36,7 +36,7 @@ defineProps({
   },
   startPage: {
     type: Number,
-    default: 0
+    default: 1
   },
   prevPage: {
     type: Function,

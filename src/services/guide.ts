@@ -44,6 +44,7 @@ const getPlantGuideList = async ({
           snnmScnm,
           ...plantList
         } = listData
+        plantList.total = 1
         plantInfoList.push(plantList)
       } else {
         listData.map((item: PlantListData) => {
