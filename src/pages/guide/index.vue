@@ -82,8 +82,8 @@ const { isLoading, execute } = useAsyncState(
   }
 )
 
-const executePage = async () => {
-  await execute(0, {
+const executePage = () => {
+  execute(0, {
     currentPage: guideCurrentPage.value,
     currentPageSize: pageSize,
     searchWord: guideKeyword.value
