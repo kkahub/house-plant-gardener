@@ -1,39 +1,25 @@
-import { nextTick, onMounted, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { useGuideStore } from '@/stores/guide'
 import { storeToRefs } from 'pinia'
 
-export const usePagination = () => {
+export const usePagination = (size: number) => {
+  const pageSize = ref(size) // 한 페이지에 보여줄 아이템 수
+  const total = ref(0) // 전체 아이템 수
+  const startPage = ref(1) // 페이시 넘버 처음 숫자
+  const totalPage = ref(0) // 전체 페이지 수
+  const pageCount = ref(10) // 한 번에 보여 줄 페이지 수
+  const isPrev = ref(true) // true가 활성화
+  const isNext = ref(true) // true가 활성화
+
   const guideStore = useGuideStore()
   const { guideCurrentPage } = storeToRefs(guideStore)
 
-  const pageSize = ref(16)
-  const total = ref(0)
-  const startPage = ref(1)
-  const totalPage = ref(0)
-  const pageCount = ref(10)
-  const isPrev = ref(false) // true가 disabled 활성화
-  const isNext = ref(false) // true가 disabled 활성화
-
-  // 전체 페이지 수
+  // 전체 페이지 수 계산
   const totalComputed = () => {
     if (total.value % pageSize.value === 0) {
       return total.value / pageSize.value
     } else {
       return Math.ceil(total.value / pageSize.value)
-    }
-  }
-
-  // 마지막 페이지 체크
-  const lastPageCheck = () => {
-    totalPage.value = totalComputed()
-    // console.log(totalPage.value)
-
-    if (totalPage.value <= pageCount.value) {
-      if (startPage.value + pageCount.value <= totalPage.value) {
-        isNext.value = false
-      } else {
-        isNext.value = true
-      }
     }
   }
 
@@ -52,33 +38,41 @@ export const usePagination = () => {
     return arr
   }
 
+  // isPrev 체크
   watch(
     startPage,
     () => {
       // 첫 페이지 체크
-      if (guideCurrentPage.value <= 1) {
-        isPrev.value = true
-      } else {
-        isPrev.value = false
-      }
-
-      // 마지막 페이지 체크
-      lastPageCheck()
+      guideCurrentPage.value <= 1 ? (isPrev.value = false) : (isPrev.value = true)
     },
     { immediate: true }
   )
 
-  // onMounted(() => {
-  //   totalComputed()
-  //   nextTick(() => {
-  //     // console.log('응?', total.value, pageSize.value)
-  //     // console.log(totalPage.value)
-  //   })
-  //   lastPageCheck()
-  // })
+  // isNext 체크
+  watch(
+    [total, startPage],
+    () => {
+      totalPage.value = totalComputed()
+
+      if (totalPage.value <= pageCount.value) {
+        isNext.value = false
+      } else {
+        if (startPage.value + pageCount.value <= totalPage.value) {
+          isNext.value = true
+        } else {
+          isNext.value = false
+        }
+      }
+    },
+    { immediate: true }
+  )
 
   // prev 클릭
-  const prevPage = (execute: any) => {
+  const prevPage = (execute: any, event: MouseEvent) => {
+    if (!isPrev.value) {
+      event.preventDefault()
+      return
+    }
     if (startPage.value > pageCount.value) {
       startPage.value -= pageCount.value
       getPage(startPage.value, execute)
@@ -87,10 +81,7 @@ export const usePagination = () => {
 
   // next 클릭
   const nextPage = async (execute: any, event: MouseEvent) => {
-    // console.log(totalPage.value)
-    // console.log('넥스트:', isNext.value)
     if (!isNext.value) {
-      // console.log('이벤트 멈춰!')
       event.preventDefault()
       return
     }

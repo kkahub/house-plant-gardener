@@ -1,11 +1,11 @@
 <template>
   <div>
     <ul class="pagination">
-      <!-- <li class="page_item" :class="{ disabled: isBtnFirst }">
+      <!-- <li class="page_item" :class="{ active: isBtnFirst }">
           <a class="page_btn" href="#" @click.prevent="pageArrow('first')">First</a>
         </li> -->
-      <li class="page_item" :class="{ disabled: isPrev }">
-        <a class="page_btn" href="#" @click="prevPage(executePage)">
+      <li class="page_item prev" :class="{ active: isPrev }">
+        <a class="page_btn" href="#" @click="prevPage(executePage, $event)">
           <font-awesome-icon :icon="['fas', 'chevron-left']" />
         </a>
       </li>
@@ -16,17 +16,15 @@
           </button>
         </li>
       </template>
-      <li class="page_item" :class="{ disabled: isNext }">
+      <li class="page_item next" :class="{ active: isNext }">
         <a class="page_btn" href="#" @click="nextPage(executePage, $event)">
           <font-awesome-icon :icon="['fas', 'chevron-right']" />
         </a>
       </li>
-      <!--<li class="page_item" :class="{ disabled: isBtnLast }">
+      <!--<li class="page_item" :class="{ active: isBtnLast }">
           <a class="page_btn" href="#" @click.prevent="pageArrow('last')">Last</a>
         </li> -->
     </ul>
-    <div>{{ isPrev }}</div>
-    <div>{{ isNext }}</div>
   </div>
 </template>
 
@@ -59,6 +57,10 @@ defineProps({
     default() {
       return null
     }
+  },
+  pageSize: {
+    type: Number,
+    default: 16
   },
   currentPage: {
     type: Number,

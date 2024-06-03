@@ -19,10 +19,10 @@
         <Pagination
           :get-page="getPage"
           :page-array="pageArray"
-          :prev-page="prevPage"
-          :next-page="nextPage"
           :start-page="startPage"
           :current-page="guideCurrentPage"
+          :prev-page="prevPage"
+          :next-page="nextPage"
           :is-prev="isPrev"
           :is-next="isNext"
           :execute-page="executePage"
@@ -51,10 +51,7 @@ const { guideKeyword, guideCurrentPage } = storeToRefs(guideStore)
 const plantItems = ref()
 const prevKeyword = ref('')
 const isNoData = ref(false)
-
-// Pagination
-const { pageArray, prevPage, nextPage, getPage, pageSize, total, startPage, isPrev, isNext } =
-  usePagination()
+const pageSize = ref(16)
 
 // 식물 기본정보 데이터 가져오기
 const { isLoading, execute } = useAsyncState(
@@ -82,10 +79,15 @@ const { isLoading, execute } = useAsyncState(
   }
 )
 
+// Pagination
+const { pageArray, prevPage, nextPage, getPage, total, startPage, isPrev, isNext } = usePagination(
+  pageSize.value
+)
+
 const executePage = () => {
   execute(0, {
     currentPage: guideCurrentPage.value,
-    currentPageSize: pageSize,
+    currentPageSize: pageSize.value,
     searchWord: guideKeyword.value
   })
 }
@@ -94,6 +96,7 @@ const handleSearch = () => {
   guideCurrentPage.value = 1
   executePage()
   prevKeyword.value = guideKeyword.value
+  startPage.value = 1
 }
 </script>
 

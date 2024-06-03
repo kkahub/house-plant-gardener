@@ -84,9 +84,7 @@ export const getPlantDetail = async (code: string | string[]) => {
 
     // 식물 상세 정보 json변환
     const detailString = await res.text()
-
     const detailNode = new DOMParser().parseFromString(detailString, 'text/xml')
-
     const detailObject: any = xmlToJson.convertJson(detailNode)
     const detailData = detailObject.response.body.item
 

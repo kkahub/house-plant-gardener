@@ -454,6 +454,28 @@ input {
         font-weight: 700;
       }
     }
+    &.prev,
+    &.next {
+      &.active {
+        .page_btn {
+          cursor: pointer;
+          opacity: 1;
+          background: #fff;
+        }
+        &:hover {
+          .page_btn {
+            background: $c-bg;
+            color: $c-sub;
+          }
+        }
+      }
+      .page_btn {
+        cursor: default;
+        opacity: 0.5;
+        background: transparent;
+        color: $c-txt;
+      }
+    }
     .page_btn {
       display: block;
       padding: 7px;
@@ -465,13 +487,6 @@ input {
       color: $c-txt;
       line-height: 1;
       text-align: center;
-    }
-    &.disabled {
-      .page_btn {
-        opacity: 0.5;
-        background: transparent;
-        color: $c-txt;
-      }
     }
   }
 }
