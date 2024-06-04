@@ -9,11 +9,19 @@
           <font-awesome-icon :icon="['fas', 'chevron-left']" />
         </a>
       </li>
-      <template v-for="(item, index) in pageArray(startPage)" :key="`list-${index}`">
-        <li class="page_item" :class="{ active: item === currentPage }">
-          <button class="page_btn" @click="getPage(item, executePage)" type="button">
-            {{ item }}
-          </button>
+      <template v-for="(pageNum, index) in pageArray(startPage)" :key="`list-${index}`">
+        <li class="page_item" :class="{ active: pageNum === currentPage }">
+          <router-link
+            :to="`/guide/${pageNum}`"
+            @click="getPage(pageNum, executePage)"
+            class="page_btn"
+            type="button"
+          >
+            {{ pageNum }}
+          </router-link>
+          <!-- <button class="page_btn" @click="getPage(pageNum, executePage)" type="button">
+            {{ pageNum }}
+          </button> -->
         </li>
       </template>
       <li class="page_item next" :class="{ active: isNext }">
@@ -57,6 +65,10 @@ defineProps({
     default() {
       return null
     }
+  },
+  guideKeyword: {
+    type: String,
+    default: ''
   },
   pageSize: {
     type: Number,

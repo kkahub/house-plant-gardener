@@ -14,22 +14,32 @@
         />
       </div>
 
-      <div v-if="!isNoData" class="guide_list_wrap">
-        <GuideList :plant-items="plantItems" />
-        <Pagination
-          :get-page="getPage"
-          :page-array="pageArray"
-          :start-page="startPage"
-          :current-page="guideCurrentPage"
-          :prev-page="prevPage"
-          :next-page="nextPage"
-          :is-prev="isPrev"
-          :is-next="isNext"
-          :execute-page="executePage"
-          :loading="isLoading"
-        />
+      <div class="guide_list_wrap">
+        <div v-if="isLoading" class="guide_list_loading">
+          <div class="loader_inner">
+            <div class="loader">로딩중...</div>
+          </div>
+        </div>
+        <div v-else>
+          <div v-if="!isNoData" class="guide_list_inner">
+            <GuideList :plant-items="plantItems" />
+            <Pagination
+              :page-array="pageArray"
+              :start-page="startPage"
+              :current-page="guideCurrentPage"
+              :prev-page="prevPage"
+              :next-page="nextPage"
+              :get-page="getPage"
+              :guide-keyword="guideKeyword"
+              :is-prev="isPrev"
+              :is-next="isNext"
+              :execute-page="executePage"
+              :loading="isLoading"
+            />
+          </div>
+          <div v-else class="no_data">검색된 식물이 없습니다.</div>
+        </div>
       </div>
-      <div v-else class="no_data">검색된 식물이 없습니다.</div>
     </div>
   </section>
 </template>
@@ -46,7 +56,7 @@ import GuideList from '@/components/apps/guide/GuideList.vue'
 import Pagination from '@/components/pagination/Pagination.vue'
 
 const guideStore = useGuideStore()
-const { guideKeyword, guideCurrentPage } = storeToRefs(guideStore)
+const { guideCurrentPage, guideKeyword } = storeToRefs(guideStore)
 
 const plantItems = ref()
 const prevKeyword = ref('')
@@ -81,17 +91,15 @@ const { isLoading, execute } = useAsyncState(
 
 // Pagination
 const { pageArray, prevPage, nextPage, getPage, total, startPage, isPrev, isNext } = usePagination(
-  pageSize.value
+  pageSize.value,
+  guideKeyword.value
 )
 
-const executePage = () => {
-  execute(0, {
-    currentPage: guideCurrentPage.value,
-    currentPageSize: pageSize.value,
-    searchWord: guideKeyword.value
-  })
+const executePage = async () => {
+  await execute()
 }
 
+// 검색
 const handleSearch = () => {
   guideCurrentPage.value = 1
   executePage()

@@ -1,6 +1,6 @@
 <template>
   <li>
-    <router-link :to="`/guide/${item?.plantPilbkNo}`">
+    <router-link :to="`/guide/detail/${item?.plantPilbkNo}`">
       <div class="thum_wrap">
         <img v-if="noImg" :src="item?.imgUrl" />
         <div v-else class="no_img">
