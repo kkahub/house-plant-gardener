@@ -1,6 +1,10 @@
 import { type PlantListData, type PlantList, type PlantDetail } from '@/types/plants'
 import * as xmlToJson from '../plugin/xmlToJson'
 
+import { db } from '@/firebase/firebase'
+import { doc } from 'firebase/firestore'
+
+// 식물도감 리스트
 const getPlantGuideList = async ({
   currentPage,
   currentPageSize,
@@ -69,8 +73,10 @@ const getPlantGuideList = async ({
   }
 }
 
-export default getPlantGuideList
+// 식물도감 좋아요 여부
+export async function hasLike(uid: string, plantCode: string) {}
 
+// 식물도감 상세페이지
 export const getPlantDetail = async (code: string | string[]) => {
   const params = {
     serviceKey: import.meta.env.VITE_PLANT_API_KEY,
@@ -154,3 +160,5 @@ export const getPlantDetail = async (code: string | string[]) => {
     return 'error'
   }
 }
+
+export default getPlantGuideList

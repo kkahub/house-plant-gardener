@@ -10,21 +10,24 @@
           </div>
         </div>
       </div>
-      <div class="info_gallery">
+    </router-link>
+    <div class="info_gallery">
+      <div class="wrap_btn">
+        <button @click.prevent="toggleLike" type="button">
+          <font-awesome-icon :icon="isLike ? ['fas', 'heart'] : ['far', 'heart']" />
+        </button>
+        <button @click.prevent="toggleBookmark" type="button">
+          <font-awesome-icon :icon="isBookmark ? ['fas', 'bookmark'] : ['far', 'bookmark']" />
+        </button>
+      </div>
+      <router-link :to="`/guide/detail/${item?.plantPilbkNo}`">
         <div class="wrap_title">
-          <h3 class="gallery_title">
-            {{ item?.plantGnrlNm }}
-          </h3>
-          <div class="wrap_btn">
-            <button type="button"><font-awesome-icon :icon="['far', 'heart']" /></button>
-            <button type="button"><font-awesome-icon :icon="['far', 'bookmark']" /></button>
-          </div>
+          <h3 class="gallery_title">{{ item?.plantGnrlNm }}</h3>
         </div>
         <div class="family_genus">
           <dfn>{{ item?.familyKorNm + ' ' + item?.genusKorNm }}</dfn>
           <dfn class="orignal_name">{{ item?.familyNm + ' ' + item?.genusNm }}</dfn>
         </div>
-
         <div class="count_info">
           <span class="view">
             <font-awesome-icon :icon="['far', 'eye']" />
@@ -43,13 +46,14 @@
           0
         </span> -->
         </div>
-      </div>
-    </router-link>
+      </router-link>
+    </div>
   </li>
 </template>
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useLike } from '@/composables/useLike'
 import { useAuthStore } from '@/stores/auth'
 import { storeToRefs } from 'pinia'
 
@@ -59,9 +63,25 @@ const props = defineProps({
   item: Object,
   default: () => ({})
 })
-
 const noImg = ref(true)
+const isBookmark = ref(false)
+
+const { getLikeStatus } = useLike(id, count)
+
+// 썸네일 이미지 없을 때
 noImg.value = props.item?.imgUrl !== 'NONE'
+
+// 북마크 상태 가져오기
+// isBookmark.value = await hasBookmark(uid, count)
+
+// 북마크 토글
+const toggleBookmark = () => {
+  if (isAuthenticated.value === false) {
+    alert('로그인 후 이용해주세요.')
+    return
+  }
+  isBookmark.value = !isBookmark.value
+}
 </script>
 
 <style scoped></style>

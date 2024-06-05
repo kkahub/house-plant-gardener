@@ -204,6 +204,7 @@ input {
     }
   }
   .info_gallery {
+    position: relative;
     padding: 15px 0 20px;
 
     .wrap_title {
@@ -220,6 +221,7 @@ input {
     .wrap_btn {
       position: absolute;
       right: 0;
+      z-index: 1;
 
       button {
         margin-left: 10px;
@@ -238,6 +240,18 @@ input {
         margin-top: 2px;
         color: $c-txt-sub;
         letter-spacing: -0.02em;
+      }
+    }
+  }
+  .wrap_btn {
+    .fa-heart {
+      &[data-prefix='fas'] {
+        color: $c-main;
+      }
+    }
+    .fa-bookmark {
+      &[data-prefix='fas'] {
+        color: $c-main;
       }
     }
   }

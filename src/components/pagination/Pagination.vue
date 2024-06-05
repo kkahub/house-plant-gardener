@@ -9,7 +9,7 @@
           <font-awesome-icon :icon="['fas', 'chevron-left']" />
         </a>
       </li>
-      <template v-for="(pageNum, index) in pageArray(startPage)" :key="`list-${index}`">
+      <template v-for="pageNum in pageArray(startPage)" :key="pageNum">
         <li class="page_item" :class="{ active: pageNum === currentPage }">
           <router-link
             :to="`/guide?page=${pageNum}`"
