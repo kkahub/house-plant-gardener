@@ -46,12 +46,12 @@ export const usePagination = (size: number, keyword: string) => {
     return arr
   }
 
-  // isPrev 체크
+  // 이전, 다음 체크
   watch(
     [total, startPage],
     () => {
       // isPrev 체크
-      guideCurrentPage.value <= 1 ? (isPrev.value = false) : (isPrev.value = true)
+      guideCurrentPage.value <= pageCount.value ? (isPrev.value = false) : (isPrev.value = true)
 
       // isNext 체크
       totalPage.value = totalComputed()
@@ -71,7 +71,7 @@ export const usePagination = (size: number, keyword: string) => {
   // routing
   const routeChange = () => {
     guideCurrentPage.value = startPage.value
-    router.push({ path: `${route.matched[0].path}/${guideCurrentPage.value}` })
+    router.push({ path: `${route.matched[0].path}`, query: { page: `${guideCurrentPage.value}` } })
   }
 
   // prev 클릭
@@ -99,8 +99,8 @@ export const usePagination = (size: number, keyword: string) => {
   }
 
   // 페이지 리스트 호출
-  const getPage = async (num: number, execute: any) => {
-    if (guideCurrentPage.value === num) return
+  const getPage = async (num: number, execute: any, e?: MouseEvent) => {
+    if (e && guideCurrentPage.value === num) return
 
     guideCurrentPage.value = num
 

@@ -12,16 +12,13 @@
       <template v-for="(pageNum, index) in pageArray(startPage)" :key="`list-${index}`">
         <li class="page_item" :class="{ active: pageNum === currentPage }">
           <router-link
-            :to="`/guide/${pageNum}`"
-            @click="getPage(pageNum, executePage)"
+            :to="`/guide?page=${pageNum}`"
+            @click="getPage(pageNum, executePage, $event)"
             class="page_btn"
             type="button"
           >
             {{ pageNum }}
           </router-link>
-          <!-- <button class="page_btn" @click="getPage(pageNum, executePage)" type="button">
-            {{ pageNum }}
-          </button> -->
         </li>
       </template>
       <li class="page_item next" :class="{ active: isNext }">

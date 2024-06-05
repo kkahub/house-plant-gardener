@@ -46,6 +46,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useAsyncState } from '@vueuse/core'
 import { usePagination } from '@/composables/usePagination'
 import { storeToRefs } from 'pinia'
@@ -62,6 +63,14 @@ const plantItems = ref()
 const prevKeyword = ref('')
 const isNoData = ref(false)
 const pageSize = ref(16)
+
+const route = useRoute()
+const router = useRouter()
+
+// 쿼리 주소를 이용해 다이렉트 접속 시 페이지 값 설정
+if (route.query.page !== undefined) {
+  guideCurrentPage.value = Number(route.query.page)
+}
 
 // 식물 기본정보 데이터 가져오기
 const { isLoading, execute } = useAsyncState(
@@ -105,6 +114,9 @@ const handleSearch = () => {
   executePage()
   prevKeyword.value = guideKeyword.value
   startPage.value = 1
+
+  // 라우팅
+  router.push({ path: `${route.matched[0].path}` })
 }
 </script>
 

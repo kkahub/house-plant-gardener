@@ -252,6 +252,9 @@ input {
       font-size: 14px;
       color: $c-txt-sub;
     }
+    .svg-inline--fa {
+      margin-right: 3px;
+    }
     .fa-comment-dots {
       transform: scaleX(-100%);
     }
@@ -292,10 +295,10 @@ input {
     height: 50px;
     border-radius: 50%;
     background:
-      radial-gradient(farthest-side, $c-main 95%, #0000) 50% 1px/12px 12px no-repeat,
-      radial-gradient(farthest-side, #0000 calc(100% - 14px), #ddd 0);
+      radial-gradient(farthest-side, $c-main 95%, #0000) 60% 1px/10px 10px no-repeat,
+      radial-gradient(farthest-side, #0000 calc(100% - 11px), #ddd 0);
     font-size: 0;
-    animation: loader 2s infinite linear;
+    animation: loader 1.5s infinite linear;
   }
 }
 @keyframes loader {
@@ -313,7 +316,7 @@ input {
   .page_item {
     &:hover {
       .page_btn {
-        background: $c-bg;
+        background: #fff;
         color: $c-sub;
       }
     }
@@ -329,18 +332,17 @@ input {
         .page_btn {
           cursor: pointer;
           opacity: 1;
-          background: #fff;
         }
         &:hover {
           .page_btn {
-            background: $c-bg;
+            background: #fff;
             color: $c-sub;
           }
         }
       }
       .page_btn {
         cursor: default;
-        opacity: 0.5;
+        opacity: 0.3;
         background: transparent;
         color: $c-txt;
       }
@@ -350,9 +352,7 @@ input {
       padding: 7px;
       min-width: 32px;
       height: 32px;
-      border: 1px solid $c-line-sub;
       border-radius: 5px;
-      background: #fff;
       color: $c-txt;
       line-height: 1;
       text-align: center;
