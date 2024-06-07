@@ -21,7 +21,7 @@
             v-model="form.password"
             name="password"
             type="password"
-            placeholder="비밀번호(문자, 숫자조합 8자 이상)"
+            placeholder="비밀번호"
             autocomplete="off"
           />
           <font-awesome-icon :icon="['fas', 'lock']" />

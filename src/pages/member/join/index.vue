@@ -22,7 +22,7 @@
             id="password"
             name="password"
             type="password"
-            placeholder="비밀번호(문자, 숫자조합 8자 이상)"
+            placeholder="비밀번호(문자, 숫자, 특수문자로 8~16자)"
             autocomplete="off"
           />
           <font-awesome-icon :icon="['fas', 'lock']" />
@@ -77,7 +77,11 @@ const schema = yup.object().shape({
   password: yup
     .string()
     .required('비밀번호를 입력해주세요.')
-    .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$/, '문자, 숫자 조합 8~16자로 해주세요.'),
+    .matches(
+      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*_+-=])[A-Za-z\d!@#$%^&*_+-=]{8,16}$/,
+      '문자, 숫자, 특수문자 조합 8~16자로 해주세요.'
+    ),
+  // .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$/, '문자, 숫자 조합 8~16자로 해주세요.'),
   passwordConfirm: yup
     .string()
     .required('비밀번호를 입력해주세요.')

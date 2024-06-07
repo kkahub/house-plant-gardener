@@ -72,7 +72,7 @@ if (route.query.page !== undefined) {
   guideCurrentPage.value = Number(route.query.page)
 }
 
-// 식물 기본정보 데이터 가져오기
+// 식물도감정보 데이터 가져오기
 const { isLoading, execute } = useAsyncState(
   () =>
     getPlantGuideList({

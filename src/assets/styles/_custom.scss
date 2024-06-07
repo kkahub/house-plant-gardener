@@ -208,7 +208,7 @@
   }
 }
 
-// 회원가입
+// 로그인
 .wrap_login {
   width: 350px;
 
@@ -220,6 +220,11 @@
   .auth_login {
     margin-top: 40px;
   }
+}
+
+// 회원가입
+.wrap_join {
+  width: 380px;
 }
 
 // 이메일 인증하기
