@@ -90,7 +90,7 @@ export async function removeLike(uid: string, plantCode: string) {
 
 // 식물도감 좋아요 수 +-
 export async function likeCountComputed(plantCode: string, likeCount: number) {
-  await setDoc(doc(db, 'plantCode', plantCode), { likeCount })
+  await setDoc(doc(db, 'plantCode', plantCode), { likeCount }, { merge: true })
 }
 
 // 식물도감 좋아요 수 가져오기
@@ -124,6 +124,22 @@ export async function removeBookmark(uid: string, plantCode: string) {
   await deleteDoc(doc(db, 'guide_bookmarks', `${uid}_${plantCode}`))
 }
 
+// 식물도감 북마크 수 +-
+export async function bookmarkCountComputed(plantCode: string, bookmarkCount: number) {
+  await setDoc(doc(db, 'plantCode', plantCode), { bookmarkCount }, { merge: true })
+}
+
+// 식물도감 북마크 수 가져오기
+export async function getBookmarkCount(plantCode: string) {
+  const docSnap = await getDoc(doc(db, 'plantCode', plantCode))
+
+  if (docSnap.data()?.bookmarkCount !== undefined) {
+    return await docSnap.data()?.bookmarkCount
+  } else {
+    return 0
+  }
+}
+
 // 식물도감 북마크 여부
 export async function hasBookmark(uid: string, plantCode: string) {
   const docSnap = await getDoc(doc(db, 'guide_bookmarks', `${uid}_${plantCode}`))
@@ -131,7 +147,7 @@ export async function hasBookmark(uid: string, plantCode: string) {
 }
 
 // 식물도감 상세페이지
-export const getPlantDetail = async (code: string | string[]) => {
+export const getPlantDetail = async (code: string) => {
   const params = {
     serviceKey: import.meta.env.VITE_PLANT_API_KEY,
     q1: code
@@ -147,6 +163,9 @@ export const getPlantDetail = async (code: string | string[]) => {
     const detailNode = new DOMParser().parseFromString(detailString, 'text/xml')
     const detailObject: any = xmlToJson.convertJson(detailNode)
     const detailData = detailObject.response.body.item
+
+    // 도감 검색 결과 없음
+    if (detailData === undefined) return
 
     // 가든 상세 정보 편집
     const {

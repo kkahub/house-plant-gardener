@@ -1,9 +1,15 @@
 <template>
   <section class="wrap_detail">
-    <div class="inner">
+    <div v-if="isLoading" class="inner con_loader">
+      <div class="loader_inner">
+        <div class="loader">로딩중...</div>
+      </div>
+    </div>
+    <div v-else class="inner">
       <!-- 기본 정보 -->
       <div class="card_gallery">
         <ShortInfo
+          :code="code"
           :img-src="info?.imgUrl"
           :img-alt="info?.familyKorNm"
           :name="info?.plantGnrlNm"
@@ -90,7 +96,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { getPlantDetail } from '@/services/guide'
 import { useAsyncState } from '@vueuse/core'
 import { useIsShow } from '@/composables/useIsShow'
@@ -103,11 +109,18 @@ import Similar from '@/pages/components/details/Similar.vue'
 
 const info = ref()
 const route = useRoute()
+const router = useRouter()
+const code = ref(String(route.params.code))
 const { isShow } = useIsShow()
 
-const { error } = useAsyncState(() => getPlantDetail(route.params.code), null, {
+const { error, isLoading } = useAsyncState(() => getPlantDetail(code.value), null, {
   onSuccess: (result) => {
-    info.value = result
+    if (result === undefined) {
+      alert('잘못된 접근입니다.')
+      router.go(-1)
+    } else {
+      info.value = result
+    }
   }
 })
 </script>

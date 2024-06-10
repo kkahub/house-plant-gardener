@@ -127,6 +127,20 @@ input {
   }
 }
 
+// 버튼 아이콘 Icon
+.wrap_btn {
+  .fa-heart {
+    &[data-prefix='fas'] {
+      color: $c-main;
+    }
+  }
+  .fa-bookmark {
+    &[data-prefix='fas'] {
+      color: $c-main;
+    }
+  }
+}
+
 // 이미지 없음
 .no_img {
   display: flex;
@@ -243,18 +257,6 @@ input {
       }
     }
   }
-  .wrap_btn {
-    .fa-heart {
-      &[data-prefix='fas'] {
-        color: $c-main;
-      }
-    }
-    .fa-bookmark {
-      &[data-prefix='fas'] {
-        color: $c-main;
-      }
-    }
-  }
   .count_info {
     display: flex;
     justify-content: flex-start;
@@ -299,6 +301,11 @@ input {
 }
 
 // 로딩중
+.con_loader {
+  display: grid;
+  place-content: center;
+  height: calc(100dvh - 270px);
+}
 .loader_inner {
   display: grid;
   place-content: center;

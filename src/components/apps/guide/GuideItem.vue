@@ -43,7 +43,7 @@
           </span>
           <span class="bookmark">
             <font-awesome-icon :icon="['far', 'bookmark']" />
-            0
+            {{ bookmarkCount }}
           </span>
         </div>
       </router-link>
@@ -53,18 +53,14 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useAuthStore } from '@/stores/auth'
-import { storeToRefs } from 'pinia'
 import { useLike } from '@/composables/useLike'
-
-const { isAuthenticated, uid } = storeToRefs(useAuthStore())
+import { useBookmark } from '@/composables/useBookmark'
 
 const props = defineProps({
   item: Object,
   default: () => ({})
 })
 const noImg = ref(true)
-const isBookmark = ref(false)
 
 // 썸네일 이미지 없을 때
 noImg.value = props.item?.imgUrl !== 'NONE'
@@ -72,17 +68,8 @@ noImg.value = props.item?.imgUrl !== 'NONE'
 // 좋아요 컴포저블
 const { toggleLike, isLike, likeCount } = useLike(props.item?.plantPilbkNo)
 
-// 북마크 상태 가져오기
-// isBookmark.value = await hasBookmark(uid, count)
-
-// 북마크 토글
-const toggleBookmark = () => {
-  if (isAuthenticated.value === false) {
-    alert('로그인 후 이용해주세요.')
-    return
-  }
-  isBookmark.value = !isBookmark.value
-}
+// 북마크 컴포저블
+const { toggleBookmark, isBookmark, bookmarkCount } = useBookmark(props.item?.plantPilbkNo)
 </script>
 
 <style scoped></style>

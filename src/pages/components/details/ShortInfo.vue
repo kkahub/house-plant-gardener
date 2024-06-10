@@ -15,8 +15,12 @@
         <span class="original_name">{{ scientificName }}</span>
       </h2>
       <div class="wrap_btn">
-        <button type="button"><font-awesome-icon :icon="['far', 'heart']" /></button>
-        <button type="button"><font-awesome-icon :icon="['far', 'bookmark']" /></button>
+        <button @click.prevent="toggleLike" type="button">
+          <font-awesome-icon :icon="isLike ? ['fas', 'heart'] : ['far', 'heart']" />
+        </button>
+        <button @click.prevent="toggleBookmark" type="button">
+          <font-awesome-icon :icon="isBookmark ? ['fas', 'bookmark'] : ['far', 'bookmark']" />
+        </button>
       </div>
     </div>
     <div class="short_line">
@@ -44,10 +48,14 @@
 
 <script setup lang="ts">
 import { useIsShow } from '@/composables/useIsShow'
+import { useLike } from '@/composables/useLike'
+import { useBookmark } from '@/composables/useBookmark'
 
-const { isShow } = useIsShow()
-
-defineProps({
+const props = defineProps({
+  code: {
+    type: String,
+    default: ''
+  },
   imgSrc: {
     type: String,
     default: ''
@@ -97,6 +105,14 @@ defineProps({
     default: ''
   }
 })
+
+const { isShow } = useIsShow()
+
+// 좋아요 컴포저블
+const { toggleLike, isLike } = useLike(props.code)
+
+// 북마크 컴포저블
+const { toggleBookmark, isBookmark } = useBookmark(props.code)
 </script>
 
 <style scoped></style>
