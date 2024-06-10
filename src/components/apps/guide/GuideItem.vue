@@ -41,10 +41,10 @@
             <font-awesome-icon :icon="['far', 'heart']" />
             {{ likeCount }}
           </span>
-          <!-- <span class="bookmark">
-          <font-awesome-icon :icon="['far', 'bookmark']" />
-          0
-        </span> -->
+          <span class="bookmark">
+            <font-awesome-icon :icon="['far', 'bookmark']" />
+            0
+          </span>
         </div>
       </router-link>
     </div>
@@ -53,11 +53,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { useLike } from '@/composables/useLike'
 import { useAuthStore } from '@/stores/auth'
 import { storeToRefs } from 'pinia'
-import { useAsyncState } from '@vueuse/core'
-import { getPlantGuideInfo } from '@/services/guide'
+import { useLike } from '@/composables/useLike'
 
 const { isAuthenticated, uid } = storeToRefs(useAuthStore())
 
@@ -68,34 +66,11 @@ const props = defineProps({
 const noImg = ref(true)
 const isBookmark = ref(false)
 
-// let codeInfo = [...props.item?.plantPilbkNo ]
-
-// const codeInfo = ref({ ...[props.item?.plantPilbkNo] })
-
-// console.log(props.item?.plantPilbkNo)
-
-// 식물 기본정보 데이터 가져오기
-// const { execute } = useAsyncState(() => getPlantGuideInfo(), null, {
-//   throwError: true,
-//   onSuccess: (result) => {
-//     if (result?.length === 0 || result === null) {
-//       isNoData.value = true
-//     } else {
-//       isNoData.value = false
-//       plantItems.value = result
-
-//       if (result) {
-//         total.value = result[0].total
-//       }
-//     }
-//   }
-// })
-
-// 좋아요 컴포저블
-const { toggleLike, isLike, likeCount } = useLike(props.item?.plantPilbkNo, props.item?.likeCount)
-
 // 썸네일 이미지 없을 때
 noImg.value = props.item?.imgUrl !== 'NONE'
+
+// 좋아요 컴포저블
+const { toggleLike, isLike, likeCount } = useLike(props.item?.plantPilbkNo)
 
 // 북마크 상태 가져오기
 // isBookmark.value = await hasBookmark(uid, count)

@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import GuideItem from './GuideItem.vue'
 
-defineProps({
+const props = defineProps({
   plantItems: Object,
   default: () => {}
 })

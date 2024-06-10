@@ -73,23 +73,6 @@ const getPlantGuideList = async ({
   }
 }
 
-// 식물도감 게시물 정보
-// export async function getPlantGuideInfo() {
-//   const docSnap = await getDoc(doc(db, 'plantCode', plantCode))
-
-//   if (!docSnap.exists()) {
-//     throw new Error('Document does not exist!')
-//   }
-
-//   const data = docSnap.data()
-
-//   return {
-//     code: docSnap.plantCode,
-//     ...data,
-//     createdAt: data.createdAt?.toDate()
-//   }
-// }
-
 // 식물도감 좋아요 추가
 export async function addLike(uid: string, plantCode: string) {
   // 유저별 좋아요
@@ -105,9 +88,20 @@ export async function removeLike(uid: string, plantCode: string) {
   await deleteDoc(doc(db, 'guide_likes', `${uid}_${plantCode}`))
 }
 
-// 도감 식물 좋아요 수
+// 식물도감 좋아요 수 +-
 export async function likeCountComputed(plantCode: string, likeCount: number) {
   await setDoc(doc(db, 'plantCode', plantCode), { likeCount })
+}
+
+// 식물도감 좋아요 수 가져오기
+export async function getLikeCount(plantCode: string) {
+  const docSnap = await getDoc(doc(db, 'plantCode', plantCode))
+
+  if (docSnap.data()?.likeCount !== undefined) {
+    return await docSnap.data()?.likeCount
+  } else {
+    return 0
+  }
 }
 
 // 식물도감 좋아요 여부

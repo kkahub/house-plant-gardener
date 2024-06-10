@@ -1,14 +1,13 @@
 import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
-import { addLike, removeLike, hasLike, likeCountComputed } from '@/services/guide'
+import { addLike, removeLike, hasLike, getLikeCount, likeCountComputed } from '@/services/guide'
 
-export const useLike = (code: string, count) => {
+export const useLike = (code: string) => {
   const { uid, isAuthenticated } = storeToRefs(useAuthStore())
-  const initCount = count !== undefined ? count : 0
 
   const isLike = ref(false)
-  const likeCount = ref(initCount)
+  const likeCount = ref(0)
   const guideCode = ref(code)
 
   // 로그인 시 좋아요 상태 가져오기
@@ -20,6 +19,9 @@ export const useLike = (code: string, count) => {
 
     // 좋아요 상태 가져오기
     isLike.value = await hasLike(uid.value, guideCode.value)
+
+    // 좋아요 갯수 가져오기
+    likeCount.value = await getLikeCount(guideCode.value)
   }
 
   // 좋아요 토글
