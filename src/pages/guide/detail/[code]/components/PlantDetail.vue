@@ -22,15 +22,51 @@
           :spread-kr="info?.dstrb"
           :spread="info?.osDstrb"
           :copy="info?.cprtCtnt"
+          :toggle-bookmark="toggleBookmark"
+          :is-bookmark="isBookmark"
+          :toggle-note="toggleNote"
+          :is-note="isNote"
         />
       </div>
       <!-- // 기본 정보 -->
-
+      <!-- 노트 -->
+      <div v-if="isNote" class="card note">
+        <div class="card_title">
+          노트
+          <div class="btn_wrap">
+            <button v-if="isEditNote" @click="noteSave" type="button" title="저장하기">
+              <font-awesome-icon :icon="['far', 'floppy-disk']" />
+            </button>
+            <button v-else @click="" type="button" title="노트하기">
+              <font-awesome-icon :icon="['far', 'pen-to-square']" />
+            </button>
+            <button type="button" title="삭제하기">
+              <font-awesome-icon :icon="['far', 'trash-can']" />
+            </button>
+          </div>
+        </div>
+        <div class="card_content">
+          <textarea
+            v-if="isEditNote"
+            v-focus
+            v-model="noteContent"
+            name="note_edit"
+            class="note_edit"
+            id=""
+            placeholder="내용을 입력해주세요."
+          ></textarea>
+          <div v-else class="note_content">
+            노트 내용 노트 내용노트 내용 노트 내용노트 내용 노트 내용노트 내용 노트 내용노트 내용
+            노트 내용노트 내용 노트 내용노트 내용 노트 내용노트 내용 노트 내용노트 내용 노트 내용
+          </div>
+        </div>
+      </div>
+      <!-- // 노트 -->
       <!-- 상세 정보 -->
       <div class="card_detail">
         <!-- 재배 정보 -->
         <DetailsCard
-          summary="재배 정보"
+          title="재배 정보"
           v-if="
             isShow(info?.grwEvrntDesc) ||
             isShow(info?.rrngType) ||
@@ -48,7 +84,7 @@
         <!-- // 재배 정보 -->
         <!-- 외형 -->
         <DetailsCard
-          summary="외형"
+          title="외형"
           v-if="
             isShow(info?.shpe) ||
             isShow(info?.leafDesc) ||
@@ -74,14 +110,14 @@
         <!-- // 외형 -->
         <!-- 특징 -->
         <DetailsCard
-          summary="특징"
+          title="특징"
           v-if="isShow(info?.spft) || isShow(info?.useMthdDesc) || isShow(info?.note)"
         >
           <Signature :special="info?.spft" :use="info?.useMthdDesc" :note="info?.note" />
         </DetailsCard>
         <!-- // 특징 -->
         <!-- 유사식물 -->
-        <DetailsCard summary="유사식물" v-if="isShow(info?.smlrPlntDesc)">
+        <DetailsCard title="유사식물" v-if="isShow(info?.smlrPlntDesc)">
           <Similar :similar-plant="info?.smlrPlntDesc" />
         </DetailsCard>
         <!-- //유사식물 -->
@@ -95,11 +131,13 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getPlantDetail } from '@/services/guide'
-import { useAsyncState } from '@vueuse/core'
+import { useAsyncState, useFocus } from '@vueuse/core'
 import { useIsShow } from '@/composables/useIsShow'
+import { useBookmark } from '@/composables/useBookmark'
+import { useNote } from '@/composables/useNote'
 import DetailsCard from '@/components/base/DetailsCard.vue'
 import ShortInfo from '@/pages/components/details/ShortInfo.vue'
 import Growing from '@/pages/components/details/Growing.vue'
@@ -122,6 +160,19 @@ const { error, isLoading } = useAsyncState(() => getPlantDetail(code.value), nul
       info.value = result
     }
   }
+})
+
+// 북마크 컴포저블
+const { toggleBookmark, isBookmark } = useBookmark(code.value)
+
+// 메모 컴포저블
+const { toggleNote, isNote, isEditNote, noteSave, noteContent } = useNote(
+  code.value,
+  isBookmark.value
+)
+
+watch(noteContent, () => {
+  console.log(noteContent.value)
 })
 </script>
 

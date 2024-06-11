@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap_info_item">
+  <div class="card_content">
     <div class="info_item">
       <h4 class="sub_title">
         <font-awesome-icon :icon="['fas', 'equals']" />

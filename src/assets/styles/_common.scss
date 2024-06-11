@@ -387,11 +387,67 @@ input {
   text-align: center;
 }
 
+// 카드 레이아웃
+.card {
+  border: 1px solid $c-line;
+  border-radius: 8px;
+  background: #fff;
+
+  .card_title {
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 15px;
+    font-size: 20px;
+    color: $c-title;
+    font-weight: 600;
+  }
+  &[open] {
+    .fa-chevron-up {
+      transform: rotate(0);
+    }
+  }
+  .fa-chevron-up {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    color: $c-main;
+    transform: rotate(-180deg);
+    transition: all 0.2s ease-in-out;
+  }
+  .card_content {
+    border-top: 1px solid $c-line;
+    padding: 15px;
+  }
+  .sub_title {
+    padding-bottom: 7px;
+    font-size: 18px;
+  }
+  .icon_wrap {
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
+    width: 19px;
+    height: 19px;
+  }
+  .material-symbols-rounded {
+    margin-top: -2px;
+    margin-left: -2px;
+    font-size: 23px;
+    color: $c-main;
+  }
+  .svg-inline--fa {
+    margin-right: 2px;
+    font-size: 19px;
+    color: $c-main;
+  }
+}
+
 /* 상세페이지 */
 // 식물 기본 정보
 .card_gallery {
   display: flex;
-  padding-bottom: 10px;
+  padding-bottom: 15px;
 
   .wrap_img {
     display: flex;
@@ -426,7 +482,7 @@ input {
     }
     .name_info {
       position: relative;
-      max-width: 420px;
+      max-width: 390px;
       padding-bottom: 20px;
       font-size: 24px;
 
@@ -442,9 +498,11 @@ input {
     }
     .wrap_btn {
       position: relative;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
 
       button {
-        margin-left: 14px;
         font-size: 25px;
         color: $c-txt-sub;
       }
@@ -472,74 +530,22 @@ input {
 .card_detail {
   display: flex;
   flex-wrap: wrap;
-  gap: 20px;
-  padding: 10px 0;
+  gap: 15px;
   margin-bottom: 10px;
 
-  .card {
-    border: 1px solid $c-line;
-    border-radius: 8px;
-    background: #fff;
-  }
   .detail_info {
     position: relative;
     width: 100%;
 
-    &[open] {
-      .fa-chevron-up {
-        transform: rotate(0);
-      }
-    }
-    .fa-chevron-up {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      color: $c-main;
-      transform: rotate(-180deg);
-      transition: all 0.2s ease-in-out;
-    }
-    summary {
-      cursor: pointer;
-      display: block;
-      padding: 12px 15px;
-      font-size: 20px;
-      color: $c-title;
-      font-weight: 600;
-    }
-    .wrap_info_item {
-      border-top: 1px solid $c-line;
-    }
     .desc {
       white-space: pre-line;
     }
   }
-  .info_item {
-    padding: 10px 15px;
-
-    .sub_title {
-      padding-bottom: 7px;
-      font-size: 18px;
-    }
-    .icon_wrap {
-      display: inline-block;
-      overflow: hidden;
-      vertical-align: top;
-      width: 19px;
-      height: 19px;
-    }
-    .material-symbols-rounded {
-      margin-top: -2px;
-      margin-left: -2px;
-      font-size: 23px;
-      color: $c-main;
-    }
-    .svg-inline--fa {
-      margin-right: 2px;
-      font-size: 19px;
-      color: $c-main;
-    }
+  .info_item + .info_item {
+    padding-top: 25px;
   }
 }
+
 // 슬라이더
 .swiper_wrap {
   position: relative;

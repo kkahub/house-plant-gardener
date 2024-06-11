@@ -18,8 +18,13 @@
         <button @click.prevent="toggleLike" type="button">
           <font-awesome-icon :icon="isLike ? ['fas', 'heart'] : ['far', 'heart']" />
         </button>
-        <button @click.prevent="toggleBookmark" type="button">
-          <font-awesome-icon :icon="isBookmark ? ['fas', 'bookmark'] : ['far', 'bookmark']" />
+        <button @click.prevent="props.toggleBookmark" type="button">
+          <font-awesome-icon :icon="props.isBookmark ? ['fas', 'bookmark'] : ['far', 'bookmark']" />
+        </button>
+        <button v-if="props.isBookmark" @click.prevent="props.toggleNote" type="button">
+          <font-awesome-icon
+            :icon="props.isNote ? ['fas', 'note-sticky'] : ['far', 'note-sticky']"
+          />
         </button>
       </div>
     </div>
@@ -49,7 +54,6 @@
 <script setup lang="ts">
 import { useIsShow } from '@/composables/useIsShow'
 import { useLike } from '@/composables/useLike'
-import { useBookmark } from '@/composables/useBookmark'
 
 const props = defineProps({
   code: {
@@ -103,6 +107,26 @@ const props = defineProps({
   copy: {
     type: String,
     default: ''
+  },
+  toggleBookmark: {
+    type: Function,
+    default: () => {}
+  },
+  isBookmark: {
+    type: Boolean,
+    default: false
+  },
+  toggleNote: {
+    type: Function,
+    default: () => {}
+  },
+  isNote: {
+    type: Boolean,
+    default: false
+  },
+  isEditNote: {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -110,9 +134,6 @@ const { isShow } = useIsShow()
 
 // 좋아요 컴포저블
 const { toggleLike, isLike } = useLike(props.code)
-
-// 북마크 컴포저블
-const { toggleBookmark, isBookmark } = useBookmark(props.code)
 </script>
 
 <style scoped></style>

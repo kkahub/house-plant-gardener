@@ -75,7 +75,6 @@ const getPlantGuideList = async ({
 
 // 식물도감 좋아요 추가
 export async function addLike(uid: string, plantCode: string) {
-  // 유저별 좋아요
   await setDoc(doc(db, 'guide_likes', `${uid}_${plantCode}`), {
     uid,
     plantCode,
@@ -144,6 +143,35 @@ export async function getBookmarkCount(plantCode: string) {
 export async function hasBookmark(uid: string, plantCode: string) {
   const docSnap = await getDoc(doc(db, 'guide_bookmarks', `${uid}_${plantCode}`))
   return docSnap.exists()
+}
+
+// 식물도감 노트 가져오기
+export async function getNoteContent(uid: string, plantCode: string) {
+  const docSnap = await getDoc(doc(db, 'guide_notes', `${uid}_${plantCode}`))
+
+  if (docSnap.data()?.note !== undefined) {
+    return await docSnap.data()?.note
+  }
+}
+
+// 식물도감 노트 추가
+export async function addNote(uid: string, plantCode: string, note: string) {
+  await setDoc(doc(db, 'guide_notes', `${uid}_${plantCode}`), {
+    uid,
+    plantCode,
+    note,
+    createdAt: serverTimestamp()
+  })
+}
+
+// 식물도감 노트 삭제
+export async function removeNote(uid: string, plantCode: string) {}
+
+// 식물도감 노트 여부
+export async function hasNote(uid: string, plantCode: string) {
+  const docSnap = await getDoc(doc(db, 'guide_notes', `${uid}_${plantCode}`))
+  const data = docSnap.data()
+  return data === undefined ? false : true
 }
 
 // 식물도감 상세페이지

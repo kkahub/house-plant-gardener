@@ -500,8 +500,13 @@ button {
 }
 input,
 textarea {
-  box-sizing: border-box;
-  margin: 0;
+  resize: none;
+}
+textarea {
+  border: 0;
+  outline: 0;
+  width: 100%;
+  font-weight: 300;
 }
 caption {
   display: none;

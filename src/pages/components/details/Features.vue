@@ -1,5 +1,5 @@
 <template>
-  <div class="wrap_info_item">
+  <div class="card_content">
     <div class="info_item" v-if="isShow(shape)">
       <h4 class="sub_title">형태</h4>
       <p class="desc">{{ shape }}</p>
