@@ -21,9 +21,14 @@
         <button @click.prevent="props.toggleBookmark" type="button">
           <font-awesome-icon :icon="props.isBookmark ? ['fas', 'bookmark'] : ['far', 'bookmark']" />
         </button>
-        <button v-if="props.isBookmark" @click.prevent="props.toggleNote" type="button">
+        <button
+          v-if="props.isBookmark"
+          @click.prevent="props.toggleNote"
+          type="button"
+          :class="props.isNote ? 'active' : ''"
+        >
           <font-awesome-icon
-            :icon="props.isNote ? ['fas', 'note-sticky'] : ['far', 'note-sticky']"
+            :icon="props.isNoteView ? ['fas', 'note-sticky'] : ['far', 'note-sticky']"
           />
         </button>
       </div>
@@ -121,6 +126,10 @@ const props = defineProps({
     default: () => {}
   },
   isNote: {
+    type: Boolean,
+    default: false
+  },
+  isNoteView: {
     type: Boolean,
     default: false
   },

@@ -47,7 +47,6 @@ export const useLike = (code: string) => {
 
   return {
     isLike,
-    getLikeStatus,
     toggleLike,
     likeCount
   }

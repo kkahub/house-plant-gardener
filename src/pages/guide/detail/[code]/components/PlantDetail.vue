@@ -26,41 +26,20 @@
           :is-bookmark="isBookmark"
           :toggle-note="toggleNote"
           :is-note="isNote"
+          :is-note-view="isNoteView"
+          :is-edit-note="isEditNote"
         />
       </div>
       <!-- // 기본 정보 -->
       <!-- 노트 -->
-      <div v-if="isNote" class="card note">
-        <div class="card_title">
-          노트
-          <div class="btn_wrap">
-            <button v-if="isEditNote" @click="noteSave" type="button" title="저장하기">
-              <font-awesome-icon :icon="['far', 'floppy-disk']" />
-            </button>
-            <button v-else @click="" type="button" title="노트하기">
-              <font-awesome-icon :icon="['far', 'pen-to-square']" />
-            </button>
-            <button type="button" title="삭제하기">
-              <font-awesome-icon :icon="['far', 'trash-can']" />
-            </button>
-          </div>
-        </div>
-        <div class="card_content">
-          <textarea
-            v-if="isEditNote"
-            v-focus
-            v-model="noteContent"
-            name="note_edit"
-            class="note_edit"
-            id=""
-            placeholder="내용을 입력해주세요."
-          ></textarea>
-          <div v-else class="note_content">
-            노트 내용 노트 내용노트 내용 노트 내용노트 내용 노트 내용노트 내용 노트 내용노트 내용
-            노트 내용노트 내용 노트 내용노트 내용 노트 내용노트 내용 노트 내용노트 내용 노트 내용
-          </div>
-        </div>
-      </div>
+      <ShortNote
+        :is-bookmark="isBookmark"
+        :is-note="isNote"
+        :is-note-view="isNoteView"
+        :is-edit-note="isEditNote"
+        :note-save="noteSave"
+        v-model:note-content="noteContent"
+      />
       <!-- // 노트 -->
       <!-- 상세 정보 -->
       <div class="card_detail">
@@ -139,6 +118,7 @@ import { useIsShow } from '@/composables/useIsShow'
 import { useBookmark } from '@/composables/useBookmark'
 import { useNote } from '@/composables/useNote'
 import DetailsCard from '@/components/base/DetailsCard.vue'
+import ShortNote from '@/pages/components/details/ShortNote.vue'
 import ShortInfo from '@/pages/components/details/ShortInfo.vue'
 import Growing from '@/pages/components/details/Growing.vue'
 import Features from '@/pages/components/details/Features.vue'
@@ -166,10 +146,7 @@ const { error, isLoading } = useAsyncState(() => getPlantDetail(code.value), nul
 const { toggleBookmark, isBookmark } = useBookmark(code.value)
 
 // 메모 컴포저블
-const { toggleNote, isNote, isEditNote, noteSave, noteContent } = useNote(
-  code.value,
-  isBookmark.value
-)
+const { toggleNote, isNote, isNoteView, isEditNote, noteSave, noteContent } = useNote(code.value)
 
 watch(noteContent, () => {
   console.log(noteContent.value)

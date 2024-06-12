@@ -53,7 +53,6 @@ export const useBookmark = (code: string) => {
 
   return {
     isBookmark,
-    getBookmarkStatus,
     toggleBookmark,
     bookmarkCount
   }

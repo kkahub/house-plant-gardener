@@ -3,24 +3,29 @@ import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 import { getNoteContent, addNote, removeNote, hasNote } from '@/services/guide'
 
-export const useNote = (code: string, isBookmark: boolean) => {
+export const useNote = (code: string) => {
   const { uid, isAuthenticated } = storeToRefs(useAuthStore())
-
   const isNote = ref(false)
+  const isNoteView = ref(false)
   const isEditNote = ref(false)
   const guideCode = ref(code)
   const noteContent = ref('')
 
   // 로그인 시 노트 상태 가져오기
   const getNoteStatus = async () => {
-    if (isAuthenticated.value === false || isBookmark === false) {
+    if (isAuthenticated.value === false) {
       isNote.value = false
       return
     }
 
     // 노트 상태 가져오기
     isNote.value = await hasNote(uid.value, guideCode.value)
-    console.log('get isNote : ', isNote.value)
+
+    // 노트 내용 가져오기
+    if (isNote.value) {
+      noteContent.value = await getNoteContent(uid.value, guideCode.value)
+      isNoteView.value = true
+    }
   }
 
   // 노트 토글
@@ -30,19 +35,18 @@ export const useNote = (code: string, isBookmark: boolean) => {
       return
     }
 
-    if (isNote.value) {
-      noteContent.value = await getNoteContent(uid.value, guideCode.value)
-      console.log('noteContent : ', noteContent.value)
+    if (isNoteView.value) {
       isEditNote.value = false
-      //   await removeNote(uid.value, guideCode.value)
-      //   // noteContentComputed(guideCode.value, noteContent.value)
     } else {
-      isEditNote.value = true
-
-      //   await addNote(uid.value, guideCode.value, noteContent.value)
-      //   // noteContentComputed(guideCode.value, noteContent.value)
+      if (isNote.value) {
+        // 노트 있을 때
+        noteContent.value = await getNoteContent(uid.value, guideCode.value)
+      } else {
+        // 노트 없을 때
+        isEditNote.value = true
+      }
     }
-    isNote.value = !isNote.value
+    isNoteView.value = !isNoteView.value
   }
 
   // 노트 저장
@@ -52,12 +56,15 @@ export const useNote = (code: string, isBookmark: boolean) => {
       return
     }
     await addNote(uid.value, guideCode.value, noteContent.value)
+    isEditNote.value = false
+    isNote.value = true
   }
 
   watch(isAuthenticated, () => getNoteStatus(), { immediate: true })
 
   return {
     isNote,
+    isNoteView,
     isEditNote,
     getNoteStatus,
     toggleNote,

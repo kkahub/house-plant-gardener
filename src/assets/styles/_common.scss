@@ -139,6 +139,11 @@ input {
       color: $c-main;
     }
   }
+  .active {
+    .fa-note-sticky {
+      color: $c-main;
+    }
+  }
 }
 
 // 이미지 없음
