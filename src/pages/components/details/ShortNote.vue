@@ -6,16 +6,16 @@
         <div class="btn_wrap">
           <button
             v-if="props.isEditNote"
-            @click.prevent="props.noteSave"
+            @click="props.noteSave(prevNote)"
             type="button"
             title="저장하기"
           >
             <font-awesome-icon :icon="['far', 'floppy-disk']" />
           </button>
-          <button v-else type="button" title="노트하기">
+          <button v-else @click="props.editNote" type="button" title="노트하기">
             <font-awesome-icon :icon="['far', 'pen-to-square']" />
           </button>
-          <button type="button" title="삭제하기">
+          <button @click="props.noteRemove" type="button" title="삭제하기">
             <font-awesome-icon :icon="['far', 'trash-can']" />
           </button>
         </div>
@@ -58,6 +58,18 @@ const props = defineProps({
   noteContent: {
     type: String,
     default: ''
+  },
+  editNote: {
+    type: Function,
+    default: () => {}
+  },
+  prevNote: {
+    type: String,
+    default: ''
+  },
+  noteRemove: {
+    type: Function,
+    default: () => {}
   }
 })
 

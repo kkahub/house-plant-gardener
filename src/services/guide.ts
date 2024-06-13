@@ -2,7 +2,7 @@ import { type PlantListData, type PlantList, type PlantDetail } from '@/types/pl
 import * as xmlToJson from '../plugin/xmlToJson'
 
 import { db } from '@/firebase/firebase'
-import { deleteDoc, doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore'
+import { deleteDoc, doc, getDoc, increment, serverTimestamp, setDoc } from 'firebase/firestore'
 
 // 식물도감 리스트
 const getPlantGuideList = async ({
@@ -73,6 +73,22 @@ const getPlantGuideList = async ({
   }
 }
 
+// 식물도감 조회수 가져오기
+export async function getReadCount(plantCode: string) {
+  const docSnap = await getDoc(doc(db, 'plantCode', plantCode))
+
+  if (docSnap.data()?.readCount !== undefined) {
+    return await docSnap.data()?.readCount
+  } else {
+    return 0
+  }
+}
+
+// 식물도감 조회수 증가
+export async function incrementReadCount(plantCode: string, readCount: number) {
+  await setDoc(doc(db, 'plantCode', plantCode), { readCount: increment(1) }, { merge: true })
+}
+
 // 식물도감 좋아요 추가
 export async function addLike(uid: string, plantCode: string) {
   await setDoc(doc(db, 'guide_likes', `${uid}_${plantCode}`), {
@@ -124,7 +140,7 @@ export async function removeBookmark(uid: string, plantCode: string) {
 }
 
 // 식물도감 북마크 수 +-
-export async function bookmarkCountComputed(plantCode: string, bookmarkCount: number) {
+export async function updateBookmarkCount(plantCode: string, bookmarkCount: number) {
   await setDoc(doc(db, 'plantCode', plantCode), { bookmarkCount }, { merge: true })
 }
 
@@ -165,7 +181,9 @@ export async function addNote(uid: string, plantCode: string, note: string) {
 }
 
 // 식물도감 노트 삭제
-export async function removeNote(uid: string, plantCode: string) {}
+export async function removeNote(uid: string, plantCode: string) {
+  await deleteDoc(doc(db, 'guide_notes', `${uid}_${plantCode}`))
+}
 
 // 식물도감 노트 여부
 export async function hasNote(uid: string, plantCode: string) {
@@ -194,6 +212,10 @@ export const getPlantDetail = async (code: string) => {
 
     // 도감 검색 결과 없음
     if (detailData === undefined) return
+
+    // 조회수 가져온 후 증가
+    const readCount = await getReadCount(code)
+    incrementReadCount(code, readCount)
 
     // 가든 상세 정보 편집
     const {

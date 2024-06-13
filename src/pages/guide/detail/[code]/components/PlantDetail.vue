@@ -38,6 +38,9 @@
         :is-note-view="isNoteView"
         :is-edit-note="isEditNote"
         :note-save="noteSave"
+        :edit-note="editNote"
+        :prev-note="prevNote"
+        :note-remove="noteRemove"
         v-model:note-content="noteContent"
       />
       <!-- // 노트 -->
@@ -110,10 +113,10 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { getPlantDetail } from '@/services/guide'
-import { useAsyncState, useFocus } from '@vueuse/core'
+import { useAsyncState } from '@vueuse/core'
 import { useIsShow } from '@/composables/useIsShow'
 import { useBookmark } from '@/composables/useBookmark'
 import { useNote } from '@/composables/useNote'
@@ -129,9 +132,10 @@ const info = ref()
 const route = useRoute()
 const router = useRouter()
 const code = ref(String(route.params.code))
+const prevNote = ref('')
 const { isShow } = useIsShow()
 
-const { error, isLoading } = useAsyncState(() => getPlantDetail(code.value), null, {
+const { isLoading } = useAsyncState(() => getPlantDetail(code.value), null, {
   onSuccess: (result) => {
     if (result === undefined) {
       alert('잘못된 접근입니다.')
@@ -146,11 +150,15 @@ const { error, isLoading } = useAsyncState(() => getPlantDetail(code.value), nul
 const { toggleBookmark, isBookmark } = useBookmark(code.value)
 
 // 메모 컴포저블
-const { toggleNote, isNote, isNoteView, isEditNote, noteSave, noteContent } = useNote(code.value)
+const { toggleNote, isNote, isNoteView, isEditNote, noteSave, noteContent, noteRemove } = useNote(
+  code.value
+)
 
-watch(noteContent, () => {
-  console.log(noteContent.value)
-})
+// 노트 작성 모드
+const editNote = () => {
+  isEditNote.value = true
+  prevNote.value = noteContent.value
+}
 </script>
 
 <style scoped></style>

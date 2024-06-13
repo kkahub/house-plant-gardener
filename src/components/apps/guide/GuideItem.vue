@@ -13,12 +13,15 @@
     </router-link>
     <div class="info_gallery">
       <div class="wrap_btn">
-        <button @click.prevent="toggleLike" type="button">
+        <button @click="toggleLike" type="button">
           <font-awesome-icon :icon="isLike ? ['fas', 'heart'] : ['far', 'heart']" />
         </button>
-        <button @click.prevent="toggleBookmark" type="button">
+        <button @click="toggleBookmark(isNote)" type="button">
           <font-awesome-icon :icon="isBookmark ? ['fas', 'bookmark'] : ['far', 'bookmark']" />
         </button>
+        <div v-if="isNote" class="icon_note active">
+          <font-awesome-icon :icon="['fas', 'note-sticky']" />
+        </div>
       </div>
       <router-link :to="`/guide/detail/${item?.plantPilbkNo}`">
         <div class="wrap_title">
@@ -31,11 +34,7 @@
         <div class="count_info">
           <span class="view">
             <font-awesome-icon :icon="['far', 'eye']" />
-            0
-          </span>
-          <span class="comment">
-            <font-awesome-icon :icon="['far', 'comment-dots']" />
-            0
+            {{ readCount }}
           </span>
           <span class="like">
             <font-awesome-icon :icon="['far', 'heart']" />
@@ -55,12 +54,16 @@
 import { ref } from 'vue'
 import { useLike } from '@/composables/useLike'
 import { useBookmark } from '@/composables/useBookmark'
+import { useNote } from '@/composables/useNote'
+import { useAsyncState } from '@vueuse/core'
+import { getReadCount } from '@/services/guide'
 
 const props = defineProps({
   item: Object,
   default: () => ({})
 })
 const noImg = ref(true)
+const readCount = ref(0)
 
 // 썸네일 이미지 없을 때
 noImg.value = props.item?.imgUrl !== 'NONE'
@@ -68,8 +71,18 @@ noImg.value = props.item?.imgUrl !== 'NONE'
 // 좋아요 컴포저블
 const { toggleLike, isLike, likeCount } = useLike(props.item?.plantPilbkNo)
 
+// 노트 컴포저블
+const { isNote } = useNote(props.item?.plantPilbkNo)
+
 // 북마크 컴포저블
 const { toggleBookmark, isBookmark, bookmarkCount } = useBookmark(props.item?.plantPilbkNo)
+
+// 조회수 조회
+useAsyncState(() => getReadCount(props.item?.plantPilbkNo), 0, {
+  onSuccess: (result) => {
+    readCount.value = result
+  }
+})
 </script>
 
 <style scoped></style>

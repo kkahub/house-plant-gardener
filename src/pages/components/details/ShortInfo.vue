@@ -15,15 +15,15 @@
         <span class="original_name">{{ scientificName }}</span>
       </h2>
       <div class="wrap_btn">
-        <button @click.prevent="toggleLike" type="button">
+        <button @click="toggleLike" type="button">
           <font-awesome-icon :icon="isLike ? ['fas', 'heart'] : ['far', 'heart']" />
         </button>
-        <button @click.prevent="props.toggleBookmark" type="button">
+        <button @click="props.toggleBookmark(props.isNote)" type="button">
           <font-awesome-icon :icon="props.isBookmark ? ['fas', 'bookmark'] : ['far', 'bookmark']" />
         </button>
         <button
           v-if="props.isBookmark"
-          @click.prevent="props.toggleNote"
+          @click="props.toggleNote"
           type="button"
           :class="props.isNote ? 'active' : ''"
         >

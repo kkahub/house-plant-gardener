@@ -6,15 +6,14 @@ import {
   removeBookmark,
   hasBookmark,
   getBookmarkCount,
-  bookmarkCountComputed
+  updateBookmarkCount
 } from '@/services/guide'
 
 export const useBookmark = (code: string) => {
-  const { uid, isAuthenticated } = storeToRefs(useAuthStore())
-
   const isBookmark = ref(false)
   const bookmarkCount = ref(0)
   const guideCode = ref(code)
+  const { uid, isAuthenticated } = storeToRefs(useAuthStore())
 
   // 로그인 시 북마크 상태 가져오기
   const getBookmarkStatus = async () => {
@@ -31,20 +30,24 @@ export const useBookmark = (code: string) => {
   }
 
   // 북마크 토글
-  const toggleBookmark = async () => {
+  const toggleBookmark = async (isNote: boolean) => {
     if (isAuthenticated.value === false) {
       alert('로그인 후 이용해주세요.')
       return
     }
 
     if (isBookmark.value) {
+      if (isNote) {
+        alert('작성하신 노트가 존재합니다. 삭제 후 북마크를 해제해주세요.')
+        return
+      }
       await removeBookmark(uid.value, guideCode.value)
       bookmarkCount.value -= 1
-      bookmarkCountComputed(guideCode.value, bookmarkCount.value)
+      updateBookmarkCount(guideCode.value, bookmarkCount.value)
     } else {
       await addBookmark(uid.value, guideCode.value)
       bookmarkCount.value += 1
-      bookmarkCountComputed(guideCode.value, bookmarkCount.value)
+      updateBookmarkCount(guideCode.value, bookmarkCount.value)
     }
     isBookmark.value = !isBookmark.value
   }
