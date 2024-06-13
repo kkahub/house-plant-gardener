@@ -83,7 +83,6 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAsyncState } from '@vueuse/core'
 import { signInWithGoogle, signInWithEmail } from '@/services/auth'
-import { getErrorMessage } from '@/utils/firebase/error-message'
 import { Field, Form, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup'
 
@@ -118,7 +117,6 @@ const { isLoading, error, execute } = useAsyncState(signInWithEmail, null, {
   },
   onError: (err: any) => {
     console.log(`잘못입력! ${error}`)
-    // alert(`${getErrorMessage(err.code)}`)
     alert(`이메일이나 비밀번호를 잘못 입력하셨습니다.`)
   }
 })

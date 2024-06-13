@@ -52,17 +52,17 @@ House Plant Gardeners Project
 
 - 텍스트 에디터
 
-### xml2js, events
+### vee-validate, yup
 
-[xml2js](https://github.com/Leonidas-from-XIV/node-xml2js)
-[events](https://www.npmjs.com/package/events)
+[vee-validate](https://vee-validate.logaretm.com/v4/tutorials/basics)
+[yup](https://github.com/jquense/yup)
 
-- xml 데이터를 json 데이터로 변환
-- Typescript 사용 시 @types/xml2js 같이 설치
-- events는 Node.js에 포함되어 있지만 없을 경우 설치 필요
+- 유효성검사, 에러메시지 제공
 
   <br/><br/>
 
 ## Open API
 
-**농촌진흥청 실내정원용 식물 :** [API 소개>>](https://www.data.go.kr/data/15059042/openapi.do)
+**산림청 국립수목원 식물자원 서비스 :**[API 소개>>](https://www.data.go.kr/data/15000312/openapi.do)
+
+<!-- **농촌진흥청 실내정원용 식물 :** [API 소개>>](https://www.data.go.kr/data/15059042/openapi.do) -->
