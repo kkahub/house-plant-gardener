@@ -86,6 +86,8 @@ import { signInWithGoogle, signInWithEmail } from '@/services/auth'
 import { Field, Form, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup'
 
+const router = useRouter()
+
 const schema = yup.object().shape({
   email: yup.string().email('올바른 이메일 형식이 아닙니다.').required('이메일을 입력해주세요.'),
   password: yup
@@ -93,8 +95,6 @@ const schema = yup.object().shape({
     .required('비밀번호를 입력해주세요.')
     .min(8, '비밀번호는 최소 8자 이상, 16자 이하입니다.')
 })
-
-const router = useRouter()
 
 // 구글 로그인
 const handleSignInGoogle = async () => {
@@ -120,9 +120,7 @@ const { isLoading, error, execute } = useAsyncState(signInWithEmail, null, {
     alert(`이메일이나 비밀번호를 잘못 입력하셨습니다.`)
   }
 })
-const handleSignInEmail = () => {
-  return execute(0, form.value)
-}
+const handleSignInEmail = () => execute(0, form.value)
 </script>
 
 <style scoped></style>

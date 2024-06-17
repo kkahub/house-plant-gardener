@@ -70,8 +70,6 @@ const form = ref({
   password: ''
 })
 
-// const passwordConfirm = ref('')
-
 const schema = yup.object().shape({
   email: yup.string().email('올바른 이메일 형식이 아닙니다.').required('이메일을 입력해주세요.'),
   password: yup
@@ -81,7 +79,6 @@ const schema = yup.object().shape({
       /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*_+-=])[A-Za-z\d!@#$%^&*_+-=]{8,16}$/,
       '문자, 숫자, 특수문자 조합 8~16자로 해주세요.'
     ),
-  // .matches(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,16}$/, '문자, 숫자 조합 8~16자로 해주세요.'),
   passwordConfirm: yup
     .string()
     .required('비밀번호를 입력해주세요.')

@@ -16,14 +16,14 @@ import axios from 'axios'
 
 const app = createApp(App)
 
-library.add(fas, far)
-app.component('font-awesome-icon', FontAwesomeIcon)
-
 app.config.globalProperties.axios = axios
-
-app.directive('focus', focus)
 
 app.use(createPinia())
 app.use(router)
+
+app.directive('focus', focus)
+
+library.add(fas, far)
+app.component('font-awesome-icon', FontAwesomeIcon)
 
 app.mount('#app')
