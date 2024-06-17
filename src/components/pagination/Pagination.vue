@@ -5,7 +5,7 @@
           <a class="page_btn" href="#" @click.prevent="pageArrow('first')">First</a>
         </li> -->
       <li class="page_item prev" :class="{ active: isPrev }">
-        <a class="page_btn" href="#" @click="prevPage(executePage, $event)">
+        <a class="page_btn" href="#" @click.prevent="prevPage()">
           <font-awesome-icon :icon="['fas', 'chevron-left']" />
         </a>
       </li>
@@ -13,7 +13,7 @@
         <li class="page_item" :class="{ active: pageNum === currentPage }">
           <router-link
             :to="`/guide?page=${pageNum}`"
-            @click="getPage(pageNum, executePage, $event)"
+            @click="getPage(pageNum, $event)"
             class="page_btn"
             type="button"
           >
@@ -22,7 +22,7 @@
         </li>
       </template>
       <li class="page_item next" :class="{ active: isNext }">
-        <a class="page_btn" href="#" @click="nextPage(executePage, $event)">
+        <a class="page_btn" href="#" @click.prevent="nextPage()">
           <font-awesome-icon :icon="['fas', 'chevron-right']" />
         </a>
       </li>
@@ -80,12 +80,6 @@ defineProps({
   },
   isNext: {
     type: Boolean
-  },
-  executePage: {
-    type: Function,
-    default() {
-      return null
-    }
   }
 })
 </script>

@@ -3,7 +3,7 @@ import { useGuideStore } from '@/stores/guide'
 import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
 
-export const usePagination = (size: number, keyword: string) => {
+export const usePagination = (size: number, keyword: string, execute: any) => {
   const pageSize = ref(size) // 한 페이지에 보여줄 아이템 수
   const total = ref(0) // 전체 아이템 수
   const startPage = ref(1) // 페이시 넘버 처음 숫자
@@ -71,15 +71,15 @@ export const usePagination = (size: number, keyword: string) => {
   // routing
   const routeChange = () => {
     guideCurrentPage.value = startPage.value
-    router.push({ path: `${route.matched[0].path}`, query: { page: `${guideCurrentPage.value}` } })
+    router
+      .push({ path: `${route.matched[0].path}`, query: { page: `${guideCurrentPage.value}` } })
+      .catch(() => {})
   }
 
   // prev 클릭
-  const prevPage = (execute: any, event: MouseEvent) => {
-    if (!isPrev.value) {
-      event.preventDefault()
-      return
-    }
+  const prevPage = () => {
+    if (!isPrev.value) return
+
     if (startPage.value > pageCount.value) {
       startPage.value -= pageCount.value
       routeChange()
@@ -88,19 +88,17 @@ export const usePagination = (size: number, keyword: string) => {
   }
 
   // next 클릭
-  const nextPage = async (execute: any, event: MouseEvent) => {
-    if (!isNext.value) {
-      event.preventDefault()
-      return
-    }
+  const nextPage = () => {
+    if (!isNext.value) return
+
     startPage.value += pageCount.value
     routeChange()
     getPage(startPage.value, execute)
   }
 
   // 페이지 리스트 호출
-  const getPage = async (num: number, execute: any, e?: MouseEvent) => {
-    if (e && guideCurrentPage.value === num) return
+  const getPage = async (num: number, e: MouseEvent) => {
+    if (route.query.page === undefined || guideCurrentPage.value === num) return
 
     guideCurrentPage.value = num
 
@@ -111,6 +109,16 @@ export const usePagination = (size: number, keyword: string) => {
     })
     window.scrollTo(0, 0)
   }
+
+  // 라우트 감시(뒤로가기, 앞으로가기 등)
+  watch(route, async () => {
+    const queryPage = route.query.page
+
+    if (queryPage !== undefined) {
+      guideCurrentPage.value = Number(queryPage)
+      await execute()
+    }
+  })
 
   return {
     pageArray,
