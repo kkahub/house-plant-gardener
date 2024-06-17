@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAsyncState } from '@vueuse/core'
 import { usePagination } from '@/composables/usePagination'
@@ -118,6 +118,18 @@ const handleSearch = () => {
   // 라우팅
   router.push({ path: `${route.matched[0].path}` })
 }
+
+// 라우트 감시(뒤로가기, 앞으로가기)
+watch(route, () => {
+  const queryPage = route.query.page
+
+  if (queryPage !== undefined) {
+    guideCurrentPage.value = Number(route.query.page)
+  } else {
+    guideCurrentPage.value = 1
+  }
+  executePage()
+})
 </script>
 
 <style scoped></style>
