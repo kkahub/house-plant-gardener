@@ -10,8 +10,11 @@ export const useLike = (code: string) => {
   const likeCount = ref(0)
   const guideCode = ref(code)
 
-  // 로그인 시 좋아요 상태 가져오기
+  // 좋아요 호출
   const getLikeStatus = async () => {
+    // 좋아요 갯수 가져오기
+    likeCount.value = await getLikeCount(guideCode.value)
+
     if (isAuthenticated.value === false) {
       isLike.value = false
       return
@@ -19,9 +22,6 @@ export const useLike = (code: string) => {
 
     // 좋아요 상태 가져오기
     isLike.value = await hasLike(uid.value, guideCode.value)
-
-    // 좋아요 갯수 가져오기
-    likeCount.value = await getLikeCount(guideCode.value)
   }
 
   // 좋아요 토글

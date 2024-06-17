@@ -15,8 +15,11 @@ export const useBookmark = (code: string) => {
   const guideCode = ref(code)
   const { uid, isAuthenticated } = storeToRefs(useAuthStore())
 
-  // 로그인 시 북마크 상태 가져오기
+  // 북마크 호출
   const getBookmarkStatus = async () => {
+    // 북마크 갯수 가져오기
+    bookmarkCount.value = await getBookmarkCount(guideCode.value)
+
     if (isAuthenticated.value === false) {
       isBookmark.value = false
       return
@@ -24,9 +27,6 @@ export const useBookmark = (code: string) => {
 
     // 북마크 상태 가져오기
     isBookmark.value = await hasBookmark(uid.value, guideCode.value)
-
-    // 북마크 갯수 가져오기
-    bookmarkCount.value = await getBookmarkCount(guideCode.value)
   }
 
   // 북마크 토글
