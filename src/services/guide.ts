@@ -1,8 +1,10 @@
 import { type PlantListData, type PlantList, type PlantDetail } from '@/types/plants'
 import * as xmlToJson from '../plugin/xmlToJson'
-
 import { db } from '@/firebase/firebase'
 import { deleteDoc, doc, getDoc, increment, serverTimestamp, setDoc } from 'firebase/firestore'
+import { useAuthStore } from '@/stores/auth'
+
+const { isAuthenticated } = useAuthStore()
 
 // 식물도감 리스트
 const getPlantGuideList = async ({
@@ -213,9 +215,11 @@ export const getPlantDetail = async (code: string) => {
     // 도감 검색 결과 없음
     if (detailData === undefined) return
 
-    // 조회수 가져온 후 증가
-    const readCount = await getReadCount(code)
-    incrementReadCount(code, readCount)
+    // 로그인 회원만 조회수 가져온 후 증가
+    if (isAuthenticated === true) {
+      const readCount = await getReadCount(code)
+      incrementReadCount(code, readCount)
+    }
 
     // 가든 상세 정보 편집
     const {
