@@ -1,3 +1,21 @@
+// header, titlie
+.inner {
+  .page_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+  }
+  .title_wrap {
+    text-align: left;
+
+    .title_desc::before {
+      content: '';
+      left: 0;
+      margin-left: 0;
+    }
+  }
+}
+
 // Form
 input {
   width: 100%;

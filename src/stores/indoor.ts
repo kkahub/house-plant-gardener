@@ -2,9 +2,9 @@
 import { ref } from 'vue'
 import { defineStore } from 'pinia'
 
-export const useProtectStore = defineStore('protectPage', () => {
-  const protectKeyword = ref('')
-  const protectCurrentPage = ref(1)
+export const useIndoorStore = defineStore('indoorPage', () => {
+  const indoorKeyword = ref('')
+  const indoorCurrentPage = ref(1)
 
-  return { protectKeyword, protectCurrentPage }
+  return { indoorKeyword, indoorCurrentPage }
 })

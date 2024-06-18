@@ -25,7 +25,7 @@ const getGuideList = async ({
 
   try {
     const res = await fetch(
-      `/openapi/service/rest/PlantService/plntIlstrSearch?serviceKey=${listParams.serviceKey}&numOfRows=${listParams.numOfRows}&pageNo=${listParams.pageNo}&sw=${listParams.searchWord}`
+      `/service/guide/plntIlstrSearch?serviceKey=${listParams.serviceKey}&numOfRows=${listParams.numOfRows}&pageNo=${listParams.pageNo}&sw=${listParams.searchWord}`
     )
 
     // 식물 기본 정보 json변환

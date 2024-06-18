@@ -1,4 +1,4 @@
-import { type GuideListData, type GuideList, type GuideDetail } from '@/types/indoor'
+import { type IndoorListData, type IndoorList, type IndoorDetail } from '@/types/indoor'
 import * as xmlToJson from '../plugin/xmlToJson'
 import { db } from '@/firebase/firebase'
 import { deleteDoc, doc, getDoc, increment, serverTimestamp, setDoc } from 'firebase/firestore'
@@ -7,7 +7,7 @@ import { useAuthStore } from '@/stores/auth'
 const { isAuthenticated } = useAuthStore()
 
 // 실내식물 리스트
-const getGuideList = async ({
+const getIndoorList = async ({
   currentPage,
   currentPageSize,
   searchWord
@@ -35,7 +35,7 @@ const getGuideList = async ({
     const listObject: any = xmlToJson.convertJson(listNode)
     const listData = listObject.response.body.items.item
 
-    const plantInfoList: GuideList[] | null = []
+    const plantInfoList: IndoorList[] | null = []
 
     if (listData !== undefined) {
       // 가든 기본 정보 편집
@@ -48,12 +48,12 @@ const getGuideList = async ({
           notRcmmGnrlNm,
           plantSpecsScnm,
           snnmScnm,
-          ...GuideList
+          ...IndoorList
         } = listData
-        GuideList.total = 1
-        plantInfoList.push(GuideList)
+        IndoorList.total = 1
+        plantInfoList.push(IndoorList)
       } else {
-        listData.map((item: GuideListData) => {
+        listData.map((item: IndoorListData) => {
           const {
             detailYn,
             frstRgstnDtm,
@@ -61,9 +61,9 @@ const getGuideList = async ({
             notRcmmGnrlNm,
             plantSpecsScnm,
             snnmScnm,
-            ...GuideList
+            ...IndoorList
           } = item
-          const list: any = GuideList
+          const list: any = IndoorList
           list.total = Number(listObject.response.body.totalCount)
           plantInfoList.push(list)
         })
@@ -93,7 +93,7 @@ export async function incrementReadCount(plantCode: string, readCount: number) {
 
 // 식물도감 좋아요 추가
 export async function addLike(uid: string, plantCode: string) {
-  await setDoc(doc(db, 'guide_likes', `${uid}_${plantCode}`), {
+  await setDoc(doc(db, 'indoor_likes', `${uid}_${plantCode}`), {
     uid,
     plantCode,
     createdAt: serverTimestamp()
@@ -102,7 +102,7 @@ export async function addLike(uid: string, plantCode: string) {
 
 // 식물도감 좋아요 삭제
 export async function removeLike(uid: string, plantCode: string) {
-  await deleteDoc(doc(db, 'guide_likes', `${uid}_${plantCode}`))
+  await deleteDoc(doc(db, 'indoor_likes', `${uid}_${plantCode}`))
 }
 
 // 식물도감 좋아요 수 +-
@@ -123,13 +123,13 @@ export async function getLikeCount(plantCode: string) {
 
 // 식물도감 좋아요 여부
 export async function hasLike(uid: string, plantCode: string) {
-  const docSnap = await getDoc(doc(db, 'guide_likes', `${uid}_${plantCode}`))
+  const docSnap = await getDoc(doc(db, 'indoor_likes', `${uid}_${plantCode}`))
   return docSnap.exists()
 }
 
 // 식물도감 북마크 추가
 export async function addBookmark(uid: string, plantCode: string) {
-  await setDoc(doc(db, 'guide_bookmarks', `${uid}_${plantCode}`), {
+  await setDoc(doc(db, 'indoor_bookmarks', `${uid}_${plantCode}`), {
     uid,
     plantCode,
     createdAt: serverTimestamp()
@@ -138,7 +138,7 @@ export async function addBookmark(uid: string, plantCode: string) {
 
 // 식물도감 북마크 삭제
 export async function removeBookmark(uid: string, plantCode: string) {
-  await deleteDoc(doc(db, 'guide_bookmarks', `${uid}_${plantCode}`))
+  await deleteDoc(doc(db, 'indoor_bookmarks', `${uid}_${plantCode}`))
 }
 
 // 식물도감 북마크 수 +-
@@ -159,13 +159,13 @@ export async function getBookmarkCount(plantCode: string) {
 
 // 식물도감 북마크 여부
 export async function hasBookmark(uid: string, plantCode: string) {
-  const docSnap = await getDoc(doc(db, 'guide_bookmarks', `${uid}_${plantCode}`))
+  const docSnap = await getDoc(doc(db, 'indoor_bookmarks', `${uid}_${plantCode}`))
   return docSnap.exists()
 }
 
 // 식물도감 노트 가져오기
 export async function getNoteContent(uid: string, plantCode: string) {
-  const docSnap = await getDoc(doc(db, 'guide_notes', `${uid}_${plantCode}`))
+  const docSnap = await getDoc(doc(db, 'indoor_notes', `${uid}_${plantCode}`))
 
   if (docSnap.data()?.note !== undefined) {
     return await docSnap.data()?.note
@@ -174,7 +174,7 @@ export async function getNoteContent(uid: string, plantCode: string) {
 
 // 식물도감 노트 추가
 export async function addNote(uid: string, plantCode: string, note: string) {
-  await setDoc(doc(db, 'guide_notes', `${uid}_${plantCode}`), {
+  await setDoc(doc(db, 'indoor_notes', `${uid}_${plantCode}`), {
     uid,
     plantCode,
     note,
@@ -184,18 +184,18 @@ export async function addNote(uid: string, plantCode: string, note: string) {
 
 // 식물도감 노트 삭제
 export async function removeNote(uid: string, plantCode: string) {
-  await deleteDoc(doc(db, 'guide_notes', `${uid}_${plantCode}`))
+  await deleteDoc(doc(db, 'indoor_notes', `${uid}_${plantCode}`))
 }
 
 // 식물도감 노트 여부
 export async function hasNote(uid: string, plantCode: string) {
-  const docSnap = await getDoc(doc(db, 'guide_notes', `${uid}_${plantCode}`))
+  const docSnap = await getDoc(doc(db, 'indoor_notes', `${uid}_${plantCode}`))
   const data = docSnap.data()
   return data === undefined ? false : true
 }
 
 // 식물도감 상세페이지
-export const getGuideDetail = async (code: string) => {
+export const getIndoorDetail = async (code: string) => {
   const params = {
     serviceKey: import.meta.env.VITE_PLANT_API_KEY,
     q1: code
@@ -280,15 +280,15 @@ export const getGuideDetail = async (code: string) => {
       ...info
     } = detailData
 
-    const GuideDetail: GuideDetail = info
+    const IndoorDetail: IndoorDetail = info
 
-    return GuideDetail
+    return IndoorDetail
   } catch (error) {
     return 'error'
   }
 }
 
-export default getGuideList
+export default getIndoorList
 
 // import axios from 'axios'
 // import xm12js from 'xml2js'

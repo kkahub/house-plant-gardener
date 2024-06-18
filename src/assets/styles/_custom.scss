@@ -124,20 +124,6 @@
 // 식물도감 페이지
 // 식물도감 리스트
 .wrap_guide_list {
-  .page_header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
-  }
-  .title_wrap {
-    text-align: left;
-
-    .title_desc::before {
-      content: '';
-      left: 0;
-      margin-left: 0;
-    }
-  }
   .guide_list_loading {
     height: 500px;
   }
