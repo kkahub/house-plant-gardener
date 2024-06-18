@@ -1,4 +1,4 @@
-import { type PlantListData, type PlantList, type PlantDetail } from '@/types/plants'
+import { type GuideListData, type GuideList, type GuideDetail } from '@/types/guide'
 import * as xmlToJson from '../plugin/xmlToJson'
 import { db } from '@/firebase/firebase'
 import { deleteDoc, doc, getDoc, increment, serverTimestamp, setDoc } from 'firebase/firestore'
@@ -7,7 +7,7 @@ import { useAuthStore } from '@/stores/auth'
 const { isAuthenticated } = useAuthStore()
 
 // 식물도감 리스트
-const getPlantGuideList = async ({
+const getGuideList = async ({
   currentPage,
   currentPageSize,
   searchWord
@@ -35,7 +35,7 @@ const getPlantGuideList = async ({
     const listObject: any = xmlToJson.convertJson(listNode)
     const listData = listObject.response.body.items.item
 
-    const plantInfoList: PlantList[] | null = []
+    const plantInfoList: GuideList[] | null = []
 
     if (listData !== undefined) {
       // 가든 기본 정보 편집
@@ -48,12 +48,12 @@ const getPlantGuideList = async ({
           notRcmmGnrlNm,
           plantSpecsScnm,
           snnmScnm,
-          ...plantList
+          ...GuideList
         } = listData
-        plantList.total = 1
-        plantInfoList.push(plantList)
+        GuideList.total = 1
+        plantInfoList.push(GuideList)
       } else {
-        listData.map((item: PlantListData) => {
+        listData.map((item: GuideListData) => {
           const {
             detailYn,
             frstRgstnDtm,
@@ -61,9 +61,9 @@ const getPlantGuideList = async ({
             notRcmmGnrlNm,
             plantSpecsScnm,
             snnmScnm,
-            ...plantList
+            ...GuideList
           } = item
-          const list: any = plantList
+          const list: any = GuideList
           list.total = Number(listObject.response.body.totalCount)
           plantInfoList.push(list)
         })
@@ -195,7 +195,7 @@ export async function hasNote(uid: string, plantCode: string) {
 }
 
 // 식물도감 상세페이지
-export const getPlantDetail = async (code: string) => {
+export const getGuideDetail = async (code: string) => {
   const params = {
     serviceKey: import.meta.env.VITE_PLANT_API_KEY,
     q1: code
@@ -280,12 +280,12 @@ export const getPlantDetail = async (code: string) => {
       ...info
     } = detailData
 
-    const plantDetail: PlantDetail = info
+    const GuideDetail: GuideDetail = info
 
-    return plantDetail
+    return GuideDetail
   } catch (error) {
     return 'error'
   }
 }
 
-export default getPlantGuideList
+export default getGuideList

@@ -50,7 +50,7 @@ import { useAsyncState } from '@vueuse/core'
 import { usePagination } from '@/composables/usePagination'
 import { storeToRefs } from 'pinia'
 import { useGuideStore } from '@/stores/guide'
-import getPlantGuideList from '@/services/guide'
+import getGuideList from '@/services/guide'
 import SearchBar from '@/pages/components/details/SearchBar.vue'
 import GuideList from '@/components/apps/guide/GuideList.vue'
 import Pagination from '@/components/pagination/Pagination.vue'
@@ -74,7 +74,7 @@ if (route.query.page !== undefined) {
 // 식물도감정보 데이터 가져오기
 const { isLoading, execute } = useAsyncState(
   () =>
-    getPlantGuideList({
+    getGuideList({
       currentPage: guideCurrentPage.value,
       currentPageSize: pageSize.value,
       searchWord: guideKeyword.value

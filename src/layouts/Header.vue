@@ -26,7 +26,7 @@
       <ul id="gnb">
         <li :class="{ active: path === '/' }"><a href="/">Home</a></li>
         <li :class="{ active: path === '/guide' }"><a href="/guide">식물도감</a></li>
-        <li :class="{ active: path === '/tags' }"><a href="/tags">태그분류</a></li>
+        <li :class="{ active: path === '/indoor' }"><a href="/indoor">실내식물</a></li>
         <li :class="{ active: path === '/community' }"><a href="/community">자유게시판</a></li>
       </ul>
     </nav>

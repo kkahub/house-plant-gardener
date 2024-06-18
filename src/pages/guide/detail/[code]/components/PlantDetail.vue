@@ -115,7 +115,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { getPlantDetail } from '@/services/guide'
+import { getGuideDetail } from '@/services/guide'
 import { useAsyncState } from '@vueuse/core'
 import { useIsShow } from '@/composables/useIsShow'
 import { useBookmark } from '@/composables/useBookmark'
@@ -135,7 +135,7 @@ const code = ref(String(route.params.code))
 const prevNote = ref('')
 const { isShow } = useIsShow()
 
-const { isLoading } = useAsyncState(() => getPlantDetail(code.value), null, {
+const { isLoading } = useAsyncState(() => getGuideDetail(code.value), null, {
   onSuccess: (result) => {
     if (result === undefined) {
       alert('잘못된 접근입니다.')

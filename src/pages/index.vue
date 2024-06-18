@@ -17,8 +17,7 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-// import getHousePlantList from '@/services/plants'
-import getPlantGuideList from '@/services/guide'
+import getGuideList from '@/services/guide'
 import { useConvertJson } from '@/composables/useConvertJson'
 import { useRoute } from 'vue-router/auto'
 import MainSlider from '@/pages/components/main/MainSlider.vue'
@@ -33,7 +32,7 @@ const route = useRoute()
 
 // 식물 기본정보 데이터 가져오기
 const { error } = useAsyncState(
-  () => getPlantGuideList({ currentPage: 1, currentPageSize: 8, searchWord: '' }),
+  () => getGuideList({ currentPage: 1, currentPageSize: 8, searchWord: '' }),
   null,
   {
     onSuccess: (result) => {
