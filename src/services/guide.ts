@@ -17,17 +17,16 @@ const getGuideList = async ({
   searchWord: string
 }) => {
   const listParams = {
-    serviceKey: import.meta.env.VITE_PLANT_API_KEY,
+    serviceKey: import.meta.env.VITE_GUIDE_API_KEY,
     pageNo: currentPage,
     numOfRows: currentPageSize,
-    searchWord: searchWord
+    searchWord
   }
 
   try {
     const res = await fetch(
       `/service/guide/plntIlstrSearch?serviceKey=${listParams.serviceKey}&numOfRows=${listParams.numOfRows}&pageNo=${listParams.pageNo}&sw=${listParams.searchWord}`
     )
-
     // 식물 기본 정보 json변환
     const listString = await res.text()
     const listNode = new DOMParser().parseFromString(listString, 'text/xml')
@@ -38,7 +37,7 @@ const getGuideList = async ({
     const plantInfoList: GuideList[] | null = []
 
     if (listData !== undefined) {
-      // 가든 기본 정보 편집
+      // 기본 정보 편집
       if (listData.length === undefined) {
         // 리스트가 한 개일 때 한 객체로만 들어옴
         const {

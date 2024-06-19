@@ -1,5 +1,5 @@
 import { type IndoorListData, type IndoorList, type IndoorDetail } from '@/types/indoor'
-import * as xmlToJson from '../plugin/xmlToJson'
+import * as xmlToJsonIndoor from '../plugin/xmlToJsonIndoor'
 import { db } from '@/firebase/firebase'
 import { deleteDoc, doc, getDoc, increment, serverTimestamp, setDoc } from 'firebase/firestore'
 import { useAuthStore } from '@/stores/auth'
@@ -17,28 +17,54 @@ const getIndoorList = async ({
   searchWord: string
 }) => {
   const listParams = {
-    serviceKey: import.meta.env.VITE_PLANT_API_KEY,
+    apiKey: import.meta.env.VITE_INDOOR_PLANT_API_KEY,
     pageNo: currentPage,
     numOfRows: currentPageSize,
-    searchWord: searchWord
+    searchWord,
+    exemple: ''
   }
 
   try {
     const res = await fetch(
-      `/openapi/service/rest/PlantService/plntIlstrSearch?serviceKey=${listParams.serviceKey}&numOfRows=${listParams.numOfRows}&pageNo=${listParams.pageNo}&sw=${listParams.searchWord}`
+      `/service/indoor/gardenList?apiKey=${listParams.apiKey}` +
+        `&numOfRows=${listParams.numOfRows}` +
+        `&pageNo=${listParams.pageNo}` +
+        `&sText=${listParams.searchWord}` +
+        `&cntntsNo=${listParams.exemple}` +
+        `&word=${listParams.exemple}` +
+        `&lightChkVal=${listParams.exemple}` +
+        `&grwhstleChkVal=${listParams.exemple}` +
+        `&lefcolrChkVal=${listParams.exemple}` +
+        `&lefmrkChkVal=${listParams.exemple}` +
+        `&flclrChkVal=${listParams.exemple}` +
+        `&fmldecolrChkVal=${listParams.exemple}` +
+        `&ignSeasonChkVal=${listParams.exemple}` +
+        `&winterLwetChkVal=${listParams.exemple}` +
+        `&priceTypeSel=${listParams.exemple}` +
+        `&waterCycleSel=${listParams.exemple}` +
+        `&sType=sCntntsSj&wordType=cntntsSj`
     )
+
+    // const res = await fetch(
+    //   `/service/indoor/gardenList?apiKey=${listParams.apiKey}` +
+    //     `&cntntsNo=&pageNo=1&word=&lightChkVal=&grwhstleChkVal=&lefcolrChkVal=&lefmrkChkVal=&flclrChkVal=&fmldecolrChkVal=&ignSeasonChkVal=&winterLwetChkVal=&sType=sCntntsSj&sText=&wordType=cntntsSj&priceTypeSel=&waterCycleSel=`
+    // )
 
     // 식물 기본 정보 json변환
     const listString = await res.text()
     const listNode = new DOMParser().parseFromString(listString, 'text/xml')
 
-    const listObject: any = xmlToJson.convertJson(listNode)
+    const listObject: any = xmlToJsonIndoor.convertJson(listNode)
+    // console.log('텍스트 버전', listString)
+    // console.log('=============================================')
+    // console.log('오브젝트 버전', listObject)
+
     const listData = listObject.response.body.items.item
 
     const plantInfoList: IndoorList[] | null = []
 
     if (listData !== undefined) {
-      // 가든 기본 정보 편집
+      // 기본 정보 편집
       if (listData.length === undefined) {
         // 리스트가 한 개일 때 한 객체로만 들어옴
         const {
@@ -197,19 +223,19 @@ export async function hasNote(uid: string, plantCode: string) {
 // 식물도감 상세페이지
 export const getIndoorDetail = async (code: string) => {
   const params = {
-    serviceKey: import.meta.env.VITE_PLANT_API_KEY,
+    apiKey: import.meta.env.VITE_PLANT_API_KEY,
     q1: code
   }
 
   try {
     const res = await fetch(
-      `/openapi/service/rest/PlantService/plntIlstrInfo?serviceKey=${params.serviceKey}&q1=${params.q1}`
+      `/openapi/service/rest/PlantService/plntIlstrInfo?apiKey=${params.apiKey}&q1=${params.q1}`
     )
 
     // 식물 상세 정보 json변환
     const detailString = await res.text()
     const detailNode = new DOMParser().parseFromString(detailString, 'text/xml')
-    const detailObject: any = xmlToJson.convertJson(detailNode)
+    const detailObject: any = xmlToJsonIndoor.convertJson(detailNode)
     const detailData = detailObject.response.body.item
 
     // 도감 검색 결과 없음

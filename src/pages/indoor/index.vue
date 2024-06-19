@@ -23,7 +23,9 @@
         <!-- v-else -->
         <div>
           <div class="indoor_list_inner">
-            <div></div>
+            <div v-for="item in plantItems" :key="item" style="text-align: right">
+              {{ item.cntntsSj }}
+            </div>
             <!-- <IndoorList :plant-items="plantItems" /> -->
           </div>
         </div>

@@ -10,7 +10,6 @@
         <router-link to="/guide" class="btn btn_lg btn_point">MORE</router-link>
       </div>
       <GuideList :plant-items="plantItems" />
-      <!-- <BookList :house-items="houseItems" /> -->
     </div>
   </section>
 </template>
@@ -18,28 +17,18 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import getGuideList from '@/services/guide'
-import { useConvertJson } from '@/composables/useConvertJson'
-import { useRoute } from 'vue-router/auto'
 import MainSlider from '@/pages/components/main/MainSlider.vue'
 import GuideList from '@/components/apps/guide/GuideList.vue'
 import { useAsyncState } from '@vueuse/core'
 
-const { toArr } = useConvertJson()
-const houseItems = ref()
 const plantItems = ref()
 
-const route = useRoute()
-
 // 식물 기본정보 데이터 가져오기
-const { error } = useAsyncState(
-  () => getGuideList({ currentPage: 1, currentPageSize: 8, searchWord: '' }),
-  null,
-  {
-    onSuccess: (result) => {
-      plantItems.value = result
-    }
+useAsyncState(() => getGuideList({ currentPage: 1, currentPageSize: 8, searchWord: '' }), null, {
+  onSuccess: (result) => {
+    plantItems.value = result
   }
-)
+})
 </script>
 
 <style scoped></style>
