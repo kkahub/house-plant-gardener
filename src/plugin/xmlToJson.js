@@ -1,3 +1,8 @@
+/**
+ * nodeType
+ * text의 경우 xml.nodeType === 3
+ * <!CDATA[[...]] >의 경우 xml.nodeType === 4
+ */
 export const convertJson = (xml) => {
   let obj = {}
 
@@ -12,19 +17,24 @@ export const convertJson = (xml) => {
         obj['@attributes'][attribute.nodeName] = attribute.nodeValue
       }
     }
-  } else if (xml.nodeType === 3) {
-    // text
+  } else if (xml.nodeType === 3 || xml.nodeType === 4) {
+    // text or cdata node type
     obj = xml.nodeValue
   }
 
+  const isTextNode = xml.hasChildNodes() && xml.childNodes.length === 1
+
   // do children
   // If just one text node inside
-  if (xml.hasChildNodes() && xml.childNodes.length === 1 && xml.childNodes[0].nodeType === 3) {
+  if (isTextNode && xml.childNodes[0].nodeType === 3) {
+    obj = xml.childNodes[0].nodeValue
+  } else if (isTextNode && xml.childNodes[0].nodeType === 4) {
     obj = xml.childNodes[0].nodeValue
   } else if (xml.hasChildNodes()) {
     for (let i = 0; i < xml.childNodes.length; i += 1) {
       const item = xml.childNodes.item(i)
       const nodeName = item.nodeName
+
       if (typeof obj[nodeName] === 'undefined') {
         obj[nodeName] = convertJson(item)
       } else {

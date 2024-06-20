@@ -202,7 +202,7 @@ export const getGuideDetail = async (code: string) => {
 
   try {
     const res = await fetch(
-      `/openapi/service/rest/PlantService/plntIlstrInfo?serviceKey=${params.serviceKey}&q1=${params.q1}`
+      `/service/guide/plntIlstrInfo?serviceKey=${params.serviceKey}&q1=${params.q1}`
     )
 
     // 식물 상세 정보 json변환

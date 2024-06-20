@@ -1,5 +1,5 @@
 import { type IndoorListData, type IndoorList, type IndoorDetail } from '@/types/indoor'
-import * as xmlToJsonIndoor from '../plugin/xmlToJsonIndoor'
+import * as xmlToJson from '../plugin/xmlToJson'
 import { db } from '@/firebase/firebase'
 import { deleteDoc, doc, getDoc, increment, serverTimestamp, setDoc } from 'firebase/firestore'
 import { useAuthStore } from '@/stores/auth'
@@ -45,20 +45,12 @@ const getIndoorList = async ({
         `&sType=sCntntsSj&wordType=cntntsSj`
     )
 
-    // const res = await fetch(
-    //   `/service/indoor/gardenList?apiKey=${listParams.apiKey}` +
-    //     `&cntntsNo=&pageNo=1&word=&lightChkVal=&grwhstleChkVal=&lefcolrChkVal=&lefmrkChkVal=&flclrChkVal=&fmldecolrChkVal=&ignSeasonChkVal=&winterLwetChkVal=&sType=sCntntsSj&sText=&wordType=cntntsSj&priceTypeSel=&waterCycleSel=`
-    // )
-
     // 식물 기본 정보 json변환
     const listString = await res.text()
+
     const listNode = new DOMParser().parseFromString(listString, 'text/xml')
 
-    const listObject: any = xmlToJsonIndoor.convertJson(listNode)
-    // console.log('텍스트 버전', listString)
-    // console.log('=============================================')
-    // console.log('오브젝트 버전', listObject)
-
+    const listObject: any = xmlToJson.convertJson(listNode)
     const listData = listObject.response.body.items.item
 
     const plantInfoList: IndoorList[] | null = []
@@ -235,7 +227,7 @@ export const getIndoorDetail = async (code: string) => {
     // 식물 상세 정보 json변환
     const detailString = await res.text()
     const detailNode = new DOMParser().parseFromString(detailString, 'text/xml')
-    const detailObject: any = xmlToJsonIndoor.convertJson(detailNode)
+    const detailObject: any = xmlToJson.convertJson(detailNode)
     const detailData = detailObject.response.body.item
 
     // 도감 검색 결과 없음
