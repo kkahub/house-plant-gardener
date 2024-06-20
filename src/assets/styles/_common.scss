@@ -17,6 +17,9 @@
 }
 
 // Form
+legend {
+  display: block;
+}
 input {
   width: 100%;
   height: 36px;
@@ -28,6 +31,9 @@ input {
   font-weight: 300;
 }
 .form_group {
+  display: flex;
+}
+.wrap_input {
   padding: 5px 0;
 }
 .form_notice {
@@ -39,6 +45,41 @@ input {
 textarea {
   border-radius: 8px;
   font-weight: 300;
+}
+
+// 체크박스 - 버튼형
+.check_btn {
+  position: relative;
+
+  input {
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+
+    &:checked + label {
+      border: 1px solid $c-main;
+      background: #fff;
+      color: $c-main;
+    }
+  }
+  label {
+    cursor: pointer;
+    display: block;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding: 8px 20px;
+    border: 1px solid $c-bg;
+    background: $c-bg;
+    border-radius: 32px;
+    font-size: 16px;
+
+    &:hover {
+      background: #fff;
+    }
+  }
 }
 
 // 버튼 Button
@@ -165,6 +206,37 @@ textarea {
     .fa-note-sticky {
       color: $c-main;
     }
+  }
+}
+
+// 검색 필터
+.wrap_filter {
+  .fieldset {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 15px 20px;
+  }
+  .legend {
+    width: 100px;
+    padding: 8px 0;
+    font-size: 18px;
+    font-weight: 700;
+  }
+  .form_group {
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+  }
+  .check_btn label {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .color_view {
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-radius: 10px;
   }
 }
 

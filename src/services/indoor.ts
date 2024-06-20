@@ -10,38 +10,66 @@ const { isAuthenticated } = useAuthStore()
 const getIndoorList = async ({
   currentPage,
   currentPageSize,
-  searchWord
+  searchWord = '',
+  light = '',
+  growForm = '',
+  leafColor = '',
+  leafPattern = '',
+  flowerColor = '',
+  fruitColor = '',
+  flowering = '',
+  minTemp = '',
+  price = '',
+  waterCycle = ''
 }: {
   currentPage: number
   currentPageSize: number
   searchWord: string
+  light: string
+  growForm: string
+  leafColor: string
+  leafPattern: string
+  flowerColor: string
+  fruitColor: string
+  flowering: string
+  minTemp: string
+  price: string
+  waterCycle: string
 }) => {
   const listParams = {
     apiKey: import.meta.env.VITE_INDOOR_PLANT_API_KEY,
     pageNo: currentPage,
     numOfRows: currentPageSize,
     searchWord,
+    light,
+    growForm,
+    leafColor,
+    leafPattern,
+    flowerColor,
+    fruitColor,
+    flowering,
+    minTemp,
+    price,
+    waterCycle,
     exemple: ''
   }
 
   try {
     const res = await fetch(
       `/service/indoor/gardenList?apiKey=${listParams.apiKey}` +
-        `&numOfRows=${listParams.numOfRows}` +
         `&pageNo=${listParams.pageNo}` +
+        `&numOfRows=${listParams.numOfRows}` +
         `&sText=${listParams.searchWord}` +
-        `&cntntsNo=${listParams.exemple}` +
-        `&word=${listParams.exemple}` +
-        `&lightChkVal=${listParams.exemple}` +
-        `&grwhstleChkVal=${listParams.exemple}` +
-        `&lefcolrChkVal=${listParams.exemple}` +
-        `&lefmrkChkVal=${listParams.exemple}` +
-        `&flclrChkVal=${listParams.exemple}` +
-        `&fmldecolrChkVal=${listParams.exemple}` +
-        `&ignSeasonChkVal=${listParams.exemple}` +
-        `&winterLwetChkVal=${listParams.exemple}` +
-        `&priceTypeSel=${listParams.exemple}` +
-        `&waterCycleSel=${listParams.exemple}` +
+        `&lightChkVal=${listParams.light}` +
+        `&grwhstleChkVal=${listParams.growForm}` +
+        `&lefcolrChkVal=${listParams.leafColor}` +
+        `&lefmrkChkVal=${listParams.leafPattern}` +
+        `&flclrChkVal=${listParams.flowerColor}` +
+        `&fmldecolrChkVal=${listParams.fruitColor}` +
+        `&ignSeasonChkVal=${listParams.flowering}` +
+        `&winterLwetChkVal=${listParams.minTemp}` +
+        `&priceTypeSel=${listParams.price}` +
+        `&waterCycleSel=${listParams.waterCycle}` +
         `&sType=sCntntsSj&wordType=cntntsSj`
     )
 
@@ -52,6 +80,7 @@ const getIndoorList = async ({
 
     const listObject: any = xmlToJson.convertJson(listNode)
     const listData = listObject.response.body.items.item
+    console.log(listData)
 
     const plantInfoList: IndoorList[] | null = []
 

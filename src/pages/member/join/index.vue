@@ -11,12 +11,12 @@
     </div>
     <div class="member_box">
       <Form :validation-schema="schema" @submit="handleSubmit">
-        <div class="form_group ipt_email">
+        <div class="wrap_input ipt_email">
           <Field v-model="form.email" name="email" type="email" placeholder="이메일" />
           <font-awesome-icon :icon="['far', 'envelope']" />
           <ErrorMessage name="email" class="form_notice" />
         </div>
-        <div class="form_group">
+        <div class="wrap_input">
           <Field
             v-model="form.password"
             id="password"
@@ -28,7 +28,7 @@
           <font-awesome-icon :icon="['fas', 'lock']" />
           <ErrorMessage name="password" class="form_notice" />
         </div>
-        <div class="form_group">
+        <div class="wrap_input">
           <Field
             id="passwordConfirm"
             name="passwordConfirm"

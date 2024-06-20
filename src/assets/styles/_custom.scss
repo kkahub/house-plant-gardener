@@ -121,8 +121,8 @@
   }
 }
 
-// 식물도감 페이지
-// 식물도감 리스트
+// * 식물도감 페이지
+// ** 식물도감 리스트
 .wrap_guide_list {
   .guide_list_loading {
     height: 500px;
@@ -132,7 +132,7 @@
   }
 }
 
-// 식물도감 상세
+// ** 식물도감 상세
 .wrap_detail {
   .note {
     overflow: hidden;
@@ -189,10 +189,23 @@
   }
 }
 
+// * 실내식물
+// ** 실내식물 리스트
+.wrap_indoor_list {
+  .color_view {
+    &.green {
+      background: linear-gradient(135deg, $c-filter-ygreen, $c-filter-green);
+    }
+    &.yellow {
+      background: linear-gradient(135deg, $c-filter-yellow, $c-filter-gold);
+    }
+  }
+}
+
 // 맴버 관련 공통
 #wrap_member {
   .member_box {
-    .form_group {
+    .wrap_input {
       position: relative;
 
       input {
