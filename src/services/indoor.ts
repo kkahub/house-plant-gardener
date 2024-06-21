@@ -19,7 +19,6 @@ const getIndoorList = async ({
   fruitColor = '',
   flowering = '',
   minTemp = '',
-  price = '',
   waterCycle = ''
 }: {
   currentPage: number
@@ -33,7 +32,6 @@ const getIndoorList = async ({
   fruitColor: string
   flowering: string
   minTemp: string
-  price: string
   waterCycle: string
 }) => {
   const listParams = {
@@ -49,7 +47,6 @@ const getIndoorList = async ({
     fruitColor,
     flowering,
     minTemp,
-    price,
     waterCycle,
     exemple: ''
   }
@@ -68,19 +65,15 @@ const getIndoorList = async ({
         `&fmldecolrChkVal=${listParams.fruitColor}` +
         `&ignSeasonChkVal=${listParams.flowering}` +
         `&winterLwetChkVal=${listParams.minTemp}` +
-        `&priceTypeSel=${listParams.price}` +
         `&waterCycleSel=${listParams.waterCycle}` +
         `&sType=sCntntsSj&wordType=cntntsSj`
     )
 
     // 식물 기본 정보 json변환
     const listString = await res.text()
-
     const listNode = new DOMParser().parseFromString(listString, 'text/xml')
-
     const listObject: any = xmlToJson.convertJson(listNode)
     const listData = listObject.response.body.items.item
-    console.log(listData)
 
     const plantInfoList: IndoorList[] | null = []
 
@@ -88,30 +81,39 @@ const getIndoorList = async ({
       // 기본 정보 편집
       if (listData.length === undefined) {
         // 리스트가 한 개일 때 한 객체로만 들어옴
+
         const {
-          detailYn,
-          frstRgstnDtm,
-          lastUpdtDtm,
-          notRcmmGnrlNm,
-          plantSpecsScnm,
-          snnmScnm,
+          rtnFileSeCode,
+          rtnFileSn,
+          rtnOrginlFileNm,
+          rtnStreFileNm,
+          rtnFileCours,
+          rtnImageDc,
+          rtnThumbFileNm,
+          rtnImgSeCode,
+          rtnThumbFileUrl,
           ...IndoorList
         } = listData
+        IndoorList.rtnFileUrl = IndoorList.rtnFileUrl.split('|')
         IndoorList.total = 1
         plantInfoList.push(IndoorList)
       } else {
         listData.map((item: IndoorListData) => {
           const {
-            detailYn,
-            frstRgstnDtm,
-            lastUpdtDtm,
-            notRcmmGnrlNm,
-            plantSpecsScnm,
-            snnmScnm,
+            rtnFileSeCode,
+            rtnFileSn,
+            rtnOrginlFileNm,
+            rtnStreFileNm,
+            rtnFileCours,
+            rtnImageDc,
+            rtnThumbFileNm,
+            rtnImgSeCode,
+            rtnThumbFileUrl,
             ...IndoorList
           } = item
+          IndoorList.rtnFileUrl = IndoorList.rtnFileUrl.split('|')
           const list: any = IndoorList
-          list.total = Number(listObject.response.body.totalCount)
+          list.total = Number(listObject.response.body.items.totalCount)
           plantInfoList.push(list)
         })
       }

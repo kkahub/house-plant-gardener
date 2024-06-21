@@ -1,6 +1,30 @@
 <template>
   <li>
-    <router-link :to="`/guide/detail/${item?.plantPilbkNo}`"> 실내식물 아이템 </router-link>
+    <IndoorThumbnailSwiper :item="item" />
+    <router-link :to="`/guide/detail/${item?.cntntsNo}`">
+      <div class="info_gallery">
+        <div class="wrap_title">
+          <h3 class="gallery_title">{{ item?.cntntsSj }}</h3>
+        </div>
+        <div class="count_info">
+          <span class="view">
+            <font-awesome-icon :icon="['far', 'eye']" />
+            0
+            <!-- {{ readCount }} -->
+          </span>
+          <span class="like">
+            <font-awesome-icon :icon="['far', 'heart']" />
+            0
+            <!-- {{ likeCount }} -->
+          </span>
+          <span class="bookmark">
+            <font-awesome-icon :icon="['far', 'bookmark']" />
+            0
+            <!-- {{ bookmarkCount }} -->
+          </span>
+        </div>
+      </div>
+    </router-link>
   </li>
 </template>
 
@@ -10,8 +34,9 @@ import { useLike } from '@/composables/useLike'
 import { useBookmark } from '@/composables/useBookmark'
 import { useNote } from '@/composables/useNote'
 import { useAsyncState } from '@vueuse/core'
+import IndoorThumbnailSwiper from '@/pages/components/indoor/IndoorThumbnailSwiper.vue'
 
-const props = defineProps({
+defineProps({
   item: Object,
   default: () => ({})
 })

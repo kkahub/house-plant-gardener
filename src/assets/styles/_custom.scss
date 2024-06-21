@@ -61,12 +61,22 @@
       }
     }
   }
+  .title_wrap {
+    text-align: center;
+
+    .title_desc::before {
+      content: '';
+      left: 50%;
+      margin-left: -18px;
+    }
+  }
   .page_title {
     font-size: 38px;
   }
   h2.title {
     font-size: 30px;
   }
+
   .list_gallery {
     padding-top: 40px;
   }
@@ -192,12 +202,119 @@
 // * 실내식물
 // ** 실내식물 리스트
 .wrap_indoor_list {
+  .wrap_search {
+    justify-content: flex-start;
+    gap: 10px;
+    padding: 20px 0;
+
+    .btn_search_detail {
+      padding: 0 15px;
+      background: #fff;
+      font-size: 14px;
+
+      &.on {
+        color: $c-key;
+
+        .fa-chevron-down {
+          transform: rotate(180deg);
+        }
+      }
+    }
+  }
   .color_view {
-    &.green {
-      background: linear-gradient(135deg, $c-filter-ygreen, $c-filter-green);
+    &.blue {
+      background: $c-filter-blue;
+    }
+    &.purple {
+      background: $c-filter-purple;
+    }
+    &.pink {
+      background: $c-filter-pink;
+    }
+    &.red {
+      background: $c-filter-red;
     }
     &.yellow {
-      background: linear-gradient(135deg, $c-filter-yellow, $c-filter-gold);
+      background: $c-filter-yellow;
+    }
+    &.orange {
+      background: $c-filter-orange;
+    }
+    &.white {
+      border: 1px solid $c-line;
+      background: #fff;
+    }
+    &.black {
+      background: #000;
+    }
+    &.ygreen_green {
+      background: linear-gradient(135deg, $c-filter-ygreen 20%, $c-filter-green 80%);
+    }
+    &.yellow_gold {
+      background: linear-gradient(135deg, $c-filter-yellow 20%, $c-filter-gold 80%);
+    }
+    &.white_cream {
+      border: 1px solid $c-line;
+      background: linear-gradient(135deg, #fff 20%, $c-filter-cream 80%);
+    }
+    &.silver_gray {
+      background: linear-gradient(135deg, $c-filter-silver 20%, $c-filter-gray 80%);
+    }
+    &.pink_red_wine {
+      background: linear-gradient(
+        135deg,
+        $c-filter-pink 30%,
+        $c-filter-red 60%,
+        $c-filter-wine 75%
+      );
+    }
+    &.mix {
+      background: linear-gradient(
+        135deg,
+        $c-filter-ygreen 15%,
+        $c-filter-yellow 40%,
+        $c-filter-orange 60%,
+        $c-filter-red 70%,
+        $c-filter-wine 75%
+      );
+    }
+    &.ect {
+      background: linear-gradient(
+        135deg,
+        $c-filter-pink 20%,
+        $c-filter-purple 50%,
+        $c-filter-blue 80%
+      );
+    }
+  }
+  .water_view {
+    display: block;
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+
+    &.water_1 {
+      background: $c-filter-blue;
+    }
+    &.water_2 {
+      background: linear-gradient($c-filter-cream 30%, $c-filter-blue 30%);
+    }
+    &.water_3 {
+      background: linear-gradient($c-filter-cream 70%, $c-filter-blue 70%);
+    }
+    &.water_4 {
+      background: $c-filter-cream;
+    }
+  }
+
+  .swiper_wrap {
+    .swiper-horizontal > .swiper-pagination-bullets,
+    .swiper-pagination-bullets.swiper-pagination-horizontal {
+      bottom: 10px;
+    }
+    .swiper-pagination-bullet {
+      width: 9px;
+      height: 9px;
     }
   }
 }

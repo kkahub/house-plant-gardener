@@ -145,7 +145,7 @@ section {
 
 // 텍스트 설정
 .title_wrap {
-  text-align: center;
+  text-align: left;
 }
 .page_title {
   font-size: 38px;
@@ -166,10 +166,10 @@ section {
     display: block;
     position: absolute;
     top: 15px;
-    left: 50%;
+    left: 0;
     width: 36px;
     height: 2px;
-    margin-left: -18px;
+    margin-left: 0;
     background: $c-sub;
   }
 }

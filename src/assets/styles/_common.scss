@@ -5,15 +5,11 @@
     justify-content: space-between;
     align-items: flex-end;
   }
-  .title_wrap {
-    text-align: left;
+}
 
-    .title_desc::before {
-      content: '';
-      left: 0;
-      margin-left: 0;
-    }
-  }
+// Text
+.text_light {
+  color: $c-txt-light;
 }
 
 // Form
@@ -66,15 +62,18 @@ textarea {
   }
   label {
     cursor: pointer;
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 5px;
     position: relative;
     z-index: 1;
     width: 100%;
-    padding: 8px 20px;
+    min-height: 32px;
+    padding: 5px 15px;
     border: 1px solid $c-bg;
     background: $c-bg;
     border-radius: 32px;
-    font-size: 16px;
+    font-size: 14px;
 
     &:hover {
       background: #fff;
@@ -213,22 +212,16 @@ textarea {
 .wrap_filter {
   .fieldset {
     display: grid;
-    grid-template-columns: 150px 1fr;
-    gap: 15px 20px;
+    grid-template-columns: 110px 1fr;
+    gap: 12px 20px;
   }
   .legend {
-    width: 100px;
     padding: 8px 0;
     font-size: 18px;
     font-weight: 700;
   }
   .form_group {
     flex-wrap: wrap;
-    align-items: center;
-    gap: 5px;
-  }
-  .check_btn label {
-    display: inline-flex;
     align-items: center;
     gap: 5px;
   }
