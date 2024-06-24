@@ -39,18 +39,6 @@ export interface GuideListData {
   plantSpecsScnm: string[]
   snnmScnm: string[]
 }
-export interface GuideListItem {
-  item: GuideListData
-}
-export interface GuideListItems {
-  items: GuideListItem
-}
-export interface GuideListBody {
-  body: GuideListItems
-}
-export interface GuideListRes {
-  response: GuideListBody
-}
 
 /**
  *
@@ -197,38 +185,4 @@ export interface GuideDetailData {
   sz: string
   useMthdDesc: string
   woodDesc: string
-}
-
-/**
- *
- * 실내 정원용 식물
- *
- * cntntsNo : 넘버
- * cntntsSj : 식물명
- * rtnFileUrl: 이미지 주소
- *
- */
-
-export interface HouseGuideData {
-  rtnFileCours: string[]
-  rtnFileSeCode: string[]
-  rtnFileSn: string[]
-  rtnImageDc: string[]
-  rtnImgSeCode: string[]
-  rtnOrginlFileNm: string[]
-  rtnStreFileNm: string[]
-  rtnThumbFileNm: string[]
-  rtnThumbFileUrl: string[]
-  cntntsNo: string[]
-  cntntsSj: string[]
-  rtnFileUrl: string[]
-}
-export interface HouseGuideConvert {
-  cntntsNo: string | string[]
-  cntntsSj: string | string[]
-  rtnFileUrl: string[]
-}
-export interface HouseGuideIndex {
-  [index: number]: HouseGuideConvert
-  [index: string]: HouseGuideConvert
 }

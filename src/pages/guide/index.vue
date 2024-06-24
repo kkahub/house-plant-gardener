@@ -51,7 +51,7 @@ import { usePagination } from '@/composables/usePagination'
 import { storeToRefs } from 'pinia'
 import { useGuideStore } from '@/stores/guide'
 import getGuideList from '@/services/guide'
-import SearchBar from '@/pages/components/details/SearchBar.vue'
+import SearchBar from '@/pages/components/guide/SearchBar.vue'
 import GuideList from '@/components/apps/guide/GuideList.vue'
 import Pagination from '@/components/pagination/Pagination.vue'
 

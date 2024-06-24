@@ -1,60 +1,46 @@
 /**
  *
- * 실내식물 기본정보
+ * 실내정원용 식물 리스트
  *
- * cprtCtnt: 저작권
- * familyKorNm: 과국명
- * familyNm: 과명
- * genusKorNm: 속국명
- * genusNm: 속명
- * imgUrl: 이미지 URL
- * plantGnrlNm: 국명
- * plantPilbkNo: 도감번호
+ * cntntsNo : 넘버(아이디)
+ * cntntsSj : 식물명
+ * rtnFileSeCode: 파일구분코드
+ * rtnFileSn: 파일순번
+ * rtnOrginlFileNm: 원본 파일명
+ * rtnStreFileNm: 저장 파일명
+ * rtnFileCours: 파일경로
+ * rtnImageDc: 이미지설명
+ * rtnThumbFileNm: 썸네일파일명
+ * rtnImgSeCode: 이미지구분코드
+ * rtnFileUrl: 이미지 주소
+ * rtnThumbFileUrl: 썸네일 파일 URL (100 * 100px)
  *
  */
-export interface GuideList {
-  cprtCtnt: string[]
-  familyKorNm: string[]
-  familyNm: string[]
-  genusKorNm: string[]
-  genusNm: string[]
-  imgUrl: string[]
-  plantGnrlNm: string[]
-  plantPilbkNo: string[]
+
+export interface IndoorList {
+  cntntsNo: string
+  cntntsSj: string
+  rtnFileUrl: string[]
   total: number
 }
-export interface GuideListData {
-  cprtCtnt: string[]
-  detailYn: string[]
-  familyKorNm: string[]
-  familyNm: string[]
-  frstRgstnDtm: string[]
-  genusKorNm: string[]
-  genusNm: string[]
-  imgUrl: string[]
-  lastUpdtDtm: string[]
-  notRcmmGnrlNm: string[]
-  plantGnrlNm: string[]
-  plantPilbkNo: string[]
-  plantSpecsScnm: string[]
-  snnmScnm: string[]
-}
-export interface GuideListItem {
-  item: GuideListData
-}
-export interface GuideListItems {
-  items: GuideListItem
-}
-export interface GuideListBody {
-  body: GuideListItems
-}
-export interface GuideListRes {
-  response: GuideListBody
+export interface IndoorListData {
+  cntntsNo: string
+  cntntsSj: string
+  rtnFileSeCode: string
+  rtnFileSn: string
+  rtnOrginlFileNm: string
+  rtnFileCours: string
+  rtnImageDc: string
+  rtnThumbFileNm: string
+  rtnImgSeCode: string
+  rtnStreFileNm: string
+  rtnFileUrl: string | string[]
+  rtnThumbFileUrl: string
 }
 
 /**
  *
- * 식물도감 상세페이지
+ * 실내정원용 식물 상세페이지
  *
  * brdMthdDesc:	번식방법
  * grwEvrntDesc: 생육환경
@@ -86,149 +72,9 @@ export interface GuideListRes {
  *
  */
 
-export interface GuideDetail {
+export interface IndoorDetail {
   brdMthdDesc: string
-  grwEvrntDesc: string
-  rrngType: string
-  cprtCtnt: string
-  dstrb: string
-  osDstrb: string
-  familyKorNm: string
-  familyNm: string
-  farmSpftDesc: string
-  flwrDesc: string
-  fritDesc: string
-  rootDesc: string
-  genusKorNm: string
-  genusNm: string
-  imgUrl: string
-  leafDesc: string
-  note: string
-  orplcNm: string
-  plantGnrlNm: string
-  plantSpecsScnm: string
-  shpe: string
-  smlrPlntDesc: string
-  spft: string
-  sporeDesc: string
-  stemDesc: string
-  sz: string
-  useMthdDesc: string
 }
-export interface GuideDetailData {
+export interface IndoorDetailData {
   bfofMthod: string
-  branchDesc: string
-  brdMthdDesc: string
-  bugInfo: string
-  cprtCtnt: string
-  dstrb: string
-  engNm: string
-  familyKorNm: string
-  familyNm: string
-  farmSpftDesc: string
-  flwrDesc: string
-  flwrInfo01: string
-  flwrInfo02: string
-  flwrInfo03: string
-  flwrInfo04: string
-  flwrInfo05: string
-  flwrInfo06: string
-  flwrInfo07: string
-  flwrInfo08: string
-  flwrInfo09: string
-  fritDesc: string
-  fritInfo01: string
-  frstRgstnDtm: string
-  gemmaDesc: string
-  genusKorNm: string
-  genusNm: string
-  grwEvrntDesc: string
-  imgUrl: string
-  inductionDesc: string
-  lastUpdtDtm: string
-  leafDesc: string
-  leafInfo01: string
-  leafInfo02: string
-  leafInfo03: string
-  leafInfo04: string
-  leafInfo05: string
-  leafInfo06: string
-  leafInfo07: string
-  leafInfo08: string
-  leafInfo09: string
-  leafInfo10: string
-  note: string
-  orplcNm: string
-  osDstrb: string
-  peltDesc: string
-  plantGnrlNm: string
-  plantPilbkNo: string
-  plantScnmId: string
-  plantSpecsScnm: string
-  prtcPlnDesc: string
-  ramentumDesc: string
-  ramentumInfo01: string
-  ramentumInfo02: string
-  rootDesc: string
-  rrngGubun: string
-  rrngType: string
-  shpe: string
-  smlrPlntDesc: string
-  spft: string
-  sporeDesc: string
-  sporeInfo01: string
-  sporeInfo02: string
-  sporeInfo03: string
-  sporeInfo04: string
-  sporeInfo05: string
-  sporeInfo06: string
-  sporeInfo07: string
-  sporeInfo08: string
-  sporeInfo09: string
-  stemDesc: string
-  stemInfo01: string
-  stemInfo02: string
-  stemInfo03: string
-  stemInfo04: string
-  stemInfo05: string
-  stemInfo06: string
-  stemInfo07: string
-  stemInfo08: string
-  sz: string
-  useMthdDesc: string
-  woodDesc: string
-}
-
-/**
- *
- * 실내 정원용 식물
- *
- * cntntsNo : 넘버
- * cntntsSj : 식물명
- * rtnFileUrl: 이미지 주소
- *
- */
-
-export interface HouseGuideData {
-  rtnFileCours: string[]
-  rtnFileSeCode: string[]
-  rtnFileSn: string[]
-  rtnImageDc: string[]
-  rtnImgSeCode: string[]
-  rtnOrginlFileNm: string[]
-  rtnStreFileNm: string[]
-  rtnThumbFileNm: string[]
-  rtnThumbFileUrl: string[]
-  cntntsNo: string[]
-  cntntsSj: string[]
-  rtnFileUrl: string[]
-}
-export interface HouseGuideConvert {
-  cntntsNo: string | string[]
-  cntntsSj: string | string[]
-  rtnFileUrl: string[]
-}
-export interface HouseGuideIndex {
-  [index: number]: HouseGuideConvert
-  [index: string]: HouseGuideConvert
 }

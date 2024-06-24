@@ -121,12 +121,12 @@ import { useIsShow } from '@/composables/useIsShow'
 import { useBookmark } from '@/composables/useBookmark'
 import { useNote } from '@/composables/useNote'
 import DetailsCard from '@/components/base/DetailsCard.vue'
-import ShortNote from '@/pages/components/details/ShortNote.vue'
-import ShortInfo from '@/pages/components/details/ShortInfo.vue'
-import Growing from '@/pages/components/details/Growing.vue'
-import Features from '@/pages/components/details/Features.vue'
-import Signature from '@/pages/components/details/Signature.vue'
-import Similar from '@/pages/components/details/Similar.vue'
+import ShortNote from '@/pages/components/guide/details/ShortNote.vue'
+import ShortInfo from '@/pages/components/guide/details/ShortInfo.vue'
+import Growing from '@/pages/components/guide/details/Growing.vue'
+import Features from '@/pages/components/guide/details/Features.vue'
+import Signature from '@/pages/components/guide/details/Signature.vue'
+import Similar from '@/pages/components/guide/details/Similar.vue'
 
 const info = ref()
 const route = useRoute()

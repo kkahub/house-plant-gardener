@@ -63,6 +63,6 @@ House Plant Gardeners Project
 
 ## Open API
 
-**산림청 국립수목원 식물자원 서비스 : **[API 소개>>](https://www.data.go.kr/data/15000312/openapi.do)
+**산림청 국립수목원 식물자원 서비스 :** [API 소개>>](https://www.data.go.kr/data/15000312/openapi.do)
 
-**농촌진흥청 실내정원용 식물 : ** [API 소개>>](https://www.data.go.kr/data/15059042/openapi.do)
+**농촌진흥청 실내정원용 식물 :** [API 소개>>](https://www.data.go.kr/data/15059042/openapi.do)

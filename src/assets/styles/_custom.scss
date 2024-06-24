@@ -205,7 +205,7 @@
   .wrap_search {
     justify-content: flex-start;
     gap: 10px;
-    padding: 20px 0;
+    padding: 30px 0 15px;
 
     .btn_search_detail {
       padding: 0 15px;
@@ -218,6 +218,13 @@
         .fa-chevron-down {
           transform: rotate(180deg);
         }
+      }
+    }
+  }
+  .list_gallery {
+    .info_gallery {
+      .wrap_title {
+        justify-content: center;
       }
     }
   }
@@ -306,7 +313,6 @@
       background: $c-filter-cream;
     }
   }
-
   .swiper_wrap {
     .swiper-horizontal > .swiper-pagination-bullets,
     .swiper-pagination-bullets.swiper-pagination-horizontal {

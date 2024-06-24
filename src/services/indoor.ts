@@ -10,16 +10,16 @@ const { isAuthenticated } = useAuthStore()
 const getIndoorList = async ({
   currentPage,
   currentPageSize,
-  searchWord = '',
-  light = '',
-  growForm = '',
-  leafColor = '',
-  leafPattern = '',
-  flowerColor = '',
-  fruitColor = '',
-  flowering = '',
-  minTemp = '',
-  waterCycle = ''
+  searchWord,
+  light,
+  growForm,
+  leafColor,
+  leafPattern,
+  flowerColor,
+  fruitColor,
+  flowering,
+  minTemp,
+  waterCycle
 }: {
   currentPage: number
   currentPageSize: number
@@ -47,8 +47,7 @@ const getIndoorList = async ({
     fruitColor,
     flowering,
     minTemp,
-    waterCycle,
-    exemple: ''
+    waterCycle
   }
 
   try {
@@ -74,14 +73,12 @@ const getIndoorList = async ({
     const listNode = new DOMParser().parseFromString(listString, 'text/xml')
     const listObject: any = xmlToJson.convertJson(listNode)
     const listData = listObject.response.body.items.item
-
     const plantInfoList: IndoorList[] | null = []
 
     if (listData !== undefined) {
       // 기본 정보 편집
       if (listData.length === undefined) {
         // 리스트가 한 개일 때 한 객체로만 들어옴
-
         const {
           rtnFileSeCode,
           rtnFileSn,
@@ -111,7 +108,10 @@ const getIndoorList = async ({
             rtnThumbFileUrl,
             ...IndoorList
           } = item
-          IndoorList.rtnFileUrl = IndoorList.rtnFileUrl.split('|')
+
+          if (typeof IndoorList.rtnFileUrl === 'string') {
+            IndoorList.rtnFileUrl = IndoorList.rtnFileUrl.split('|')
+          }
           const list: any = IndoorList
           list.total = Number(listObject.response.body.items.totalCount)
           plantInfoList.push(list)

@@ -1,9 +1,9 @@
 <template>
-  <GuideDetail />
+  <IndoorDetail />
 </template>
 
 <script setup lang="ts">
-import GuideDetail from './components/GuideDetail.vue'
+import IndoorDetail from './components/IndoorDetail.vue'
 </script>
 
 <style scoped></style>
