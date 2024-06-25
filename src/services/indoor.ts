@@ -243,7 +243,54 @@ export async function hasNote(uid: string, plantCode: string) {
   return data === undefined ? false : true
 }
 
-// 식물도감 상세페이지
+// 식물도감 상세 기본 정보
+export const getIndoorBasic = async (name: string) => {
+  const listParams = {
+    apiKey: import.meta.env.VITE_INDOOR_PLANT_API_KEY,
+    searchWord: name
+  }
+
+  try {
+    const res = await fetch(
+      `/service/indoor/gardenList?apiKey=${listParams.apiKey}` +
+        `&pageNo=1` +
+        `&numOfRows=217` +
+        `&sText=${listParams.searchWord}` +
+        `&sType=sCntntsSj&wordType=sCntntsSj`
+    )
+
+    // 식물 기본 정보 json변환
+    const listString = await res.text()
+    const listNode = new DOMParser().parseFromString(listString, 'text/xml')
+    const listObject: any = xmlToJson.convertJson(listNode)
+    const listData = listObject.response.body.items.item
+    let plantInfoList: IndoorList | null = null
+
+    if (listData !== undefined) {
+      // 기본 정보 편집
+      const {
+        rtnFileSeCode,
+        rtnFileSn,
+        rtnOrginlFileNm,
+        rtnStreFileNm,
+        rtnFileCours,
+        rtnImageDc,
+        rtnThumbFileNm,
+        rtnImgSeCode,
+        rtnThumbFileUrl,
+        ...IndoorList
+      } = listData
+      IndoorList.rtnFileUrl = IndoorList.rtnFileUrl.split('|')
+      plantInfoList = IndoorList
+    }
+
+    return plantInfoList
+  } catch (error) {
+    return null
+  }
+}
+
+// 식물도감 상세 정보
 export const getIndoorDetail = async (code: string) => {
   const params = {
     apiKey: import.meta.env.VITE_PLANT_API_KEY,
@@ -338,51 +385,3 @@ export const getIndoorDetail = async (code: string) => {
 }
 
 export default getIndoorList
-
-// import axios from 'axios'
-// import xm12js from 'xml2js'
-// import { type HousePlantData, type HousePlantConvert } from '@/types/plants'
-
-// const getHousePlantList = async () => {
-//   const listParams = {
-//     apiKey: import.meta.env.VITE_HOUSE_PLANT_API_KEY,
-//     numOfRows: '12'
-//   }
-
-//   try {
-//     const response = await axios.get('/service/garden/housePlantData', { params: listParams })
-//     let housePlantData: HousePlantData[] = []
-//     const housePlantList: HousePlantConvert[] = []
-
-//     // 실내 가든 기본 정보 json변환
-//     xm12js.parseString(response.data, (err, result) => {
-//       if (err) {
-//         throw err
-//       }
-//       housePlantData = result.response.body[0].items[0].item
-//     })
-
-//     // 실내 가든 기본 정보 편집
-//     housePlantData.map((item: HousePlantData) => {
-//       const {
-//         rtnFileCours,
-//         rtnFileSeCode,
-//         rtnFileSn,
-//         rtnImageDc,
-//         rtnImgSeCode,
-//         rtnOrginlFileNm,
-//         rtnStreFileNm,
-//         rtnThumbFileNm,
-//         rtnThumbFileUrl,
-//         ...plantsInfo
-//       } = item
-
-//       housePlantList.push(plantsInfo)
-//     })
-//     return housePlantList
-//   } catch (error) {
-//     return 'error'
-//   }
-// }
-
-// export default getHousePlantList

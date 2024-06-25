@@ -8,11 +8,9 @@
       :loop="true"
     >
       <swiper-slide v-for="slide in item?.rtnFileUrl" :key="slide" class="img_wrap">
-        <router-link :to="`/guide/detail/${item?.cntntsNo}`">
-          <div class="thum_wrap">
-            <img :src="`${slide}`" :alt="`${item?.cntntsSj}`" />
-          </div>
-        </router-link>
+        <div class="thum_wrap">
+          <img :src="`${slide}`" :alt="`${item?.cntntsSj}`" />
+        </div>
       </swiper-slide>
     </swiper>
   </div>
