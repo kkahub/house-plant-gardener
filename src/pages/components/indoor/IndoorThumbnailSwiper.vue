@@ -7,8 +7,8 @@
       :pagination="{ clickable: true }"
       :loop="true"
     >
-      <swiper-slide v-for="slide in item?.rtnFileUrl" :key="slide" class="img_wrap">
-        <div class="thum_wrap">
+      <swiper-slide v-for="slide in item?.rtnFileUrl" :key="slide">
+        <div class="inner_img">
           <img :src="`${slide}`" :alt="`${item?.cntntsSj}`" />
         </div>
       </swiper-slide>

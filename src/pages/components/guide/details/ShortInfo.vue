@@ -1,10 +1,12 @@
 <template>
   <div class="wrap_img">
-    <img v-if="imgSrc !== 'NONE'" :src="imgSrc" :alt="imgAlt + ' 사진'" />
-    <div v-else class="no_img">
-      <div class="msg">
-        <font-awesome-icon :icon="['fas', 'seedling']" />
-        도감에 등록된 이미지가 없습니다.
+    <div class="inner_img">
+      <img v-if="imgSrc !== 'NONE'" :src="imgSrc" :alt="imgAlt + ' 사진'" />
+      <div v-else class="no_img">
+        <div class="msg">
+          <font-awesome-icon :icon="['fas', 'seedling']" />
+          도감에 등록된 이미지가 없습니다.
+        </div>
       </div>
     </div>
   </div>

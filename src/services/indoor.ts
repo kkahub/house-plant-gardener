@@ -253,20 +253,20 @@ export const getIndoorBasic = async (name: string) => {
   try {
     const res = await fetch(
       `/service/indoor/gardenList?apiKey=${listParams.apiKey}` +
-        `&pageNo=1` +
-        `&numOfRows=217` +
+        `&numOfRows=500` +
         `&sText=${listParams.searchWord}` +
         `&sType=sCntntsSj&wordType=sCntntsSj`
     )
 
     // 식물 기본 정보 json변환
-    const listString = await res.text()
-    const listNode = new DOMParser().parseFromString(listString, 'text/xml')
-    const listObject: any = xmlToJson.convertJson(listNode)
-    const listData = listObject.response.body.items.item
-    let plantInfoList: IndoorList | null = null
+    const detailBaseString = await res.text()
+    const detailBaseNode = new DOMParser().parseFromString(detailBaseString, 'text/xml')
+    const detailBaseObject: any = xmlToJson.convertJson(detailBaseNode)
+    const detailBaseData = detailBaseObject.response.body.items.item
+    let plantBaseInfo: IndoorList | null = null
+    let detailData
 
-    if (listData !== undefined) {
+    if (detailBaseData !== undefined) {
       // 기본 정보 편집
       const {
         rtnFileSeCode,
@@ -279,12 +279,17 @@ export const getIndoorBasic = async (name: string) => {
         rtnImgSeCode,
         rtnThumbFileUrl,
         ...IndoorList
-      } = listData
+      } = detailBaseData
       IndoorList.rtnFileUrl = IndoorList.rtnFileUrl.split('|')
-      plantInfoList = IndoorList
+      plantBaseInfo = IndoorList
     }
 
-    return plantInfoList
+    // 상세정보 가져오기
+    if (plantBaseInfo !== null) {
+      detailData = await getIndoorDetail(plantBaseInfo.cntntsNo)
+    }
+
+    return { ...plantBaseInfo, ...detailData }
   } catch (error) {
     return null
   }
@@ -293,14 +298,12 @@ export const getIndoorBasic = async (name: string) => {
 // 식물도감 상세 정보
 export const getIndoorDetail = async (code: string) => {
   const params = {
-    apiKey: import.meta.env.VITE_PLANT_API_KEY,
-    q1: code
+    apiKey: import.meta.env.VITE_INDOOR_PLANT_API_KEY,
+    code
   }
 
   try {
-    const res = await fetch(
-      `/openapi/service/rest/PlantService/plntIlstrInfo?apiKey=${params.apiKey}&q1=${params.q1}`
-    )
+    const res = await fetch(`/service/indoor/gardenDtl?apiKey=${params.apiKey}&cntntsNo=${code}`)
 
     // 식물 상세 정보 json변환
     const detailString = await res.text()
@@ -311,74 +314,14 @@ export const getIndoorDetail = async (code: string) => {
     // 도감 검색 결과 없음
     if (detailData === undefined) return
 
-    // 로그인 회원만 조회수 가져온 후 증가
-    if (isAuthenticated === true) {
-      const readCount = await getReadCount(code)
-      incrementReadCount(code, readCount)
-    }
+    // 오브젝트 값은 null로 변경(값이 없을 경우 빈 오브젝트로 들어오는 중)
+    Object.entries(detailData).map(([key, val]) => {
+      if (typeof val === 'object') {
+        return (detailData[key] = null)
+      }
+    })
 
-    // 가든 상세 정보 편집
-    const {
-      engNm,
-      bfofMthod,
-      branchDesc,
-      bugInfo,
-      flwrInfo01,
-      flwrInfo02,
-      flwrInfo03,
-      flwrInfo04,
-      flwrInfo05,
-      flwrInfo06,
-      flwrInfo07,
-      flwrInfo08,
-      flwrInfo09,
-      fritInfo01,
-      frstRgstnDtm,
-      gemmaDesc,
-      inductionDesc,
-      lastUpdtDtm,
-      leafInfo01,
-      leafInfo02,
-      leafInfo03,
-      leafInfo04,
-      leafInfo05,
-      leafInfo06,
-      leafInfo07,
-      leafInfo08,
-      leafInfo09,
-      leafInfo10,
-      peltDesc,
-      plantPilbkNo,
-      plantScnmId,
-      prtcPlnDesc,
-      ramentumDesc,
-      ramentumInfo01,
-      ramentumInfo02,
-      rrngGubun,
-      sporeInfo01,
-      sporeInfo02,
-      sporeInfo03,
-      sporeInfo04,
-      sporeInfo05,
-      sporeInfo06,
-      sporeInfo07,
-      sporeInfo08,
-      sporeInfo09,
-      stemInfo01,
-      stemInfo02,
-      stemInfo03,
-      stemInfo04,
-      stemInfo05,
-      stemInfo06,
-      stemInfo07,
-      stemInfo08,
-      woodDesc,
-      ...info
-    } = detailData
-
-    const IndoorDetail: IndoorDetail = info
-
-    return IndoorDetail
+    return detailData
   } catch (error) {
     return 'error'
   }

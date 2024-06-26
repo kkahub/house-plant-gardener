@@ -1,5 +1,5 @@
 <template>
-  <section class="wrap_detail">
+  <section class="wrap_guide_detail">
     <div v-if="isLoading" class="inner con_loader">
       <div class="loader_inner">
         <div class="loader">로딩중...</div>
@@ -128,9 +128,9 @@ import Features from '@/pages/components/guide/details/Features.vue'
 import Signature from '@/pages/components/guide/details/Signature.vue'
 import Similar from '@/pages/components/guide/details/Similar.vue'
 
-const info = ref()
 const route = useRoute()
 const router = useRouter()
+const info = ref()
 const code = ref(String(route.params.code))
 const prevNote = ref('')
 const { isShow } = useIsShow()

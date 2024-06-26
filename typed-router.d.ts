@@ -27,6 +27,7 @@ declare module 'vue-router/auto-routes' {
     '/components/guide/details/Signature': RouteRecordInfo<'/components/guide/details/Signature', '/components/guide/details/Signature', Record<never, never>, Record<never, never>>,
     '/components/guide/details/Similar': RouteRecordInfo<'/components/guide/details/Similar', '/components/guide/details/Similar', Record<never, never>, Record<never, never>>,
     '/components/guide/SearchBar': RouteRecordInfo<'/components/guide/SearchBar', '/components/guide/SearchBar', Record<never, never>, Record<never, never>>,
+    '/components/indoor/detail/ShortInfo': RouteRecordInfo<'/components/indoor/detail/ShortInfo', '/components/indoor/detail/ShortInfo', Record<never, never>, Record<never, never>>,
     '/components/indoor/IndoorThumbnailSwiper': RouteRecordInfo<'/components/indoor/IndoorThumbnailSwiper', '/components/indoor/IndoorThumbnailSwiper', Record<never, never>, Record<never, never>>,
     '/components/indoor/SearchBarDetail': RouteRecordInfo<'/components/indoor/SearchBarDetail', '/components/indoor/SearchBarDetail', Record<never, never>, Record<never, never>>,
     '/components/indoor/SearchFilter': RouteRecordInfo<'/components/indoor/SearchFilter', '/components/indoor/SearchFilter', Record<never, never>, Record<never, never>>,

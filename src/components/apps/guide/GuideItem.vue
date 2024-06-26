@@ -1,7 +1,7 @@
 <template>
   <li>
     <router-link :to="`/guide/detail/${item?.plantPilbkNo}`">
-      <div class="thum_wrap">
+      <div class="wrap_thum">
         <img v-if="noImg" :src="item?.imgUrl" />
         <div v-else class="no_img">
           <div class="msg">

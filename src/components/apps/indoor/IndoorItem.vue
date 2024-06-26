@@ -1,7 +1,9 @@
 <template>
   <li>
     <router-link :to="`/indoor/detail/${item?.cntntsSj}`">
-      <IndoorThumbnailSwiper :item="item" />
+      <div class="wrap_thum">
+        <IndoorThumbnailSwiper :item="item" />
+      </div>
       <div class="info_gallery">
         <div class="wrap_title">
           <h3 class="gallery_title">{{ item?.cntntsSj }}</h3>
