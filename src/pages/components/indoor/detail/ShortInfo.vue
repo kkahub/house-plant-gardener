@@ -9,32 +9,51 @@
     </div>
   </div>
   <div class="short_info">
-    <!-- <div class="wrap_name">
+    <div class="wrap_name">
       <h2 class="name_info">
-        {{ name }}<br />
-        <span class="original_name">{{ scientificName }}</span>
+        {{ info.cntntsSj }}<br />
+        <span class="original_name">{{ info.plntbneNm }}</span>
       </h2>
-    </div> -->
-    <!-- <div class="short_line">
+    </div>
+    <div class="short_line">
       <h3 class="short_title">분류</h3>
-      <div class="desc">
-        {{ familyKr }} {{ genusKr }}<br />
-        {{ family }} {{ genus }}
+      <div class="desc">{{ info.fmlCodeNm }}</div>
+    </div>
+    <div v-if="isShow(info.orgplceInfo)" class="short_line">
+      <h3 class="short_title">원산지</h3>
+      <div class="desc">{{ info.orgplceInfo }}</div>
+    </div>
+    <div v-if="isShow(info.managelevelCode)" class="short_line">
+      <h3 class="short_title">난이도</h3>
+      <div v-if="info.managelevelCode === '089001'" class="desc">
+        <span class="star_level">
+          <font-awesome-icon :icon="['fas', 'star']" />
+          <font-awesome-icon :icon="['far', 'star']" />
+          <font-awesome-icon :icon="['far', 'star']" />
+        </span>
+        초보자
+      </div>
+      <div v-else-if="info.managelevelCode === '089002'" class="desc">
+        <span class="star_level">
+          <font-awesome-icon :icon="['fas', 'star']" />
+          <font-awesome-icon :icon="['fas', 'star']" />
+          <font-awesome-icon :icon="['far', 'star']" />
+        </span>
+        경험자
+      </div>
+      <div v-else-if="info.managelevelCode === '089003'" class="desc">
+        <span class="star_level">
+          <font-awesome-icon :icon="['fas', 'star']" />
+          <font-awesome-icon :icon="['fas', 'star']" />
+          <font-awesome-icon :icon="['fas', 'star']" />
+        </span>
+        전문가
       </div>
     </div>
-    <div v-if="isShow(origin)" class="short_line">
-      <h3 class="short_title">원산지</h3>
-      <div class="desc">{{ origin }}</div>
+    <div v-if="isShow(info.clCodeNm)" class="short_line">
+      <h3 class="short_title">용도</h3>
+      <div class="desc">{{ info.clCodeNm }}</div>
     </div>
-    <div v-if="isShow(spreadKr)" class="short_line">
-      <h3 class="short_title">국내 분포</h3>
-      <div class="desc">{{ spreadKr }}</div>
-    </div>
-    <div v-if="isShow(spread)" class="short_line">
-      <h3 class="short_title">해외분포</h3>
-      <div class="desc">{{ spread }}</div>
-      <p class="notice_copy">* {{ copy }}</p>
-    </div> -->
   </div>
 </template>
 
@@ -47,78 +66,6 @@ const props = defineProps({
     type: Object,
     default: () => ({})
   }
-  // imgSrc: {
-  //   type: String,
-  //   default: ''
-  // },
-  // imgAlt: {
-  //   type: String,
-  //   default: ''
-  // },
-  // name: {
-  //   type: String,
-  //   default: ''
-  // },
-  // scientificName: {
-  //   type: String,
-  //   default: ''
-  // },
-  // familyKr: {
-  //   type: String,
-  //   default: ''
-  // },
-  // genusKr: {
-  //   type: String,
-  //   default: ''
-  // },
-  // family: {
-  //   type: String,
-  //   default: ''
-  // },
-  // genus: {
-  //   type: String,
-  //   default: ''
-  // },
-  // origin: {
-  //   type: String,
-  //   default: ''
-  // },
-  // spreadKr: {
-  //   type: String,
-  //   default: ''
-  // },
-  // spread: {
-  //   type: String,
-  //   default: ''
-  // },
-  // copy: {
-  //   type: String,
-  //   default: ''
-  // },
-  // toggleBookmark: {
-  //   type: Function,
-  //   default: () => {}
-  // },
-  // isBookmark: {
-  //   type: Boolean,
-  //   default: false
-  // },
-  // toggleNote: {
-  //   type: Function,
-  //   default: () => {}
-  // },
-  // isNote: {
-  //   type: Boolean,
-  //   default: false
-  // },
-  // isNoteView: {
-  //   type: Boolean,
-  //   default: false
-  // },
-  // isEditNote: {
-  //   type: Boolean,
-  //   default: false
-  // }
 })
 
 const { isShow } = useIsShow()

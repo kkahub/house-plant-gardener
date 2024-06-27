@@ -137,6 +137,9 @@
   .guide_list_loading {
     height: 500px;
   }
+  .gallery_title {
+    max-width: 170px;
+  }
   .icon_note {
     font-size: 21px;
   }
@@ -325,6 +328,15 @@
       width: 9px;
       height: 9px;
     }
+  }
+  .inner_img {
+    img {
+      max-width: 300px;
+      max-height: 300px;
+    }
+  }
+  .gallery_title {
+    max-width: 100%;
   }
 }
 

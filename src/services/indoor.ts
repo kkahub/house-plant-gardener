@@ -46,7 +46,6 @@ const getIndoorList = async ({
     minTemp,
     waterCycle
   }
-  console.log(currentPage)
 
   try {
     const res = await fetch(

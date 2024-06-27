@@ -12,6 +12,12 @@
   color: $c-txt-light;
 }
 
+// 별점 star raking
+.star_level {
+  font-size: 14px;
+  color: $c-main;
+}
+
 // Form
 legend {
   display: block;
@@ -325,7 +331,6 @@ textarea {
     }
     .gallery_title {
       @include ellipsis;
-      max-width: 170px;
       font-size: 22px;
     }
     .wrap_btn {
