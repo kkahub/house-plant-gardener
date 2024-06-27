@@ -12,7 +12,7 @@
       <template v-for="pageNum in pageArray(startPage)" :key="pageNum">
         <li class="page_item" :class="{ active: pageNum === currentPage }">
           <router-link
-            :to="`/guide?page=${pageNum}`"
+            :to="`${path}${pageNum}`"
             @click="getPage(pageNum, $event)"
             class="page_btn"
             type="button"
@@ -80,6 +80,10 @@ defineProps({
   },
   isNext: {
     type: Boolean
+  },
+  path: {
+    type: String,
+    default: ''
   }
 })
 </script>

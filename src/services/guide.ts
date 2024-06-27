@@ -27,13 +27,12 @@ const getGuideList = async ({
     const res = await fetch(
       `/service/guide/plntIlstrSearch?serviceKey=${listParams.serviceKey}&numOfRows=${listParams.numOfRows}&pageNo=${listParams.pageNo}&sw=${listParams.searchWord}`
     )
+
     // 식물 기본 정보 json변환
     const listString = await res.text()
     const listNode = new DOMParser().parseFromString(listString, 'text/xml')
-
     const listObject: any = xmlToJson.convertJson(listNode)
     const listData = listObject.response.body.items.item
-
     const plantInfoList: GuideList[] | null = []
 
     if (listData !== undefined) {

@@ -9,12 +9,12 @@
     </div>
   </div>
   <div class="short_info">
-    <div class="wrap_name">
+    <!-- <div class="wrap_name">
       <h2 class="name_info">
         {{ name }}<br />
         <span class="original_name">{{ scientificName }}</span>
       </h2>
-    </div>
+    </div> -->
     <!-- <div class="short_line">
       <h3 class="short_title">분류</h3>
       <div class="desc">

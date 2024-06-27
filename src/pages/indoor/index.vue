@@ -13,7 +13,7 @@
 
       <form @submit.prevent="">
         <SearchBarDetail
-          v-model:keyword="indoorKeyword"
+          v-model:keyword="keyword"
           :prev-keyword="prevKeyword"
           :loading="isLoading"
           @submit="handleSearch"
@@ -32,14 +32,15 @@
             <Pagination
               :page-array="pageArray"
               :start-page="startPage"
-              :current-page="indoorCurrentPage"
+              :current-page="currentPage"
               :prev-page="prevPage"
               :next-page="nextPage"
               :get-page="getPage"
-              :guide-keyword="indoorKeyword"
+              :guide-keyword="keyword"
               :is-prev="isPrev"
               :is-next="isNext"
               :loading="isLoading"
+              path="/indoor?page="
             />
           </div>
           <div v-else class="no_data">검색된 식물이 없습니다.</div>
@@ -55,16 +56,15 @@ import { useRoute, useRouter } from 'vue-router'
 import { useAsyncState } from '@vueuse/core'
 import { usePagination } from '@/composables/usePagination'
 import { storeToRefs } from 'pinia'
-import { useIndoorStore } from '@/stores/indoor'
+import { usePageStore } from '@/stores/pagination'
 import getIndoorList from '@/services/indoor'
 import SearchBarDetail from '@/pages/components/indoor/SearchBarDetail.vue'
 import IndoorList from '@/components/apps/indoor/IndoorList.vue'
 import Pagination from '@/components/pagination/Pagination.vue'
 
-const indoorStore = useIndoorStore()
-const { indoorKeyword, indoorCurrentPage } = storeToRefs(indoorStore)
+const indoorPageStore = usePageStore()
+const { keyword, currentPage } = storeToRefs(indoorPageStore)
 
-const keyword = ref('')
 const plantItems = ref()
 const prevKeyword = ref('')
 const isNoData = ref(false)
@@ -84,16 +84,16 @@ const router = useRouter()
 
 // 쿼리 주소를 이용해 다이렉트 접속 시 페이지 값 설정
 if (route.query.page !== undefined) {
-  indoorCurrentPage.value = Number(route.query.page)
+  currentPage.value = Number(route.query.page)
 }
 
 // 실내식물정보 데이터 가져오기
 const { isLoading, execute } = useAsyncState(
   () =>
     getIndoorList({
-      currentPage: indoorCurrentPage.value,
+      currentPage: currentPage.value,
       currentPageSize: pageSize.value,
-      searchWord: indoorKeyword.value,
+      searchWord: keyword.value,
       light: light.value,
       growForm: growForm.value,
       leafColor: leafColor.value,
@@ -129,15 +129,15 @@ const executePage = async () => {
 // Pagination
 const { pageArray, prevPage, nextPage, getPage, total, startPage, isPrev, isNext } = usePagination(
   pageSize.value,
-  indoorKeyword.value,
+  keyword.value,
   executePage
 )
 
 // 검색
 const handleSearch = () => {
-  indoorCurrentPage.value = 1
+  currentPage.value = 1
   executePage()
-  prevKeyword.value = indoorKeyword.value
+  prevKeyword.value = keyword.value
   startPage.value = 1
 
   // 라우팅

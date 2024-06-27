@@ -385,8 +385,10 @@ textarea {
   }
   .inner_img {
     overflow: hidden;
+    position: relative;
     height: 245px;
   }
+  .swiper_wrap,
   img {
     position: absolute;
     left: 50%;

@@ -45,7 +45,6 @@ const { isLoading } = useAsyncState(() => getIndoorBasic(name.value), null, {
       router.go(-1)
     } else {
       info.value = result
-      // console.log(result)
     }
   }
 })

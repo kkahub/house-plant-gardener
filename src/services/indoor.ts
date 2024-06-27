@@ -2,9 +2,6 @@ import { type IndoorListData, type IndoorList, type IndoorDetail } from '@/types
 import * as xmlToJson from '../plugin/xmlToJson'
 import { db } from '@/firebase/firebase'
 import { deleteDoc, doc, getDoc, increment, serverTimestamp, setDoc } from 'firebase/firestore'
-import { useAuthStore } from '@/stores/auth'
-
-const { isAuthenticated } = useAuthStore()
 
 // 실내식물 리스트
 const getIndoorList = async ({
@@ -49,6 +46,7 @@ const getIndoorList = async ({
     minTemp,
     waterCycle
   }
+  console.log(currentPage)
 
   try {
     const res = await fetch(

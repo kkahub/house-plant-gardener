@@ -314,6 +314,9 @@
     }
   }
   .swiper_wrap {
+    max-width: 300px;
+    max-height: 300px;
+
     .swiper-horizontal > .swiper-pagination-bullets,
     .swiper-pagination-bullets.swiper-pagination-horizontal {
       bottom: 10px;

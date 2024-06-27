@@ -7,7 +7,7 @@
           <p class="title_desc">국립수목원에서 제공하는 식물의 정보를 자세히 소개합니다.</p>
         </div>
         <SearchBar
-          v-model:keyword="guideKeyword"
+          v-model:keyword="keyword"
           :prev-keyword="prevKeyword"
           :loading="isLoading"
           @submit="handleSearch"
@@ -26,14 +26,15 @@
             <Pagination
               :page-array="pageArray"
               :start-page="startPage"
-              :current-page="guideCurrentPage"
+              :current-page="currentPage"
               :prev-page="prevPage"
               :next-page="nextPage"
               :get-page="getPage"
-              :guide-keyword="guideKeyword"
+              :guide-keyword="keyword"
               :is-prev="isPrev"
               :is-next="isNext"
               :loading="isLoading"
+              path="/guide?page="
             />
           </div>
           <div v-else class="no_data">검색된 식물이 없습니다.</div>
@@ -49,14 +50,14 @@ import { useRoute, useRouter } from 'vue-router'
 import { useAsyncState } from '@vueuse/core'
 import { usePagination } from '@/composables/usePagination'
 import { storeToRefs } from 'pinia'
-import { useGuideStore } from '@/stores/guide'
+import { usePageStore } from '@/stores/pagination'
 import getGuideList from '@/services/guide'
 import SearchBar from '@/pages/components/guide/SearchBar.vue'
 import GuideList from '@/components/apps/guide/GuideList.vue'
 import Pagination from '@/components/pagination/Pagination.vue'
 
-const guideStore = useGuideStore()
-const { guideCurrentPage, guideKeyword } = storeToRefs(guideStore)
+const guidePageStore = usePageStore()
+const { keyword, currentPage } = storeToRefs(guidePageStore)
 
 const plantItems = ref()
 const prevKeyword = ref('')
@@ -68,16 +69,16 @@ const router = useRouter()
 
 // 쿼리 주소를 이용해 다이렉트 접속 시 페이지 값 설정
 if (route.query.page !== undefined) {
-  guideCurrentPage.value = Number(route.query.page)
+  currentPage.value = Number(route.query.page)
 }
 
 // 식물도감정보 데이터 가져오기
 const { isLoading, execute } = useAsyncState(
   () =>
     getGuideList({
-      currentPage: guideCurrentPage.value,
+      currentPage: currentPage.value,
       currentPageSize: pageSize.value,
-      searchWord: guideKeyword.value
+      searchWord: keyword.value
     }),
   null,
   {
@@ -104,15 +105,15 @@ const executePage = async () => {
 // Pagination
 const { pageArray, prevPage, nextPage, getPage, total, startPage, isPrev, isNext } = usePagination(
   pageSize.value,
-  guideKeyword.value,
+  keyword.value,
   executePage
 )
 
 // 검색
 const handleSearch = () => {
-  guideCurrentPage.value = 1
+  currentPage.value = 1
   executePage()
-  prevKeyword.value = guideKeyword.value
+  prevKeyword.value = keyword.value
   startPage.value = 1
 
   // 라우팅

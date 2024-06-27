@@ -1,5 +1,5 @@
 import { ref, watch } from 'vue'
-import { useGuideStore } from '@/stores/guide'
+import { usePageStore } from '@/stores/pagination'
 import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
 
@@ -15,8 +15,8 @@ export const usePagination = (size: number, keyword: string, execute: any) => {
   const route = useRoute()
   const router = useRouter()
 
-  const guideStore = useGuideStore()
-  const { guideCurrentPage } = storeToRefs(guideStore)
+  const guideStore = usePageStore()
+  const { currentPage } = storeToRefs(guideStore)
 
   // 전체 페이지 수 계산
   const totalComputed = () => {
@@ -34,7 +34,7 @@ export const usePagination = (size: number, keyword: string, execute: any) => {
 
     totalPage.value = totalComputed()
 
-    const startComputed = Math.trunc((guideCurrentPage.value - 1) / pageCount.value)
+    const startComputed = Math.trunc((currentPage.value - 1) / pageCount.value)
     startComputed < 1 ? (startNum = 1) : (startNum = startComputed * pageCount.value + 1)
 
     if (totalPage.value !== 0) {
@@ -51,7 +51,7 @@ export const usePagination = (size: number, keyword: string, execute: any) => {
     [total, startPage],
     () => {
       // isPrev 체크
-      guideCurrentPage.value <= pageCount.value ? (isPrev.value = false) : (isPrev.value = true)
+      currentPage.value <= pageCount.value ? (isPrev.value = false) : (isPrev.value = true)
 
       // isNext 체크
       totalPage.value = totalComputed()
@@ -70,9 +70,9 @@ export const usePagination = (size: number, keyword: string, execute: any) => {
 
   // routing
   const routeChange = () => {
-    guideCurrentPage.value = startPage.value
+    currentPage.value = startPage.value
     router
-      .push({ path: `${route.matched[0].path}`, query: { page: `${guideCurrentPage.value}` } })
+      .push({ path: `${route.matched[0].path}`, query: { page: `${currentPage.value}` } })
       .catch(() => {})
   }
 
@@ -98,12 +98,12 @@ export const usePagination = (size: number, keyword: string, execute: any) => {
 
   // 페이지 리스트 호출
   const getPage = async (num: number, e: MouseEvent) => {
-    if (route.query.page === undefined || guideCurrentPage.value === num) return
+    if (route.query.page === undefined || currentPage.value === num) return
 
-    guideCurrentPage.value = num
+    currentPage.value = num
 
     await execute(0, {
-      currentPage: guideCurrentPage.value,
+      currentPage: currentPage.value,
       currentPageSize: pageSize.value,
       searchWord: keyword
     })
@@ -115,7 +115,7 @@ export const usePagination = (size: number, keyword: string, execute: any) => {
     const queryPage = route.query.page
 
     if (queryPage !== undefined) {
-      guideCurrentPage.value = Number(queryPage)
+      currentPage.value = Number(queryPage)
       await execute()
     }
   })
