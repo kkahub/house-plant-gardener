@@ -241,7 +241,7 @@ export async function hasNote(uid: string, plantCode: string) {
 }
 
 // 식물도감 상세 기본 정보
-export const getIndoorBasic = async (name: string) => {
+export const getIndoorBasic = async (name: string, code: string) => {
   const listParams = {
     apiKey: import.meta.env.VITE_INDOOR_PLANT_API_KEY,
     searchWord: name
@@ -259,33 +259,58 @@ export const getIndoorBasic = async (name: string) => {
     const detailBaseString = await res.text()
     const detailBaseNode = new DOMParser().parseFromString(detailBaseString, 'text/xml')
     const detailBaseObject: any = xmlToJson.convertJson(detailBaseNode)
-    const detailBaseData = detailBaseObject.response.body.items.item
+    const detailBaseDatas = detailBaseObject.response.body.items.item
+    let detailBaseData
     let plantBaseInfo: IndoorList | null = null
     let detailData
 
-    if (detailBaseData !== undefined) {
-      // 기본 정보 편집
-      const {
-        rtnFileSeCode,
-        rtnFileSn,
-        rtnOrginlFileNm,
-        rtnStreFileNm,
-        rtnFileCours,
-        rtnImageDc,
-        rtnThumbFileNm,
-        rtnImgSeCode,
-        rtnThumbFileUrl,
-        ...IndoorList
-      } = detailBaseData
-      IndoorList.rtnFileUrl = IndoorList.rtnFileUrl.split('|')
-      plantBaseInfo = IndoorList
+    if (detailBaseDatas !== undefined) {
+      if (detailBaseDatas.length > 1) {
+        // 이름으로 검색한 결과가 여러 개일 경우
+        detailBaseData = detailBaseDatas.filter((item: IndoorList) => {
+          if (code === item.cntntsNo) return item
+        })
+
+        // 기본 정보 편집
+        const {
+          rtnFileSeCode,
+          rtnFileSn,
+          rtnOrginlFileNm,
+          rtnStreFileNm,
+          rtnFileCours,
+          rtnImageDc,
+          rtnThumbFileNm,
+          rtnImgSeCode,
+          rtnThumbFileUrl,
+          ...IndoorList
+        } = detailBaseData[0]
+
+        IndoorList.rtnFileUrl = IndoorList.rtnFileUrl.split('|')
+        plantBaseInfo = IndoorList
+      } else {
+        // 기본 정보 편집
+        const {
+          rtnFileSeCode,
+          rtnFileSn,
+          rtnOrginlFileNm,
+          rtnStreFileNm,
+          rtnFileCours,
+          rtnImageDc,
+          rtnThumbFileNm,
+          rtnImgSeCode,
+          rtnThumbFileUrl,
+          ...IndoorList
+        } = detailBaseDatas
+
+        IndoorList.rtnFileUrl = IndoorList.rtnFileUrl.split('|')
+        plantBaseInfo = IndoorList
+      }
     }
 
     // 상세정보 가져오기
     if (plantBaseInfo !== null) {
       detailData = await getIndoorDetail(plantBaseInfo.cntntsNo)
     }
-
     return { ...plantBaseInfo, ...detailData }
   } catch (error) {
     return null

@@ -1,6 +1,6 @@
 <template>
   <li>
-    <router-link :to="`/indoor/detail/${item?.cntntsSj}`">
+    <router-link :to="`/indoor/detail/${item?.cntntsSj}-${item?.cntntsNo}`">
       <div class="wrap_thum">
         <IndoorThumbnailSwiper :item="item" />
       </div>
