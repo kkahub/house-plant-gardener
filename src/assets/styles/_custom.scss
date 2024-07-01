@@ -329,12 +329,6 @@
       height: 9px;
     }
   }
-  .inner_img {
-    img {
-      max-width: 300px;
-      max-height: 300px;
-    }
-  }
   .gallery_title {
     max-width: 100%;
   }
@@ -343,6 +337,9 @@
 // ** 실내식물 상세
 .wrap_indoor_detail {
   .card_gallery {
+    .short_info {
+      width: 630px;
+    }
     .wrap_img {
       width: 400px;
       height: 400px;
@@ -353,6 +350,20 @@
       img {
         max-width: 100%;
         max-height: inherit;
+      }
+    }
+    .wrap_name {
+      margin-bottom: 5px;
+    }
+    .short_line {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      padding-top: 10px;
+
+      .short_title {
+        width: 110px;
+        padding-top: 5px;
       }
     }
   }

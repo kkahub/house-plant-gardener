@@ -1,5 +1,5 @@
 <template>
-  <details class="card detail_info" v-bind="$attrs" open>
+  <details class="card detail_info" :class="part" v-bind="$attrs" open>
     <summary class="card_title">
       {{ title }}<font-awesome-icon :icon="['fas', 'chevron-up']" />
     </summary>
@@ -12,6 +12,10 @@
 <script setup lang="ts">
 defineProps({
   title: {
+    type: String,
+    default: ''
+  },
+  part: {
     type: String,
     default: ''
   }

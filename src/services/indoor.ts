@@ -336,10 +336,10 @@ export const getIndoorDetail = async (code: string) => {
     // 도감 검색 결과 없음
     if (detailData === undefined) return
 
-    // 오브젝트 값은 null로 변경(값이 없을 경우 빈 오브젝트로 들어오는 중)
+    // 오브젝트 값은 빈 텍스트로 변경(값이 없을 경우 빈 오브젝트로 들어오는 중)
     Object.entries(detailData).map(([key, val]) => {
       if (typeof val === 'object') {
-        return (detailData[key] = null)
+        return (detailData[key] = '')
       }
     })
 

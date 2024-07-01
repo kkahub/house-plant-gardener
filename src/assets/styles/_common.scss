@@ -14,7 +14,8 @@
 
 // 별점 star raking
 .star_level {
-  font-size: 14px;
+  margin-right: 5px;
+  font-size: 17px;
   color: $c-main;
 }
 
@@ -449,6 +450,7 @@ textarea {
     }
     &.active {
       .page_btn {
+        background: #fff;
         color: $c-main;
         font-weight: 700;
       }
@@ -476,7 +478,7 @@ textarea {
     }
     .page_btn {
       display: block;
-      padding: 7px;
+      padding: 9px;
       min-width: 32px;
       height: 32px;
       border-radius: 5px;
@@ -499,14 +501,26 @@ textarea {
   border-radius: 8px;
   background: #fff;
 
+  &.half {
+    width: 50%;
+  }
+  &.trisector {
+    width: 33.3333%;
+  }
+  &.quarter {
+    width: 25%;
+  }
   .card_title {
-    cursor: pointer;
     display: flex;
     justify-content: space-between;
+    position: relative;
     padding: 12px 15px;
     font-size: 20px;
     color: $c-title;
     font-weight: 600;
+  }
+  summary.card_title {
+    cursor: pointer;
   }
   &[open] {
     .fa-chevron-up {
@@ -621,8 +635,10 @@ textarea {
         color: $c-txt-sub;
       }
     }
-    h3 {
+    .short_line {
       padding-top: 20px;
+    }
+    h3 {
       font-size: 18px;
     }
     .desc {
@@ -647,10 +663,19 @@ textarea {
   gap: 15px;
   margin-bottom: 10px;
 
-  .detail_info {
+  .card {
     position: relative;
     width: 100%;
 
+    &.half {
+      width: calc(50% - 7.5px);
+    }
+    &.trisector {
+      width: calc(33.3333% - 10px);
+    }
+    &.quarter {
+      width: calc(25% - 11.25px);
+    }
     .desc {
       white-space: pre-line;
     }
