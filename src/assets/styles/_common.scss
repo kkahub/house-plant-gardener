@@ -215,6 +215,256 @@ textarea {
   }
 }
 
+// 컬러 아이콘
+.icon_color_view {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 10px;
+
+  &.blue {
+    background: $c-filter-blue;
+  }
+  &.purple {
+    background: $c-filter-purple;
+  }
+  &.pink {
+    background: $c-filter-pink;
+  }
+  &.red {
+    background: $c-filter-red;
+  }
+  &.yellow {
+    background: $c-filter-yellow;
+  }
+  &.ygreen {
+    background: $c-filter-ygreen;
+  }
+  &.green {
+    background: $c-filter-green;
+  }
+  &.orange {
+    background: $c-filter-orange;
+  }
+  &.white {
+    border: 1px solid $c-line;
+    background: #fff;
+  }
+  &.black {
+    background: #000;
+  }
+  &.ygreen_green {
+    background: linear-gradient(135deg, $c-filter-ygreen 20%, $c-filter-green 80%);
+  }
+  &.yellow_gold {
+    background: linear-gradient(135deg, $c-filter-yellow 20%, $c-filter-gold 80%);
+  }
+  &.white_cream {
+    border: 1px solid $c-line;
+    background: linear-gradient(135deg, #fff 20%, $c-filter-cream 80%);
+  }
+  &.silver_gray {
+    background: linear-gradient(135deg, $c-filter-silver 20%, $c-filter-gray 80%);
+  }
+  &.pink_red_wine {
+    background: linear-gradient(135deg, $c-filter-pink 30%, $c-filter-red 60%, $c-filter-wine 75%);
+  }
+  &.mix {
+    background: linear-gradient(
+      135deg,
+      $c-filter-ygreen 15%,
+      $c-filter-yellow 40%,
+      $c-filter-orange 60%,
+      $c-filter-red 70%,
+      $c-filter-wine 75%
+    );
+  }
+  &.ect {
+    background: linear-gradient(
+      135deg,
+      $c-filter-pink 20%,
+      $c-filter-purple 50%,
+      $c-filter-blue 80%
+    );
+  }
+}
+.icon_water_view {
+  display: block;
+  width: 20px;
+  height: 20px;
+  border-radius: 3px;
+
+  &.water_1 {
+    background: $c-filter-blue;
+  }
+  &.water_2 {
+    background: linear-gradient($c-filter-cream 30%, $c-filter-blue 30%);
+  }
+  &.water_3 {
+    background: linear-gradient($c-filter-cream 70%, $c-filter-blue 70%);
+  }
+  &.water_4 {
+    background: $c-filter-cream;
+  }
+}
+
+// 패턴 아이콘
+.icon_pattern {
+  display: block;
+  width: 19px;
+  height: 19px;
+  border-radius: 0 10px 0 10px;
+
+  &.stripe {
+    @include pattern-stripe('stripe', $c-main, 8px);
+  }
+  &.dot {
+    overflow: hidden;
+    position: relative;
+
+    &::after {
+      content: '';
+      @include pattern-dot('dot', $c-main, 40%, 7px);
+      display: block;
+      position: absolute;
+      left: -6px;
+      top: -7px;
+      width: 30px;
+      height: 30px;
+      transform: rotate(45deg);
+    }
+  }
+  &.line {
+    border: 2px dotted $c-main;
+    background: $c-sub;
+  }
+  &.solid {
+    background: $c-main;
+  }
+}
+
+// 범위 바, 바 그래프
+.scope_bar {
+  display: flex;
+  position: relative;
+  padding-top: 15px;
+
+  &::after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 18px;
+    border-radius: 9px;
+  }
+  .scope_tooltip {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    padding-bottom: 29px;
+    text-align: center;
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 18px;
+      background: $c-bg;
+    }
+    &:first-child {
+      &::after {
+        content: '';
+        border-radius: 9px 0 0 9px;
+      }
+    }
+    &:last-child {
+      &::after {
+        content: '';
+        border-radius: 0 9px 9px 0;
+      }
+    }
+    &.active {
+      &::after {
+        content: '';
+        display: none;
+      }
+      span {
+        opacity: 1;
+        border: 1px solid $c-line;
+
+        &::before {
+          content: '';
+          display: block;
+          position: absolute;
+          bottom: -4px;
+          left: 50%;
+          width: 8px;
+          height: 8px;
+          margin-left: -4px;
+          border-radius: 4px;
+          background: $c-line;
+        }
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -12px;
+          left: 50%;
+          width: 1px;
+          height: 12px;
+          background: $c-line;
+        }
+      }
+    }
+    span {
+      opacity: 0.4;
+      display: block;
+      position: relative;
+      margin: 0 10px;
+      padding: 8px 10px;
+      border-radius: 8px;
+    }
+  }
+}
+
+// 계절표
+.thumnail_desc {
+  display: flex;
+  padding-top: 15px;
+
+  li {
+    width: 100%;
+    border: 1px solid $c-line;
+    text-align: center;
+
+    &:not(:last-child) {
+      border-right: 0;
+    }
+    .season {
+      display: block;
+      padding: 8px 10px;
+      border-bottom: 1px solid $c-line;
+    }
+  }
+  .water_cycle {
+    padding: 10px 10px 20px;
+  }
+  .water_bottle {
+    padding: 20px 0 5px;
+    perspective: 50px;
+
+    .icon_water_view {
+      width: 45px;
+      height: 50px;
+      border-top: 0;
+      margin: 0 auto;
+      transform: rotateX(-30deg);
+    }
+  }
+}
+
 // 검색 필터
 .wrap_filter {
   .fieldset {
@@ -231,12 +481,6 @@ textarea {
     flex-wrap: wrap;
     align-items: center;
     gap: 5px;
-  }
-  .color_view {
-    display: block;
-    width: 20px;
-    height: 20px;
-    border-radius: 10px;
   }
 }
 
@@ -501,15 +745,6 @@ textarea {
   border-radius: 8px;
   background: #fff;
 
-  &.half {
-    width: 50%;
-  }
-  &.trisector {
-    width: 33.3333%;
-  }
-  &.quarter {
-    width: 25%;
-  }
   .card_title {
     display: flex;
     justify-content: space-between;
@@ -540,7 +775,7 @@ textarea {
     padding: 15px;
   }
   .sub_title {
-    padding-bottom: 7px;
+    padding-bottom: 5px;
     font-size: 18px;
   }
   .icon_wrap {
@@ -659,7 +894,6 @@ textarea {
 // 식물 상세 정보
 .card_detail {
   display: flex;
-  flex-wrap: wrap;
   gap: 15px;
   margin-bottom: 10px;
 
@@ -667,15 +901,6 @@ textarea {
     position: relative;
     width: 100%;
 
-    &.half {
-      width: calc(50% - 7.5px);
-    }
-    &.trisector {
-      width: calc(33.3333% - 10px);
-    }
-    &.quarter {
-      width: calc(25% - 11.25px);
-    }
     .desc {
       white-space: pre-line;
     }

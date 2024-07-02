@@ -133,3 +133,25 @@
   background: #fff;
   color: $c-txt;
 }
+
+// 무늬 배경
+@mixin pattern-dot($name, $color, $size, $space) {
+  background: radial-gradient($c-sub $size, transparent 17%), $color;
+  background-position:
+    0 0,
+    $space * 0.5 $space * 0.5;
+  background-size: $space $space;
+}
+@mixin pattern-stripe($name, $color, $size) {
+  background: linear-gradient(
+    135deg,
+    $c-sub 25%,
+    $color 25%,
+    $color 50%,
+    $c-sub 50%,
+    $c-sub 75%,
+    $color 75%,
+    $color 100%
+  );
+  background-size: $size $size;
+}

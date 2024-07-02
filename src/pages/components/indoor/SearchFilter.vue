@@ -74,46 +74,46 @@
         <div class="check_btn">
           <input type="checkbox" id="leafGreen" name="leafColor" value="069001" />
           <label for="leafGreen">
-            <i class="color_view ygreen_green"></i>
+            <i class="icon_color_view ygreen_green"></i>
             연두색<span class="text_light">/</span>녹색
           </label>
         </div>
         <div class="check_btn">
           <input type="checkbox" id="lightYellow" name="leafColor" value="069002" />
           <label for="lightYellow">
-            <i class="color_view yellow_gold"></i>
+            <i class="icon_color_view yellow_gold"></i>
             노란색 <span class="text_light">/</span> 금색
           </label>
         </div>
         <div class="check_btn">
           <input type="checkbox" id="lightWhite" name="leafColor" value="069003" />
           <label for="lightWhite">
-            <i class="color_view white_cream"></i>
+            <i class="icon_color_view white_cream"></i>
             흰색 <span class="text_light">/</span> 크림색
           </label>
         </div>
         <div class="check_btn">
           <input type="checkbox" id="lightSilver" name="leafColor" value="069004" />
           <label for="lightSilver">
-            <i class="color_view silver_gray"></i>
+            <i class="icon_color_view silver_gray"></i>
             은색 <span class="text_light">/</span> 회색
           </label>
         </div>
         <div class="check_btn">
           <input type="checkbox" id="lightRed" name="leafColor" value="069005" />
           <label for="lightRed">
-            <i class="color_view pink_red_wine"></i>
+            <i class="icon_color_view pink_red_wine"></i>
             분홍 <span class="text_light">/</span> 빨강 <span class="text_light">/</span>
             자주색
           </label>
         </div>
         <div class="check_btn">
           <input type="checkbox" id="lightMix" name="leafColor" value="069006" />
-          <label for="lightMix"><i class="color_view mix"></i>혼합색</label>
+          <label for="lightMix"><i class="icon_color_view mix"></i>혼합색</label>
         </div>
         <div class="check_btn">
           <input type="checkbox" id="lightEct" name="leafColor" value="069007" />
-          <label for="lightEct"><i class="color_view ect"></i>기타</label>
+          <label for="lightEct"><i class="icon_color_view ect"></i>기타</label>
         </div>
       </div>
       <!-- // 잎색 -->
@@ -122,39 +122,39 @@
       <div class="form_group">
         <div class="check_btn">
           <input type="checkbox" id="flowerBlue" name="flowerColor" value="071001" />
-          <label for="flowerBlue"><i class="color_view blue"></i>파랑색</label>
+          <label for="flowerBlue"><i class="icon_color_view blue"></i>파랑색</label>
         </div>
         <div class="check_btn">
           <input type="checkbox" id="flowerPurple" name="flowerColor" value="071002" />
-          <label for="flowerPurple"><i class="color_view purple"></i>보라색</label>
+          <label for="flowerPurple"><i class="icon_color_view purple"></i>보라색</label>
         </div>
         <div class="check_btn">
           <input type="checkbox" id="flowerPink" name="flowerColor" value="071003" />
-          <label for="flowerPink"><i class="color_view pink"></i>분홍색</label>
+          <label for="flowerPink"><i class="icon_color_view pink"></i>분홍색</label>
         </div>
         <div class="check_btn">
           <input type="checkbox" id="flowerRed" name="flowerColor" value="071004" />
-          <label for="flowerRed"><i class="color_view red"></i>빨강색</label>
+          <label for="flowerRed"><i class="icon_color_view red"></i>빨강색</label>
         </div>
         <div class="check_btn">
           <input type="checkbox" id="flowerOrange" name="flowerColor" value="071005" />
-          <label for="flowerOrange"><i class="color_view orange"></i>오렌지색</label>
+          <label for="flowerOrange"><i class="icon_color_view orange"></i>오렌지색</label>
         </div>
         <div class="check_btn">
           <input type="checkbox" id="flowerYellow" name="flowerColor" value="071006" />
-          <label for="flowerYellow"><i class="color_view yellow"></i>노랑색</label>
+          <label for="flowerYellow"><i class="icon_color_view yellow"></i>노랑색</label>
         </div>
         <div class="check_btn">
           <input type="checkbox" id="flowerWhite" name="flowerColor" value="071007" />
-          <label for="flowerWhite"><i class="color_view white"></i>흰색</label>
+          <label for="flowerWhite"><i class="icon_color_view white"></i>흰색</label>
         </div>
         <div class="check_btn">
           <input type="checkbox" id="flowerMix" name="flowerColor" value="071008" />
-          <label for="flowerMix"><i class="color_view mix"></i>혼합색</label>
+          <label for="flowerMix"><i class="icon_color_view mix"></i>혼합색</label>
         </div>
         <div class="check_btn">
           <input type="checkbox" id="flowerEct" name="flowerColor" value="071009" />
-          <label for="flowerEct"><i class="color_view ect"></i>기타</label>
+          <label for="flowerEct"><i class="icon_color_view ect"></i>기타</label>
         </div>
       </div>
       <!-- // 꽃색 -->
@@ -163,39 +163,39 @@
       <div class="form_group">
         <div class="check_btn">
           <input type="checkbox" id="fruitBlue" name="fruitColor" value="081001" />
-          <label for="fruitBlue"><i class="color_view blue"></i>파랑색</label>
+          <label for="fruitBlue"><i class="icon_color_view blue"></i>파랑색</label>
         </div>
         <div class="check_btn">
           <input type="checkbox" id="fruitPurple" name="fruitColor" value="081002" />
-          <label for="fruitPurple"><i class="color_view purple"></i>보라색</label>
+          <label for="fruitPurple"><i class="icon_color_view purple"></i>보라색</label>
         </div>
         <div class="check_btn">
           <input type="checkbox" id="fruitBlack" name="fruitColor" value="081003" />
-          <label for="fruitBlack"><i class="color_view black"></i>검정색</label>
+          <label for="fruitBlack"><i class="icon_color_view black"></i>검정색</label>
         </div>
         <div class="check_btn">
           <input type="checkbox" id="fruitRed" name="fruitColor" value="081004" />
-          <label for="fruitRed"><i class="color_view red"></i>빨강색</label>
+          <label for="fruitRed"><i class="icon_color_view red"></i>빨강색</label>
         </div>
         <div class="check_btn">
           <input type="checkbox" id="fruitOrange" name="fruitColor" value="081005" />
-          <label for="fruitOrange"><i class="color_view orange"></i>오렌지색</label>
+          <label for="fruitOrange"><i class="icon_color_view orange"></i>오렌지색</label>
         </div>
         <div class="check_btn">
           <input type="checkbox" id="fruitYellow" name="fruitColor" value="081006" />
-          <label for="fruitYellow"><i class="color_view yellow"></i>노랑색</label>
+          <label for="fruitYellow"><i class="icon_color_view yellow"></i>노랑색</label>
         </div>
         <div class="check_btn">
           <input type="checkbox" id="fruitWhite" name="fruitColor" value="081007" />
-          <label for="fruitWhite"><i class="color_view white"></i>흰색</label>
+          <label for="fruitWhite"><i class="icon_color_view white"></i>흰색</label>
         </div>
         <div class="check_btn">
           <input type="checkbox" id="fruitMix" name="fruitColor" value="081008" />
-          <label for="fruitMix"><i class="color_view mix"></i>혼합색</label>
+          <label for="fruitMix"><i class="icon_color_view mix"></i>혼합색</label>
         </div>
         <div class="check_btn">
           <input type="checkbox" id="fruitEct" name="fruitColor" value="081009" />
-          <label for="fruitEct"><i class="color_view ect"></i>기타</label>
+          <label for="fruitEct"><i class="icon_color_view ect"></i>기타</label>
         </div>
       </div>
       <!-- // 열매색 -->
@@ -251,28 +251,28 @@
         <div class="check_btn">
           <input type="checkbox" id="waterCycle1" name="waterCycle" value="053001" />
           <label for="waterCycle1">
-            <i class="water_view water_1"></i>
+            <i class="icon_water_view water_1"></i>
             축축하게 유지(물에 잠김)
           </label>
         </div>
         <div class="check_btn">
           <input type="checkbox" id="waterCycle2" name="waterCycle" value="053002" />
           <label for="waterCycle2">
-            <i class="water_view water_2"></i>
+            <i class="icon_water_view water_2"></i>
             촉촉하게 유지(물에 잠기지 않도록 주의)
           </label>
         </div>
         <div class="check_btn">
           <input type="checkbox" id="waterCycle3" name="waterCycle" value="053003" />
           <label for="waterCycle3">
-            <i class="water_view water_3"></i>
+            <i class="icon_water_view water_3"></i>
             흙 표면이 말랐을 때
           </label>
         </div>
         <div class="check_btn">
           <input type="checkbox" id="waterCycle4" name="waterCycle" value="053004" />
           <label for="waterCycle4">
-            <i class="water_view water_4"></i>
+            <i class="icon_water_view water_4"></i>
             흙 대부분 말랐을 때
           </label>
         </div>
