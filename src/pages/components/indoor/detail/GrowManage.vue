@@ -2,7 +2,9 @@
   <div class="card_content">
     <div class="info_item" v-if="isShow(info.eclgyCodeNm)">
       <h4 class="sub_title">생태</h4>
-      <p class="desc">{{ info.eclgyCodeNm }}</p>
+      <p class="desc">
+        {{ info.eclgyCodeNm.replace('일반형', '토양 재배').replace('수경형', '수경 재배') }}
+      </p>
     </div>
     <div class="info_item" v-if="isShow(info.grwtveCodeNm)">
       <h4 class="sub_title">생장속도</h4>

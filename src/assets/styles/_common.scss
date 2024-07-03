@@ -298,13 +298,13 @@ textarea {
     background: $c-filter-blue;
   }
   &.water_2 {
-    background: linear-gradient($c-filter-cream 30%, $c-filter-blue 30%);
+    background: linear-gradient($c-filter-cream 25%, $c-filter-blue 25%);
   }
   &.water_3 {
-    background: linear-gradient($c-filter-cream 70%, $c-filter-blue 70%);
+    background: linear-gradient($c-filter-cream 65%, $c-filter-blue 65%);
   }
   &.water_4 {
-    background: $c-filter-cream;
+    background: linear-gradient($c-filter-cream 90%, $c-filter-blue 90%);
   }
 }
 
@@ -354,7 +354,8 @@ textarea {
     display: block;
     position: absolute;
     bottom: 0;
-    width: 100%;
+    left: 1px;
+    width: calc(100% - 2px);
     height: 18px;
     border-radius: 9px;
   }
@@ -399,12 +400,12 @@ textarea {
           content: '';
           display: block;
           position: absolute;
-          bottom: -4px;
+          bottom: -5px;
           left: 50%;
-          width: 8px;
-          height: 8px;
-          margin-left: -4px;
-          border-radius: 4px;
+          width: 9px;
+          height: 9px;
+          margin-left: -5px;
+          border-radius: 5px;
           background: $c-line;
         }
         &::after {
@@ -414,6 +415,7 @@ textarea {
           left: 50%;
           width: 1px;
           height: 12px;
+          margin-left: -1px;
           background: $c-line;
         }
       }
@@ -452,10 +454,25 @@ textarea {
     padding: 10px 10px 20px;
   }
   .water_bottle {
-    padding: 20px 0 5px;
-    perspective: 50px;
+    padding: 40px 0 5px;
+    perspective: 60px;
 
+    &:has(.water_1) {
+      .fa-seedling {
+        color: $c-filter-blue;
+      }
+    }
+    .fa-seedling {
+      position: absolute;
+      top: 16px;
+      left: 50%;
+      margin-left: -14px;
+      font-size: 28px;
+      color: $c-filter-cream;
+    }
     .icon_water_view {
+      position: relative;
+      z-index: 1;
       width: 45px;
       height: 50px;
       border-top: 0;

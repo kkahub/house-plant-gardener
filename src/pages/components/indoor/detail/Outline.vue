@@ -13,8 +13,6 @@
 </template>
 
 <script setup lang="ts">
-import { useIsShow } from '@/composables/useIsShow'
-
 defineProps({
   info: {
     type: Object,

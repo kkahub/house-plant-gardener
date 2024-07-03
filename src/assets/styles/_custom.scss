@@ -308,8 +308,8 @@
       }
     }
   }
-  .scope_bar {
-    &.brightness {
+  .brightness {
+    .scope_bar {
       width: 600px;
 
       &::after {
@@ -322,7 +322,9 @@
         );
       }
     }
-    &.grow_temp {
+  }
+  .grow_temp {
+    .scope_bar {
       width: 600px;
 
       &::after {
@@ -335,7 +337,9 @@
         );
       }
     }
-    &.lowest_temp {
+  }
+  .lowest_temp {
+    .scope_bar {
       width: 600px;
 
       &::after {
@@ -348,7 +352,9 @@
         );
       }
     }
-    &.humidity {
+  }
+  .humidity {
+    .scope_bar {
       width: 600px;
 
       &::after {
