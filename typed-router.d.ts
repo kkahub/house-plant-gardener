@@ -49,6 +49,7 @@ declare module 'vue-router/auto-routes' {
     '/indoor/detail/[name]/': RouteRecordInfo<'/indoor/detail/[name]/', '/indoor/detail/:name', { name: ParamValue<true> }, { name: ParamValue<false> }>,
     '/indoor/detail/[name]/components/IndoorDetail': RouteRecordInfo<'/indoor/detail/[name]/components/IndoorDetail', '/indoor/detail/:name/components/IndoorDetail', { name: ParamValue<true> }, { name: ParamValue<false> }>,
     '/member': RouteRecordInfo<'/member', '/member', Record<never, never>, Record<never, never>>,
+    '/member/find/': RouteRecordInfo<'/member/find/', '/member/find', Record<never, never>, Record<never, never>>,
     '/member/join/': RouteRecordInfo<'/member/join/', '/member/join', Record<never, never>, Record<never, never>>,
     '/member/login/': RouteRecordInfo<'/member/login/', '/member/login', Record<never, never>, Record<never, never>>,
     '/member/verify/': RouteRecordInfo<'/member/verify/', '/member/verify', Record<never, never>, Record<never, never>>,
