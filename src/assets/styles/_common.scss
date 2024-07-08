@@ -484,6 +484,12 @@ textarea {
 
 // 검색 필터
 .wrap_filter {
+  overflow: hidden;
+  height: 0;
+
+  &.active {
+    height: auto;
+  }
   .fieldset {
     display: grid;
     grid-template-columns: 110px 1fr;

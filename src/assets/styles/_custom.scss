@@ -211,20 +211,27 @@
   .wrap_search {
     justify-content: flex-start;
     gap: 10px;
-    padding: 30px 0 15px;
+    padding-top: 30px;
 
     .btn_search_detail {
       padding: 0 15px;
       background: #fff;
       font-size: 14px;
 
-      &.on {
+      &.active {
         color: $c-key;
 
         .fa-chevron-down {
           transform: rotate(180deg);
         }
       }
+    }
+  }
+  .wrap_filter {
+    padding: 0;
+
+    &.active {
+      padding-top: 15px;
     }
   }
   .list_gallery {

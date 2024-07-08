@@ -8,19 +8,24 @@
           <span class="material-symbols-rounded">search</span>
         </button>
       </div>
-      <button type="button" class="btn btn_line_light btn_search_detail on">
+      <button
+        type="button"
+        class="btn btn_line_light btn_search_detail"
+        @click="isToggleDetailFilter = !isToggleDetailFilter"
+        :class="isToggleDetailFilter ? 'active' : ''"
+      >
         상세 조건 <font-awesome-icon :icon="['fas', 'chevron-down']" />
       </button>
     </div>
     <!-- 검색어 -->
     <!-- 상세검색 -->
-    <SearchFilter />
+    <SearchFilter :is-toggle-detail-filter="isToggleDetailFilter" :light="light" />
     <!-- 상세검색 -->
   </form>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import SearchFilter from './SearchFilter.vue'
 
 const props = defineProps({
@@ -29,8 +34,14 @@ const props = defineProps({
   },
   prevKeyword: {
     type: String
+  },
+  light: {
+    type: String
   }
 })
+
+const isToggleDetailFilter = ref(true)
+
 const emit = defineEmits(['update:keyword', 'submit'])
 
 const keywordModel = computed({

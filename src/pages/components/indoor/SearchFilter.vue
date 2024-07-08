@@ -1,19 +1,37 @@
 <template>
-  <div class="wrap_filter">
+  <div class="wrap_filter" :class="isToggleDetailFilter ? 'active' : ''">
     <!-- 광도 -->
     <div class="fieldset">
       <div class="legend">광도</div>
       <div class="form_group">
         <div class="check_btn">
-          <input type="checkbox" id="lightLow" name="light" value="055001" />
+          <input
+            type="checkbox"
+            id="lightLow"
+            v-model="lightModel"
+            value="055001"
+            @change="emit('update:light', lightModel)"
+          />
           <label for="lightLow">낮음(300~800 Lux)</label>
         </div>
         <div class="check_btn">
-          <input type="checkbox" id="lightMid" name="light" value="055002" />
+          <input
+            type="checkbox"
+            id="lightMid"
+            v-model="lightModel"
+            value="055002"
+            @change="emit('update:light', lightModel)"
+          />
           <label for="lightMid">중간(800~1,500 Lux)</label>
         </div>
         <div class="check_btn">
-          <input type="checkbox" id="lightHigh" name="light" value="055003" />
+          <input
+            type="checkbox"
+            id="lightHigh"
+            v-model="lightModel"
+            value="055003"
+            @change="emit('update:light', lightModel)"
+          />
           <label for="lightHigh">높음(1,500~10,000 Lux)</label>
         </div>
       </div>
@@ -283,14 +301,37 @@
 </template>
 
 <script setup lang="ts">
+import { computed, ref, watch } from 'vue'
+
 const props = defineProps({
   keyword: {
-    type: String
+    type: String,
+    defalut: ''
   },
   prevKeyword: {
-    type: String
+    type: String,
+    defalut: ''
+  },
+  isToggleDetailFilter: {
+    type: Boolean,
+    defalut: false
+  },
+  light: {
+    type: String,
+    defalut: ''
   }
 })
+
+const lights = ref([])
+
+const emit = defineEmits(['update:light'])
+
+// const lightSorting = () => {
+//   console.log(lights.value.length)
+//   emit
+//   if (lights.value.length < 2) {
+//   }
+// }
 </script>
 
 <style scoped></style>

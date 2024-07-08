@@ -11,14 +11,12 @@
         </div>
       </div>
 
-      <form @submit.prevent="">
-        <SearchBarDetail
-          v-model:keyword="keyword"
-          :prev-keyword="prevKeyword"
-          :loading="isLoading"
-          @submit="handleSearch"
-        />
-      </form>
+      <SearchBarDetail
+        v-model:keyword="keyword"
+        :prev-keyword="prevKeyword"
+        :loading="isLoading"
+        @submit="handleSearch"
+      />
 
       <div class="indoor_list_wrap">
         <div v-if="isLoading" class="indoor_list_loading">
