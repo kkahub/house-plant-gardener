@@ -2,6 +2,7 @@ import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
   sendEmailVerification,
+  sendPasswordResetEmail,
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
@@ -49,4 +50,9 @@ export async function sendVerificationEmail() {
 export async function signInWithEmail({ email, password }: { email: string; password: string }) {
   const { user } = await signInWithEmailAndPassword(auth, email, password)
   return user
+}
+
+// 비밀번호 찾기(재설정)
+export async function sendPasswordReset(email: string) {
+  await sendPasswordResetEmail(auth, email)
 }
