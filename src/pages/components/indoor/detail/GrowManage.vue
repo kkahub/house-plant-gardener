@@ -32,7 +32,7 @@
     </div>
     <div class="info_item" v-if="isShow(info.speclmanageInfo)">
       <h4 class="sub_title">특별관리정보</h4>
-      <p class="desc">{{ info.speclmanageInfo }}</p>
+      <p class="desc">{{ info.speclmanageInfo.replace(/\n\r/g, '') }}</p>
     </div>
     <div class="info_item" v-if="isShow(info.adviseInfo) || isShow(info.etcEraInfo)">
       <h4 class="sub_title">그 외 정보</h4>

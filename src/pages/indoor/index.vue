@@ -10,10 +10,18 @@
           </p>
         </div>
       </div>
-
       <SearchBarDetail
         v-model:keyword="keyword"
         :prev-keyword="prevKeyword"
+        v-model:light="light"
+        v-model:growForm="growForm"
+        v-model:leafColor="leafColor"
+        v-model:leafPattern="leafPattern"
+        v-model:flowerColor="flowerColor"
+        v-model:fruitColor="fruitColor"
+        v-model:flowering="flowering"
+        v-model:minTemp="minTemp"
+        v-model:waterCycle="waterCycle"
         :loading="isLoading"
         @submit="handleSearch"
       />
@@ -49,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, toRef, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAsyncState } from '@vueuse/core'
 import { usePagination } from '@/composables/usePagination'
@@ -67,7 +75,7 @@ const plantItems = ref()
 const prevKeyword = ref('')
 const isNoData = ref(false)
 const pageSize = ref(16)
-const light = ref('')
+const light = toRef('')
 const growForm = ref('')
 const leafColor = ref('')
 const leafPattern = ref('')

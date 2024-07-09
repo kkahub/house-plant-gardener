@@ -88,7 +88,7 @@
       </div>
       <!-- // 상세정보 -->
       <div class="btn_group right">
-        <router-link to="/guide" class="btn btn_dark">목록으로</router-link>
+        <router-link to="/indoor" class="btn btn_dark">목록으로</router-link>
       </div>
     </div>
   </section>
@@ -100,8 +100,6 @@ import { useRoute, useRouter } from 'vue-router'
 import { getIndoorBasic, getIndoorDetail } from '@/services/indoor'
 import { useAsyncState } from '@vueuse/core'
 import { useIsShow } from '@/composables/useIsShow'
-import { useBookmark } from '@/composables/useBookmark'
-import { useNote } from '@/composables/useNote'
 import BasicCard from '@/components/base/BasicCard.vue'
 import DetailsCard from '@/components/base/DetailsCard.vue'
 import ShortInfo from '@/pages/components/indoor/detail/ShortInfo.vue'
@@ -126,7 +124,6 @@ const { isShow } = useIsShow()
 const { isLoading } = useAsyncState(() => getIndoorBasic(name.value, code.value), null, {
   throwError: true,
   onSuccess: (result) => {
-    console.log(result)
     if (result === null) {
       alert('잘못된 접근입니다.')
       router.go(-1)

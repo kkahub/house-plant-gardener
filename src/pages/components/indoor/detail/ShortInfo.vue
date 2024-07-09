@@ -56,7 +56,7 @@
     </div>
     <div v-if="isShow(info.fncltyInfo)" class="short_line">
       <h3 class="short_title">기능성 정보</h3>
-      <div class="desc">{{ info.fncltyInfo }}</div>
+      <div class="desc">{{ info.fncltyInfo.replace(/\n\r/g, '') }}</div>
     </div>
   </div>
 </template>
