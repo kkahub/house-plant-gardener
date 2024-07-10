@@ -19,6 +19,8 @@
     </div>
     <!-- 검색어 -->
     <!-- 상세검색 -->
+    <div>lightBundle 여기! {{ lightBundle }}</div>
+    <div>light 여기! {{ props.light }}</div>
     <SearchFilter
       :is-toggle-detail-filter="isToggleDetailFilter"
       v-model:lightBundle="lightBundle"
@@ -76,7 +78,7 @@ const props = defineProps({
 })
 
 const isToggleDetailFilter = ref(true)
-const lightBundle = ref('')
+const lightBundle = ref(sessionStorage.getItem('light') || '')
 const growFormBundle = ref('')
 const leafColorBundle = ref('')
 const leafPatternBundle = ref('')

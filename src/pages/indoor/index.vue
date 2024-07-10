@@ -34,7 +34,7 @@
         </div>
         <div v-else>
           <div v-if="!isNoData" class="indoor_list_inner">
-            <IndoorList :plant-items="plantItems" />
+            <IndoorList :plant-items="plantItems" :light="light" />
             <Pagination
               :page-array="pageArray"
               :start-page="startPage"
@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, toRef, watch } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAsyncState } from '@vueuse/core'
 import { usePagination } from '@/composables/usePagination'
@@ -75,7 +75,7 @@ const plantItems = ref()
 const prevKeyword = ref('')
 const isNoData = ref(false)
 const pageSize = ref(16)
-const light = toRef('')
+const light = ref('')
 const growForm = ref('')
 const leafColor = ref('')
 const leafPattern = ref('')
@@ -92,6 +92,23 @@ const router = useRouter()
 if (route.query.page !== undefined) {
   currentPage.value = Number(route.query.page)
 }
+
+// 검색 조건 유지
+const getFilter = async () => {
+  light.value = sessionStorage.getItem('light') || ''
+  growForm.value = sessionStorage.getItem('growForm') || ''
+  leafColor.value = sessionStorage.getItem('leafColor') || ''
+  leafPattern.value = sessionStorage.getItem('leafPattern') || ''
+  flowerColor.value = sessionStorage.getItem('flowerColor') || ''
+  fruitColor.value = sessionStorage.getItem('fruitColor') || ''
+  flowering.value = sessionStorage.getItem('flowering') || ''
+  minTemp.value = sessionStorage.getItem('minTemp') || ''
+  waterCycle.value = sessionStorage.getItem('waterCycle') || ''
+}
+
+onMounted(() => {
+  getFilter()
+})
 
 // 실내식물정보 데이터 가져오기
 const { isLoading, execute } = useAsyncState(
@@ -148,6 +165,9 @@ const handleSearch = () => {
 
   // 라우팅
   router.push({ path: `${route.matched[0].path}` })
+
+  // 검색 조건 세션 저장
+  sessionStorage.setItem('light', light.value)
 }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <ul class="list_gallery guide_list">
-    <IndoorItem v-for="item in plantItems" :key="item.plantPilbkNo" :item="item" />
+    <IndoorItem v-for="item in plantItems" :key="item.plantPilbkNo" :item="item" :light="light" />
   </ul>
 </template>
 
@@ -8,8 +8,13 @@
 import IndoorItem from './IndoorItem.vue'
 
 defineProps({
-  plantItems: Object,
-  default: () => {}
+  plantItems: {
+    type: Object,
+    default: () => {}
+  },
+  light: {
+    type: String
+  }
 })
 </script>
 

@@ -23,8 +23,8 @@ const router = createRouter({
   // ]
 })
 
-// 네비게이션 가드
 router.beforeEach((to, from) => {
+  // 네비게이션 가드
   const { isAuthenticated } = useAuthStore()
 
   // 로그인 상태 : 로그인 페이지로 이동하려고 할 때
@@ -33,6 +33,11 @@ router.beforeEach((to, from) => {
       alert('이미 로그인 되어 있습니다.')
       return '/'
     }
+  }
+
+  // 실내정원용 식물 필터 세션 종료
+  if (to.matched[0].path !== '/indoor') {
+    sessionStorage.removeItem('light')
   }
 })
 

@@ -30,9 +30,14 @@
 <script setup lang="ts">
 import IndoorThumbnailSwiper from '@/pages/components/indoor/IndoorThumbnailSwiper.vue'
 
-defineProps({
-  item: Object,
-  default: () => ({})
+const props = defineProps({
+  item: {
+    type: Object,
+    default: () => ({})
+  },
+  light: {
+    type: String
+  }
 })
 </script>
 

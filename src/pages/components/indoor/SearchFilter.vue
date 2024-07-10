@@ -2,22 +2,23 @@
   <div class="wrap_filter" :class="isToggleDetailFilter ? 'active' : ''">
     <!-- 광도 -->
     <div class="fieldset">
-      <div class="legend">광도</div>
+      <div class="legend">광도 {{ props.lightBundle?.split(',') }}</div>
       <div class="form_group">
         <div class="check_btn">
           <input
             type="checkbox"
             id="lightLow"
-            :value="props.lightBundle"
+            :value="055001"
             @input="lightCondition($event, '055001')"
           />
+          <!-- :value="props.lightBundle?.split(',').includes('055001') ? '055001' : ''" -->
           <label for="lightLow">낮음(300~800 Lux)</label>
         </div>
         <div class="check_btn">
           <input
             type="checkbox"
             id="lightMid"
-            :value="props.lightBundle"
+            :value="props.lightBundle?.split(',')"
             @input="lightCondition($event, '055002')"
           />
           <label for="lightMid">중간(800~1,500 Lux)</label>
@@ -26,7 +27,7 @@
           <input
             type="checkbox"
             id="lightHigh"
-            :value="props.lightBundle"
+            :value="props.lightBundle?.split(',')"
             @input="lightCondition($event, '055003')"
           />
           <label for="lightHigh">높음(1,500~10,000 Lux)</label>
@@ -592,11 +593,15 @@ const emit = defineEmits([
   'update:waterCycleBundle'
 ])
 
+const checked = () => {}
+
 const checkVal: string[] = []
 
 // 체크값 배열로 묶기
 const checkBundle = (e: Event, val: string) => {
   const target = e.target as HTMLInputElement
+
+  console.log(target)
   const checked = target.checked
 
   if (checked) {
