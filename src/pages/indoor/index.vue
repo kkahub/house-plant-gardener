@@ -10,6 +10,7 @@
           </p>
         </div>
       </div>
+      <div>라이트: {{ light }}</div>
       <SearchBarDetail
         v-model:keyword="keyword"
         :prev-keyword="prevKeyword"
@@ -168,6 +169,14 @@ const handleSearch = () => {
 
   // 검색 조건 세션 저장
   sessionStorage.setItem('light', light.value)
+  sessionStorage.setItem('growForm', growForm.value)
+  sessionStorage.setItem('leafColor', leafColor.value)
+  sessionStorage.setItem('leafPattern', leafPattern.value)
+  sessionStorage.setItem('flowerColor', flowerColor.value)
+  sessionStorage.setItem('fruitColor', fruitColor.value)
+  sessionStorage.setItem('flowering', flowering.value)
+  sessionStorage.setItem('minTemp', minTemp.value)
+  sessionStorage.setItem('waterCycle', waterCycle.value)
 }
 </script>
 

@@ -19,8 +19,6 @@
     </div>
     <!-- 검색어 -->
     <!-- 상세검색 -->
-    <div>lightBundle 여기! {{ lightBundle }}</div>
-    <div>light 여기! {{ props.light }}</div>
     <SearchFilter
       :is-toggle-detail-filter="isToggleDetailFilter"
       v-model:lightBundle="lightBundle"
@@ -79,14 +77,14 @@ const props = defineProps({
 
 const isToggleDetailFilter = ref(true)
 const lightBundle = ref(sessionStorage.getItem('light') || '')
-const growFormBundle = ref('')
-const leafColorBundle = ref('')
-const leafPatternBundle = ref('')
-const flowerColorBundle = ref('')
-const fruitColorBundle = ref('')
-const floweringBundle = ref('')
-const minTempBundle = ref('')
-const waterCycleBundle = ref('')
+const growFormBundle = ref(sessionStorage.getItem('growForm') || '')
+const leafColorBundle = ref(sessionStorage.getItem('leafColor') || '')
+const leafPatternBundle = ref(sessionStorage.getItem('leafPattern') || '')
+const flowerColorBundle = ref(sessionStorage.getItem('flowerColor') || '')
+const fruitColorBundle = ref(sessionStorage.getItem('fruitColor') || '')
+const floweringBundle = ref(sessionStorage.getItem('flowering') || '')
+const minTempBundle = ref(sessionStorage.getItem('minTemp') || '')
+const waterCycleBundle = ref(sessionStorage.getItem('waterCycle') || '')
 const isConditionChange = ref(false)
 
 const emit = defineEmits([

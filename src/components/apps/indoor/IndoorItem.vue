@@ -37,6 +37,30 @@ const props = defineProps({
   },
   light: {
     type: String
+  },
+  growForm: {
+    type: String
+  },
+  leafColor: {
+    type: String
+  },
+  leafPattern: {
+    type: String
+  },
+  flowerColor: {
+    type: String
+  },
+  fruitColor: {
+    type: String
+  },
+  flowering: {
+    type: String
+  },
+  minTemp: {
+    type: String
+  },
+  waterCycle: {
+    type: String
   }
 })
 </script>

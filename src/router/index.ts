@@ -38,6 +38,14 @@ router.beforeEach((to, from) => {
   // 실내정원용 식물 필터 세션 종료
   if (to.matched[0].path !== '/indoor') {
     sessionStorage.removeItem('light')
+    sessionStorage.removeItem('growForm')
+    sessionStorage.removeItem('leafColor')
+    sessionStorage.removeItem('leafPattern')
+    sessionStorage.removeItem('flowerColor')
+    sessionStorage.removeItem('fruitColor')
+    sessionStorage.removeItem('flowering')
+    sessionStorage.removeItem('minTemp')
+    sessionStorage.removeItem('waterCycle')
   }
 })
 

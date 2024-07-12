@@ -1,25 +1,26 @@
 <template>
   <div class="wrap_filter" :class="isToggleDetailFilter ? 'active' : ''">
-    <!-- 광도 -->
     <div class="fieldset">
-      <div class="legend">광도 {{ props.lightBundle?.split(',') }}</div>
+      <!-- 광도 -->
+      <div class="legend">광도</div>
       <div class="form_group">
         <div class="check_btn">
           <input
             type="checkbox"
             id="lightLow"
-            :value="055001"
-            @input="lightCondition($event, '055001')"
+            v-model="lightVal"
+            value="055001"
+            @change="emit('update:lightBundle', String(lightVal))"
           />
-          <!-- :value="props.lightBundle?.split(',').includes('055001') ? '055001' : ''" -->
           <label for="lightLow">낮음(300~800 Lux)</label>
         </div>
         <div class="check_btn">
           <input
             type="checkbox"
             id="lightMid"
-            :value="props.lightBundle?.split(',')"
-            @input="lightCondition($event, '055002')"
+            v-model="lightVal"
+            value="055002"
+            @change="emit('update:lightBundle', lightVal?.join())"
           />
           <label for="lightMid">중간(800~1,500 Lux)</label>
         </div>
@@ -27,8 +28,9 @@
           <input
             type="checkbox"
             id="lightHigh"
-            :value="props.lightBundle?.split(',')"
-            @input="lightCondition($event, '055003')"
+            v-model="lightVal"
+            value="055003"
+            @change="emit('update:lightBundle', lightVal?.join())"
           />
           <label for="lightHigh">높음(1,500~10,000 Lux)</label>
         </div>
@@ -41,8 +43,9 @@
           <input
             type="checkbox"
             id="growVertica"
-            :value="props.growFormBundle"
-            @input="growFormCondition($event, '054001')"
+            v-model="growFormVal"
+            value="054001"
+            @change="emit('update:growFormBundle', growFormVal?.join())"
           />
           <label for="growVertica">직립형</label>
         </div>
@@ -50,8 +53,9 @@
           <input
             type="checkbox"
             id="growTreeLike"
-            :value="props.growFormBundle"
-            @input="growFormCondition($event, '054002')"
+            v-model="growFormVal"
+            value="054002"
+            @change="emit('update:growFormBundle', growFormVal?.join())"
           />
           <label for="growTreeLike">관목형</label>
         </div>
@@ -59,8 +63,9 @@
           <input
             type="checkbox"
             id="growTrailing"
-            :value="props.growFormBundle"
-            @input="growFormCondition($event, '054003')"
+            v-model="growFormVal"
+            value="054003"
+            @change="emit('update:growFormBundle', growFormVal?.join())"
           />
           <label for="growTrailing">덩굴성</label>
         </div>
@@ -68,8 +73,9 @@
           <input
             type="checkbox"
             id="growGrass"
-            :value="props.growFormBundle"
-            @input="growFormCondition($event, '054004')"
+            v-model="growFormVal"
+            value="054004"
+            @change="emit('update:growFormBundle', growFormVal?.join())"
           />
           <label for="growGrass">풀모양</label>
         </div>
@@ -77,8 +83,9 @@
           <input
             type="checkbox"
             id="growRosette"
-            :value="props.growFormBundle"
-            @input="growFormCondition($event, '054005')"
+            v-model="growFormVal"
+            value="054005"
+            @change="emit('update:growFormBundle', growFormVal?.join())"
           />
           <label for="growRosette">로제트형</label>
         </div>
@@ -86,8 +93,9 @@
           <input
             type="checkbox"
             id="growSucculent"
-            :value="props.growFormBundle"
-            @input="growFormCondition($event, '054006')"
+            v-model="growFormVal"
+            value="054006"
+            @change="emit('update:growFormBundle', growFormVal?.join())"
           />
           <label for="growSucculent">다육형</label>
         </div>
@@ -100,8 +108,9 @@
           <input
             type="checkbox"
             id="patternStripes"
-            :value="props.leafColorBundle"
-            @input="leafColorCondition($event, '070001')"
+            v-model="leafPatternVal"
+            value="070001"
+            @change="emit('update:leafPatternBundle', leafPatternVal?.join())"
           />
           <label for="patternStripes">줄무늬</label>
         </div>
@@ -109,8 +118,9 @@
           <input
             type="checkbox"
             id="patternDot"
-            :value="props.leafColorBundle"
-            @input="leafColorCondition($event, '070002')"
+            v-model="leafPatternVal"
+            value="070002"
+            @change="emit('update:leafPatternBundle', leafPatternVal?.join())"
           />
           <label for="patternDot">점무늬</label>
         </div>
@@ -118,8 +128,9 @@
           <input
             type="checkbox"
             id="patternEdge"
-            :value="props.leafColorBundle"
-            @input="leafColorCondition($event, '070003')"
+            v-model="leafPatternVal"
+            value="070003"
+            @change="emit('update:leafPatternBundle', leafPatternVal?.join())"
           />
           <label for="patternEdge">잎 가장자리 무늬</label>
         </div>
@@ -127,8 +138,9 @@
           <input
             type="checkbox"
             id="patternEct"
-            :value="props.leafColorBundle"
-            @input="leafColorCondition($event, '070004')"
+            v-model="leafPatternVal"
+            value="070004"
+            @change="emit('update:leafPatternBundle', leafPatternVal?.join())"
           />
           <label for="patternEct">기타 (무늬없음 등)</label>
         </div>
@@ -141,8 +153,9 @@
           <input
             type="checkbox"
             id="leafGreen"
-            :value="props.leafPatternBundle"
-            @input="leafPatternCondition($event, '069001')"
+            v-model="leafColorVal"
+            value="069001"
+            @change="emit('update:leafColorBundle', leafColorVal?.join())"
           />
           <label for="leafGreen">
             <i class="icon_color_view ygreen_green"></i>
@@ -153,8 +166,9 @@
           <input
             type="checkbox"
             id="lightYellow"
-            :value="props.leafPatternBundle"
-            @input="leafPatternCondition($event, '069002')"
+            v-model="leafColorVal"
+            value="069002"
+            @change="emit('update:leafColorBundle', leafColorVal?.join())"
           />
           <label for="lightYellow">
             <i class="icon_color_view yellow_gold"></i>
@@ -165,8 +179,9 @@
           <input
             type="checkbox"
             id="lightWhite"
-            :value="props.leafPatternBundle"
-            @input="leafPatternCondition($event, '069003')"
+            v-model="leafColorVal"
+            value="069003"
+            @change="emit('update:leafColorBundle', leafColorVal?.join())"
           />
           <label for="lightWhite">
             <i class="icon_color_view white_cream"></i>
@@ -177,8 +192,9 @@
           <input
             type="checkbox"
             id="lightSilver"
-            :value="props.leafPatternBundle"
-            @input="leafPatternCondition($event, '069004')"
+            v-model="leafColorVal"
+            value="069004"
+            @change="emit('update:leafColorBundle', leafColorVal?.join())"
           />
           <label for="lightSilver">
             <i class="icon_color_view silver_gray"></i>
@@ -189,8 +205,9 @@
           <input
             type="checkbox"
             id="lightRed"
-            :value="props.leafPatternBundle"
-            @input="leafPatternCondition($event, '069005')"
+            v-model="leafColorVal"
+            value="069005"
+            @change="emit('update:leafColorBundle', leafColorVal?.join())"
           />
           <label for="lightRed">
             <i class="icon_color_view pink_red_wine"></i>
@@ -202,8 +219,9 @@
           <input
             type="checkbox"
             id="lightMix"
-            :value="props.leafPatternBundle"
-            @input="leafPatternCondition($event, '069006')"
+            v-model="leafColorVal"
+            value="069006"
+            @change="emit('update:leafColorBundle', leafColorVal?.join())"
           />
           <label for="lightMix"><i class="icon_color_view mix"></i>혼합색</label>
         </div>
@@ -211,8 +229,9 @@
           <input
             type="checkbox"
             id="lightEct"
-            :value="props.leafPatternBundle"
-            @input="leafPatternCondition($event, '069007')"
+            v-model="leafColorVal"
+            value="069007"
+            @change="emit('update:leafColorBundle', leafColorVal?.join())"
           />
           <label for="lightEct"><i class="icon_color_view ect"></i>기타</label>
         </div>
@@ -225,8 +244,9 @@
           <input
             type="checkbox"
             id="flowerBlue"
-            :value="props.flowerColorBundle"
-            @input="flowerColorCondition($event, '071001')"
+            v-model="flowerColorVal"
+            value="071001"
+            @change="emit('update:flowerColorBundle', flowerColorVal?.join())"
           />
           <label for="flowerBlue"><i class="icon_color_view blue"></i>파랑색</label>
         </div>
@@ -234,8 +254,9 @@
           <input
             type="checkbox"
             id="flowerPurple"
-            :value="props.flowerColorBundle"
-            @input="flowerColorCondition($event, '071002')"
+            v-model="flowerColorVal"
+            value="071002"
+            @change="emit('update:flowerColorBundle', flowerColorVal?.join())"
           />
           <label for="flowerPurple"><i class="icon_color_view purple"></i>보라색</label>
         </div>
@@ -243,8 +264,9 @@
           <input
             type="checkbox"
             id="flowerPink"
-            :value="props.flowerColorBundle"
-            @input="flowerColorCondition($event, '071003')"
+            v-model="flowerColorVal"
+            value="071003"
+            @change="emit('update:flowerColorBundle', flowerColorVal?.join())"
           />
           <label for="flowerPink"><i class="icon_color_view pink"></i>분홍색</label>
         </div>
@@ -252,8 +274,9 @@
           <input
             type="checkbox"
             id="flowerRed"
-            :value="props.flowerColorBundle"
-            @input="flowerColorCondition($event, '071004')"
+            v-model="flowerColorVal"
+            value="071004"
+            @change="emit('update:flowerColorBundle', flowerColorVal?.join())"
           />
           <label for="flowerRed"><i class="icon_color_view red"></i>빨강색</label>
         </div>
@@ -261,8 +284,9 @@
           <input
             type="checkbox"
             id="flowerOrange"
-            :value="props.flowerColorBundle"
-            @input="flowerColorCondition($event, '071005')"
+            v-model="flowerColorVal"
+            value="071005"
+            @change="emit('update:flowerColorBundle', flowerColorVal?.join())"
           />
           <label for="flowerOrange"><i class="icon_color_view orange"></i>오렌지색</label>
         </div>
@@ -270,8 +294,9 @@
           <input
             type="checkbox"
             id="flowerYellow"
-            :value="props.flowerColorBundle"
-            @input="flowerColorCondition($event, '071006')"
+            v-model="flowerColorVal"
+            value="071006"
+            @change="emit('update:flowerColorBundle', flowerColorVal?.join())"
           />
           <label for="flowerYellow"><i class="icon_color_view yellow"></i>노랑색</label>
         </div>
@@ -279,8 +304,9 @@
           <input
             type="checkbox"
             id="flowerWhite"
-            :value="props.flowerColorBundle"
-            @input="flowerColorCondition($event, '071007')"
+            v-model="flowerColorVal"
+            value="071007"
+            @change="emit('update:flowerColorBundle', flowerColorVal?.join())"
           />
           <label for="flowerWhite"><i class="icon_color_view white"></i>흰색</label>
         </div>
@@ -288,8 +314,9 @@
           <input
             type="checkbox"
             id="flowerMix"
-            :value="props.flowerColorBundle"
-            @input="flowerColorCondition($event, '071008')"
+            v-model="flowerColorVal"
+            value="071008"
+            @change="emit('update:flowerColorBundle', flowerColorVal?.join())"
           />
           <label for="flowerMix"><i class="icon_color_view mix"></i>혼합색</label>
         </div>
@@ -297,8 +324,9 @@
           <input
             type="checkbox"
             id="flowerEct"
-            :value="props.flowerColorBundle"
-            @input="flowerColorCondition($event, '071009')"
+            v-model="flowerColorVal"
+            value="071009"
+            @change="emit('update:flowerColorBundle', flowerColorVal?.join())"
           />
           <label for="flowerEct"><i class="icon_color_view ect"></i>기타</label>
         </div>
@@ -311,8 +339,9 @@
           <input
             type="checkbox"
             id="fruitBlue"
-            :value="props.fruitColorBundle"
-            @input="fruitColorCondition($event, '081001')"
+            v-model="fruitColorVal"
+            value="081001"
+            @change="emit('update:fruitColorBundle', fruitColorVal?.join())"
           />
           <label for="fruitBlue"><i class="icon_color_view blue"></i>파랑색</label>
         </div>
@@ -320,8 +349,9 @@
           <input
             type="checkbox"
             id="fruitPurple"
-            :value="props.fruitColorBundle"
-            @input="fruitColorCondition($event, '081002')"
+            v-model="fruitColorVal"
+            value="081002"
+            @change="emit('update:fruitColorBundle', fruitColorVal?.join())"
           />
           <label for="fruitPurple"><i class="icon_color_view purple"></i>보라색</label>
         </div>
@@ -329,8 +359,9 @@
           <input
             type="checkbox"
             id="fruitBlack"
-            :value="props.fruitColorBundle"
-            @input="fruitColorCondition($event, '081003')"
+            v-model="fruitColorVal"
+            value="081003"
+            @change="emit('update:fruitColorBundle', fruitColorVal?.join())"
           />
           <label for="fruitBlack"><i class="icon_color_view black"></i>검정색</label>
         </div>
@@ -338,8 +369,9 @@
           <input
             type="checkbox"
             id="fruitRed"
-            :value="props.fruitColorBundle"
-            @input="fruitColorCondition($event, '081004')"
+            v-model="fruitColorVal"
+            value="081004"
+            @change="emit('update:fruitColorBundle', fruitColorVal?.join())"
           />
           <label for="fruitRed"><i class="icon_color_view red"></i>빨강색</label>
         </div>
@@ -347,8 +379,9 @@
           <input
             type="checkbox"
             id="fruitOrange"
-            :value="props.fruitColorBundle"
-            @input="fruitColorCondition($event, '081005')"
+            v-model="fruitColorVal"
+            value="081005"
+            @change="emit('update:fruitColorBundle', fruitColorVal?.join())"
           />
           <label for="fruitOrange"><i class="icon_color_view orange"></i>오렌지색</label>
         </div>
@@ -356,8 +389,9 @@
           <input
             type="checkbox"
             id="fruitYellow"
-            :value="props.fruitColorBundle"
-            @input="fruitColorCondition($event, '081006')"
+            v-model="fruitColorVal"
+            value="081006"
+            @change="emit('update:fruitColorBundle', fruitColorVal?.join())"
           />
           <label for="fruitYellow"><i class="icon_color_view yellow"></i>노랑색</label>
         </div>
@@ -365,8 +399,9 @@
           <input
             type="checkbox"
             id="fruitWhite"
-            :value="props.fruitColorBundle"
-            @input="fruitColorCondition($event, '081007')"
+            v-model="fruitColorVal"
+            value="081007"
+            @change="emit('update:fruitColorBundle', fruitColorVal?.join())"
           />
           <label for="fruitWhite"><i class="icon_color_view white"></i>흰색</label>
         </div>
@@ -374,8 +409,9 @@
           <input
             type="checkbox"
             id="fruitMix"
-            :value="props.fruitColorBundle"
-            @input="fruitColorCondition($event, '081008')"
+            v-model="fruitColorVal"
+            value="081008"
+            @change="emit('update:fruitColorBundle', fruitColorVal?.join())"
           />
           <label for="fruitMix"><i class="icon_color_view mix"></i>혼합색</label>
         </div>
@@ -383,8 +419,9 @@
           <input
             type="checkbox"
             id="fruitEct"
-            :value="props.fruitColorBundle"
-            @input="fruitColorCondition($event, '081009')"
+            v-model="fruitColorVal"
+            value="081009"
+            @change="emit('update:fruitColorBundle', fruitColorVal?.join())"
           />
           <label for="fruitEct"><i class="icon_color_view ect"></i>기타</label>
         </div>
@@ -397,8 +434,9 @@
           <input
             type="checkbox"
             id="flowerSpring"
-            :value="props.floweringBundle"
-            @input="floweringCondition($event, '073001')"
+            v-model="floweringVal"
+            value="073001"
+            @change="emit('update:floweringBundle', floweringVal?.join())"
           />
           <label for="flowerSpring">봄</label>
         </div>
@@ -406,8 +444,9 @@
           <input
             type="checkbox"
             id="flowerSummer"
-            :value="props.floweringBundle"
-            @input="floweringCondition($event, '073002')"
+            v-model="floweringVal"
+            value="073002"
+            @change="emit('update:floweringBundle', floweringVal?.join())"
           />
           <label for="flowerSummer">여름</label>
         </div>
@@ -415,8 +454,9 @@
           <input
             type="checkbox"
             id="flowerFall"
-            :value="props.floweringBundle"
-            @input="floweringCondition($event, '073003')"
+            v-model="floweringVal"
+            value="073003"
+            @change="emit('update:floweringBundle', floweringVal?.join())"
           />
           <label for="flowerFall">가을</label>
         </div>
@@ -424,8 +464,9 @@
           <input
             type="checkbox"
             id="flowerWinter"
-            :value="props.floweringBundle"
-            @input="floweringCondition($event, '073004')"
+            v-model="floweringVal"
+            value="073004"
+            @change="emit('update:floweringBundle', floweringVal?.join())"
           />
           <label for="flowerWinter">겨울</label>
         </div>
@@ -438,8 +479,9 @@
           <input
             type="checkbox"
             id="temp0"
-            :value="props.minTempBundle"
-            @input="minTempCondition($event, '057001')"
+            v-model="minTempVal"
+            value="057001"
+            @change="emit('update:minTempBundle', minTempVal?.join())"
           />
           <label for="temp0">~ 0 ℃</label>
         </div>
@@ -447,8 +489,9 @@
           <input
             type="checkbox"
             id="temp5"
-            :value="props.minTempBundle"
-            @input="minTempCondition($event, '057002')"
+            v-model="minTempVal"
+            value="057002"
+            @change="emit('update:minTempBundle', minTempVal?.join())"
           />
           <label for="temp5">5 ℃</label>
         </div>
@@ -456,8 +499,9 @@
           <input
             type="checkbox"
             id="temp7"
-            :value="props.minTempBundle"
-            @input="minTempCondition($event, '057003')"
+            v-model="minTempVal"
+            value="057003"
+            @change="emit('update:minTempBundle', minTempVal?.join())"
           />
           <label for="temp7">7 ℃</label>
         </div>
@@ -465,8 +509,9 @@
           <input
             type="checkbox"
             id="temp10"
-            :value="props.minTempBundle"
-            @input="minTempCondition($event, '057004')"
+            v-model="minTempVal"
+            value="057004"
+            @change="emit('update:minTempBundle', minTempVal?.join())"
           />
           <label for="temp10">10 ℃</label>
         </div>
@@ -474,8 +519,9 @@
           <input
             type="checkbox"
             id="temp13"
-            :value="props.minTempBundle"
-            @input="minTempCondition($event, '057005')"
+            v-model="minTempVal"
+            value="057005"
+            @change="emit('update:minTempBundle', minTempVal?.join())"
           />
           <label for="temp13">13 ℃ ~</label>
         </div>
@@ -488,8 +534,9 @@
           <input
             type="checkbox"
             id="waterCycle1"
-            :value="props.waterCycleBundle"
-            @input="waterCycleCondition($event, '053001')"
+            v-model="waterCycleVal"
+            value="053001"
+            @change="emit('update:waterCycleBundle', waterCycleVal?.join())"
           />
           <label for="waterCycle1">
             <i class="icon_water_view water_1"></i>
@@ -500,8 +547,9 @@
           <input
             type="checkbox"
             id="waterCycle2"
-            :value="props.waterCycleBundle"
-            @input="waterCycleCondition($event, '053002')"
+            v-model="waterCycleVal"
+            value="053002"
+            @change="emit('update:waterCycleBundle', waterCycleVal?.join())"
           />
           <label for="waterCycle2">
             <i class="icon_water_view water_2"></i>
@@ -512,8 +560,9 @@
           <input
             type="checkbox"
             id="waterCycle3"
-            :value="props.waterCycleBundle"
-            @input="waterCycleCondition($event, '053003')"
+            v-model="waterCycleVal"
+            value="053003"
+            @change="emit('update:waterCycleBundle', waterCycleVal?.join())"
           />
           <label for="waterCycle3">
             <i class="icon_water_view water_3"></i>
@@ -524,8 +573,9 @@
           <input
             type="checkbox"
             id="waterCycle4"
-            :value="props.waterCycleBundle"
-            @input="waterCycleCondition($event, '053004')"
+            v-model="waterCycleVal"
+            value="053004"
+            @change="emit('update:waterCycleBundle', waterCycleVal?.join())"
           />
           <label for="waterCycle4">
             <i class="icon_water_view water_4"></i>
@@ -539,6 +589,8 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue'
+
 const props = defineProps({
   keyword: {
     type: String,
@@ -593,52 +645,15 @@ const emit = defineEmits([
   'update:waterCycleBundle'
 ])
 
-const checked = () => {}
-
-const checkVal: string[] = []
-
-// 체크값 배열로 묶기
-const checkBundle = (e: Event, val: string) => {
-  const target = e.target as HTMLInputElement
-
-  console.log(target)
-  const checked = target.checked
-
-  if (checked) {
-    checkVal.push(val)
-  } else {
-    checkVal.splice(checkVal.indexOf(val), 1)
-  }
-  return checkVal
-}
-
-const lightCondition = (e: Event, val: string) => {
-  emit('update:lightBundle', String(checkBundle(e, val)))
-}
-const growFormCondition = (e: Event, val: string) => {
-  emit('update:growFormBundle', String(checkBundle(e, val)))
-}
-const leafColorCondition = (e: Event, val: string) => {
-  emit('update:leafColorBundle', String(checkBundle(e, val)))
-}
-const leafPatternCondition = (e: Event, val: string) => {
-  emit('update:leafPatternBundle', String(checkBundle(e, val)))
-}
-const flowerColorCondition = (e: Event, val: string) => {
-  emit('update:flowerColorBundle', String(checkBundle(e, val)))
-}
-const fruitColorCondition = (e: Event, val: string) => {
-  emit('update:fruitColorBundle', String(checkBundle(e, val)))
-}
-const floweringCondition = (e: Event, val: string) => {
-  emit('update:floweringBundle', String(checkBundle(e, val)))
-}
-const minTempCondition = (e: Event, val: string) => {
-  emit('update:minTempBundle', String(checkBundle(e, val)))
-}
-const waterCycleCondition = (e: Event, val: string) => {
-  emit('update:waterCycleBundle', String(checkBundle(e, val)))
-}
+const lightVal = ref(props.lightBundle?.split(','))
+const growFormVal = ref(props.growFormBundle?.split(','))
+const leafColorVal = ref(props.leafColorBundle?.split(','))
+const leafPatternVal = ref(props.leafPatternBundle?.split(','))
+const flowerColorVal = ref(props.flowerColorBundle?.split(','))
+const fruitColorVal = ref(props.fruitColorBundle?.split(','))
+const floweringVal = ref(props.floweringBundle?.split(','))
+const minTempVal = ref(props.minTempBundle?.split(','))
+const waterCycleVal = ref(props.waterCycleBundle?.split(','))
 </script>
 
 <style scoped></style>
