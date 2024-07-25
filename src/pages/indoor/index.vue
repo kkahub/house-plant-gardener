@@ -10,7 +10,6 @@
           </p>
         </div>
       </div>
-      <div>라이트: {{ light }}</div>
       <SearchBarDetail
         v-model:keyword="keyword"
         :prev-keyword="prevKeyword"
@@ -58,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAsyncState } from '@vueuse/core'
 import { usePagination } from '@/composables/usePagination'
@@ -106,10 +105,7 @@ const getFilter = async () => {
   minTemp.value = sessionStorage.getItem('minTemp') || ''
   waterCycle.value = sessionStorage.getItem('waterCycle') || ''
 }
-
-onMounted(() => {
-  getFilter()
-})
+getFilter()
 
 // 실내식물정보 데이터 가져오기
 const { isLoading, execute } = useAsyncState(

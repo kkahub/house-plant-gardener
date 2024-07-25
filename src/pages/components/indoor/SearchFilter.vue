@@ -10,7 +10,7 @@
             id="lightLow"
             v-model="lightVal"
             value="055001"
-            @change="emit('update:lightBundle', bundlingValue(lightVal))"
+            @change="emit('update:lightBundle', bundlingValue(lightVal ?? ['']))"
           />
           <label for="lightLow">낮음(300~800 Lux)</label>
         </div>
@@ -20,7 +20,7 @@
             id="lightMid"
             v-model="lightVal"
             value="055002"
-            @change="emit('update:lightBundle', bundlingValue(lightVal))"
+            @change="emit('update:lightBundle', bundlingValue(lightVal ?? ['']))"
           />
           <label for="lightMid">중간(800~1,500 Lux)</label>
         </div>
@@ -30,7 +30,7 @@
             id="lightHigh"
             v-model="lightVal"
             value="055003"
-            @change="emit('update:lightBundle', bundlingValue(lightVal))"
+            @change="emit('update:lightBundle', bundlingValue(lightVal ?? ['']))"
           />
           <label for="lightHigh">높음(1,500~10,000 Lux)</label>
         </div>
@@ -45,7 +45,7 @@
             id="growVertica"
             v-model="growFormVal"
             value="054001"
-            @change="emit('update:growFormBundle', bundlingValue(growFormVal))"
+            @change="emit('update:growFormBundle', bundlingValue(growFormVal ?? ['']))"
           />
           <label for="growVertica">직립형</label>
         </div>
@@ -55,7 +55,7 @@
             id="growTreeLike"
             v-model="growFormVal"
             value="054002"
-            @change="emit('update:growFormBundle', bundlingValue(growFormVal))"
+            @change="emit('update:growFormBundle', bundlingValue(growFormVal ?? ['']))"
           />
           <label for="growTreeLike">관목형</label>
         </div>
@@ -65,7 +65,7 @@
             id="growTrailing"
             v-model="growFormVal"
             value="054003"
-            @change="emit('update:growFormBundle', bundlingValue(growFormVal))"
+            @change="emit('update:growFormBundle', bundlingValue(growFormVal ?? ['']))"
           />
           <label for="growTrailing">덩굴성</label>
         </div>
@@ -75,7 +75,7 @@
             id="growGrass"
             v-model="growFormVal"
             value="054004"
-            @change="emit('update:growFormBundle', bundlingValue(growFormVal))"
+            @change="emit('update:growFormBundle', bundlingValue(growFormVal ?? ['']))"
           />
           <label for="growGrass">풀모양</label>
         </div>
@@ -85,7 +85,7 @@
             id="growRosette"
             v-model="growFormVal"
             value="054005"
-            @change="emit('update:growFormBundle', bundlingValue(growFormVal))"
+            @change="emit('update:growFormBundle', bundlingValue(growFormVal ?? ['']))"
           />
           <label for="growRosette">로제트형</label>
         </div>
@@ -95,7 +95,7 @@
             id="growSucculent"
             v-model="growFormVal"
             value="054006"
-            @change="emit('update:growFormBundle', bundlingValue(growFormVal))"
+            @change="emit('update:growFormBundle', bundlingValue(growFormVal ?? ['']))"
           />
           <label for="growSucculent">다육형</label>
         </div>
@@ -110,7 +110,7 @@
             id="patternStripes"
             v-model="leafPatternVal"
             value="070001"
-            @change="emit('update:leafPatternBundle', bundlingValue(leafPatternVal))"
+            @change="emit('update:leafPatternBundle', bundlingValue(leafPatternVal ?? ['']))"
           />
           <label for="patternStripes">줄무늬</label>
         </div>
@@ -120,7 +120,7 @@
             id="patternDot"
             v-model="leafPatternVal"
             value="070002"
-            @change="emit('update:leafPatternBundle', bundlingValue(leafPatternVal))"
+            @change="emit('update:leafPatternBundle', bundlingValue(leafPatternVal ?? ['']))"
           />
           <label for="patternDot">점무늬</label>
         </div>
@@ -130,7 +130,7 @@
             id="patternEdge"
             v-model="leafPatternVal"
             value="070003"
-            @change="emit('update:leafPatternBundle', bundlingValue(leafPatternVal))"
+            @change="emit('update:leafPatternBundle', bundlingValue(leafPatternVal ?? ['']))"
           />
           <label for="patternEdge">잎 가장자리 무늬</label>
         </div>
@@ -140,7 +140,7 @@
             id="patternEct"
             v-model="leafPatternVal"
             value="070004"
-            @change="emit('update:leafPatternBundle', bundlingValue(leafPatternVal))"
+            @change="emit('update:leafPatternBundle', bundlingValue(leafPatternVal ?? ['']))"
           />
           <label for="patternEct">기타 (무늬없음 등)</label>
         </div>
@@ -155,7 +155,7 @@
             id="leafGreen"
             v-model="leafColorVal"
             value="069001"
-            @change="emit('update:leafColorBundle', bundlingValue(leafColorVal))"
+            @change="emit('update:leafColorBundle', bundlingValue(leafColorVal ?? ['']))"
           />
           <label for="leafGreen">
             <i class="icon_color_view ygreen_green"></i>
@@ -168,7 +168,7 @@
             id="lightYellow"
             v-model="leafColorVal"
             value="069002"
-            @change="emit('update:leafColorBundle', bundlingValue(leafColorVal))"
+            @change="emit('update:leafColorBundle', bundlingValue(leafColorVal ?? ['']))"
           />
           <label for="lightYellow">
             <i class="icon_color_view yellow_gold"></i>
@@ -181,7 +181,7 @@
             id="lightWhite"
             v-model="leafColorVal"
             value="069003"
-            @change="emit('update:leafColorBundle', bundlingValue(leafColorVal))"
+            @change="emit('update:leafColorBundle', bundlingValue(leafColorVal ?? ['']))"
           />
           <label for="lightWhite">
             <i class="icon_color_view white_cream"></i>
@@ -194,7 +194,7 @@
             id="lightSilver"
             v-model="leafColorVal"
             value="069004"
-            @change="emit('update:leafColorBundle', bundlingValue(leafColorVal))"
+            @change="emit('update:leafColorBundle', bundlingValue(leafColorVal ?? ['']))"
           />
           <label for="lightSilver">
             <i class="icon_color_view silver_gray"></i>
@@ -207,7 +207,7 @@
             id="lightRed"
             v-model="leafColorVal"
             value="069005"
-            @change="emit('update:leafColorBundle', bundlingValue(leafColorVal))"
+            @change="emit('update:leafColorBundle', bundlingValue(leafColorVal ?? ['']))"
           />
           <label for="lightRed">
             <i class="icon_color_view pink_red_wine"></i>
@@ -221,7 +221,7 @@
             id="lightMix"
             v-model="leafColorVal"
             value="069006"
-            @change="emit('update:leafColorBundle', bundlingValue(leafColorVal))"
+            @change="emit('update:leafColorBundle', bundlingValue(leafColorVal ?? ['']))"
           />
           <label for="lightMix"><i class="icon_color_view mix"></i>혼합색</label>
         </div>
@@ -231,7 +231,7 @@
             id="lightEct"
             v-model="leafColorVal"
             value="069007"
-            @change="emit('update:leafColorBundle', bundlingValue(leafColorVal))"
+            @change="emit('update:leafColorBundle', bundlingValue(leafColorVal ?? ['']))"
           />
           <label for="lightEct"><i class="icon_color_view ect"></i>기타</label>
         </div>
@@ -246,7 +246,7 @@
             id="flowerBlue"
             v-model="flowerColorVal"
             value="071001"
-            @change="emit('update:flowerColorBundle', bundlingValue(flowerColorVal))"
+            @change="emit('update:flowerColorBundle', bundlingValue(flowerColorVal ?? ['']))"
           />
           <label for="flowerBlue"><i class="icon_color_view blue"></i>파랑색</label>
         </div>
@@ -256,7 +256,7 @@
             id="flowerPurple"
             v-model="flowerColorVal"
             value="071002"
-            @change="emit('update:flowerColorBundle', bundlingValue(flowerColorVal))"
+            @change="emit('update:flowerColorBundle', bundlingValue(flowerColorVal ?? ['']))"
           />
           <label for="flowerPurple"><i class="icon_color_view purple"></i>보라색</label>
         </div>
@@ -266,7 +266,7 @@
             id="flowerPink"
             v-model="flowerColorVal"
             value="071003"
-            @change="emit('update:flowerColorBundle', bundlingValue(flowerColorVal))"
+            @change="emit('update:flowerColorBundle', bundlingValue(flowerColorVal ?? ['']))"
           />
           <label for="flowerPink"><i class="icon_color_view pink"></i>분홍색</label>
         </div>
@@ -276,7 +276,7 @@
             id="flowerRed"
             v-model="flowerColorVal"
             value="071004"
-            @change="emit('update:flowerColorBundle', bundlingValue(flowerColorVal))"
+            @change="emit('update:flowerColorBundle', bundlingValue(flowerColorVal ?? ['']))"
           />
           <label for="flowerRed"><i class="icon_color_view red"></i>빨강색</label>
         </div>
@@ -286,7 +286,7 @@
             id="flowerOrange"
             v-model="flowerColorVal"
             value="071005"
-            @change="emit('update:flowerColorBundle', bundlingValue(flowerColorVal))"
+            @change="emit('update:flowerColorBundle', bundlingValue(flowerColorVal ?? ['']))"
           />
           <label for="flowerOrange"><i class="icon_color_view orange"></i>오렌지색</label>
         </div>
@@ -296,7 +296,7 @@
             id="flowerYellow"
             v-model="flowerColorVal"
             value="071006"
-            @change="emit('update:flowerColorBundle', bundlingValue(flowerColorVal))"
+            @change="emit('update:flowerColorBundle', bundlingValue(flowerColorVal ?? ['']))"
           />
           <label for="flowerYellow"><i class="icon_color_view yellow"></i>노랑색</label>
         </div>
@@ -306,7 +306,7 @@
             id="flowerWhite"
             v-model="flowerColorVal"
             value="071007"
-            @change="emit('update:flowerColorBundle', bundlingValue(flowerColorVal))"
+            @change="emit('update:flowerColorBundle', bundlingValue(flowerColorVal ?? ['']))"
           />
           <label for="flowerWhite"><i class="icon_color_view white"></i>흰색</label>
         </div>
@@ -316,7 +316,7 @@
             id="flowerMix"
             v-model="flowerColorVal"
             value="071008"
-            @change="emit('update:flowerColorBundle', bundlingValue(flowerColorVal))"
+            @change="emit('update:flowerColorBundle', bundlingValue(flowerColorVal ?? ['']))"
           />
           <label for="flowerMix"><i class="icon_color_view mix"></i>혼합색</label>
         </div>
@@ -326,7 +326,7 @@
             id="flowerEct"
             v-model="flowerColorVal"
             value="071009"
-            @change="emit('update:flowerColorBundle', bundlingValue(flowerColorVal))"
+            @change="emit('update:flowerColorBundle', bundlingValue(flowerColorVal ?? ['']))"
           />
           <label for="flowerEct"><i class="icon_color_view ect"></i>기타</label>
         </div>
@@ -341,7 +341,7 @@
             id="fruitBlue"
             v-model="fruitColorVal"
             value="081001"
-            @change="emit('update:fruitColorBundle', bundlingValue(fruitColorVal))"
+            @change="emit('update:fruitColorBundle', bundlingValue(fruitColorVal ?? ['']))"
           />
           <label for="fruitBlue"><i class="icon_color_view blue"></i>파랑색</label>
         </div>
@@ -351,7 +351,7 @@
             id="fruitPurple"
             v-model="fruitColorVal"
             value="081002"
-            @change="emit('update:fruitColorBundle', bundlingValue(fruitColorVal))"
+            @change="emit('update:fruitColorBundle', bundlingValue(fruitColorVal ?? ['']))"
           />
           <label for="fruitPurple"><i class="icon_color_view purple"></i>보라색</label>
         </div>
@@ -361,7 +361,7 @@
             id="fruitBlack"
             v-model="fruitColorVal"
             value="081003"
-            @change="emit('update:fruitColorBundle', bundlingValue(fruitColorVal))"
+            @change="emit('update:fruitColorBundle', bundlingValue(fruitColorVal ?? ['']))"
           />
           <label for="fruitBlack"><i class="icon_color_view black"></i>검정색</label>
         </div>
@@ -371,7 +371,7 @@
             id="fruitRed"
             v-model="fruitColorVal"
             value="081004"
-            @change="emit('update:fruitColorBundle', bundlingValue(fruitColorVal))"
+            @change="emit('update:fruitColorBundle', bundlingValue(fruitColorVal ?? ['']))"
           />
           <label for="fruitRed"><i class="icon_color_view red"></i>빨강색</label>
         </div>
@@ -381,7 +381,7 @@
             id="fruitOrange"
             v-model="fruitColorVal"
             value="081005"
-            @change="emit('update:fruitColorBundle', bundlingValue(fruitColorVal))"
+            @change="emit('update:fruitColorBundle', bundlingValue(fruitColorVal ?? ['']))"
           />
           <label for="fruitOrange"><i class="icon_color_view orange"></i>오렌지색</label>
         </div>
@@ -391,7 +391,7 @@
             id="fruitYellow"
             v-model="fruitColorVal"
             value="081006"
-            @change="emit('update:fruitColorBundle', bundlingValue(fruitColorVal))"
+            @change="emit('update:fruitColorBundle', bundlingValue(fruitColorVal ?? ['']))"
           />
           <label for="fruitYellow"><i class="icon_color_view yellow"></i>노랑색</label>
         </div>
@@ -401,7 +401,7 @@
             id="fruitWhite"
             v-model="fruitColorVal"
             value="081007"
-            @change="emit('update:fruitColorBundle', bundlingValue(fruitColorVal))"
+            @change="emit('update:fruitColorBundle', bundlingValue(fruitColorVal ?? ['']))"
           />
           <label for="fruitWhite"><i class="icon_color_view white"></i>흰색</label>
         </div>
@@ -411,7 +411,7 @@
             id="fruitMix"
             v-model="fruitColorVal"
             value="081008"
-            @change="emit('update:fruitColorBundle', bundlingValue(fruitColorVal))"
+            @change="emit('update:fruitColorBundle', bundlingValue(fruitColorVal ?? ['']))"
           />
           <label for="fruitMix"><i class="icon_color_view mix"></i>혼합색</label>
         </div>
@@ -421,7 +421,7 @@
             id="fruitEct"
             v-model="fruitColorVal"
             value="081009"
-            @change="emit('update:fruitColorBundle', bundlingValue(fruitColorVal))"
+            @change="emit('update:fruitColorBundle', bundlingValue(fruitColorVal ?? ['']))"
           />
           <label for="fruitEct"><i class="icon_color_view ect"></i>기타</label>
         </div>
@@ -436,7 +436,7 @@
             id="flowerSpring"
             v-model="floweringVal"
             value="073001"
-            @change="emit('update:floweringBundle', bundlingValue(floweringVal))"
+            @change="emit('update:floweringBundle', bundlingValue(floweringVal ?? ['']))"
           />
           <label for="flowerSpring">봄</label>
         </div>
@@ -446,7 +446,7 @@
             id="flowerSummer"
             v-model="floweringVal"
             value="073002"
-            @change="emit('update:floweringBundle', bundlingValue(floweringVal))"
+            @change="emit('update:floweringBundle', bundlingValue(floweringVal ?? ['']))"
           />
           <label for="flowerSummer">여름</label>
         </div>
@@ -456,7 +456,7 @@
             id="flowerFall"
             v-model="floweringVal"
             value="073003"
-            @change="emit('update:floweringBundle', bundlingValue(floweringVal))"
+            @change="emit('update:floweringBundle', bundlingValue(floweringVal ?? ['']))"
           />
           <label for="flowerFall">가을</label>
         </div>
@@ -466,7 +466,7 @@
             id="flowerWinter"
             v-model="floweringVal"
             value="073004"
-            @change="emit('update:floweringBundle', bundlingValue(floweringVal))"
+            @change="emit('update:floweringBundle', bundlingValue(floweringVal ?? ['']))"
           />
           <label for="flowerWinter">겨울</label>
         </div>
@@ -481,7 +481,7 @@
             id="temp0"
             v-model="minTempVal"
             value="057001"
-            @change="emit('update:minTempBundle', bundlingValue(minTempVal))"
+            @change="emit('update:minTempBundle', bundlingValue(minTempVal ?? ['']))"
           />
           <label for="temp0">~ 0 ℃</label>
         </div>
@@ -491,7 +491,7 @@
             id="temp5"
             v-model="minTempVal"
             value="057002"
-            @change="emit('update:minTempBundle', bundlingValue(minTempVal))"
+            @change="emit('update:minTempBundle', bundlingValue(minTempVal ?? ['']))"
           />
           <label for="temp5">5 ℃</label>
         </div>
@@ -501,7 +501,7 @@
             id="temp7"
             v-model="minTempVal"
             value="057003"
-            @change="emit('update:minTempBundle', bundlingValue(minTempVal))"
+            @change="emit('update:minTempBundle', bundlingValue(minTempVal ?? ['']))"
           />
           <label for="temp7">7 ℃</label>
         </div>
@@ -511,7 +511,7 @@
             id="temp10"
             v-model="minTempVal"
             value="057004"
-            @change="emit('update:minTempBundle', bundlingValue(minTempVal))"
+            @change="emit('update:minTempBundle', bundlingValue(minTempVal ?? ['']))"
           />
           <label for="temp10">10 ℃</label>
         </div>
@@ -521,7 +521,7 @@
             id="temp13"
             v-model="minTempVal"
             value="057005"
-            @change="emit('update:minTempBundle', bundlingValue(minTempVal))"
+            @change="emit('update:minTempBundle', bundlingValue(minTempVal ?? ['']))"
           />
           <label for="temp13">13 ℃ ~</label>
         </div>
@@ -536,7 +536,7 @@
             id="waterCycle1"
             v-model="waterCycleVal"
             value="053001"
-            @change="emit('update:waterCycleBundle', bundlingValue(waterCycleVal))"
+            @change="emit('update:waterCycleBundle', bundlingValue(waterCycleVal ?? ['']))"
           />
           <label for="waterCycle1">
             <i class="icon_water_view water_1"></i>
@@ -549,7 +549,7 @@
             id="waterCycle2"
             v-model="waterCycleVal"
             value="053002"
-            @change="emit('update:waterCycleBundle', bundlingValue(waterCycleVal))"
+            @change="emit('update:waterCycleBundle', bundlingValue(waterCycleVal!))"
           />
           <label for="waterCycle2">
             <i class="icon_water_view water_2"></i>
@@ -562,7 +562,7 @@
             id="waterCycle3"
             v-model="waterCycleVal"
             value="053003"
-            @change="emit('update:waterCycleBundle', bundlingValue(waterCycleVal))"
+            @change="emit('update:waterCycleBundle', bundlingValue(waterCycleVal!))"
           />
           <label for="waterCycle3">
             <i class="icon_water_view water_3"></i>
@@ -575,7 +575,7 @@
             id="waterCycle4"
             v-model="waterCycleVal"
             value="053004"
-            @change="emit('update:waterCycleBundle', bundlingValue(waterCycleVal))"
+            @change="emit('update:waterCycleBundle', bundlingValue(waterCycleVal!!))"
           />
           <label for="waterCycle4">
             <i class="icon_water_view water_4"></i>
@@ -589,7 +589,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 
 const props = defineProps({
   keyword: {
@@ -646,10 +646,6 @@ const emit = defineEmits([
 ])
 
 const lightVal = ref(props.lightBundle?.split(','))
-watch(lightVal, () => {
-  // console.log('배열 쪼개기', lightVal.value)
-  // props.lightBundle.filter((item: string) => item !== '')
-})
 const growFormVal = ref(props.growFormBundle?.split(','))
 const leafColorVal = ref(props.leafColorBundle?.split(','))
 const leafPatternVal = ref(props.leafPatternBundle?.split(','))
@@ -659,7 +655,7 @@ const floweringVal = ref(props.floweringBundle?.split(','))
 const minTempVal = ref(props.minTempBundle?.split(','))
 const waterCycleVal = ref(props.waterCycleBundle?.split(','))
 
-const bundlingValue = (val: any) => {
+const bundlingValue = (val: string[]) => {
   const valEdit = val.filter((item: string) => item !== '')
   return valEdit.length === 0 ? '' : valEdit.join()
 }
