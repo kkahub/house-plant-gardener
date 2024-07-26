@@ -17,7 +17,7 @@
               <button type="button" @click="handleLogout">로그아웃</button>
             </li>
             <li>
-              <a v-if="authStore.user.emailVerified" href="/">마이페이지</a>
+              <a v-if="authStore.user.emailVerified" href="/mypage/profile">마이페이지</a>
               <a v-else href="/member/verify">메일 인증하기</a>
             </li>
           </ul>

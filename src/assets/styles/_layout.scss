@@ -9,7 +9,7 @@ body,
 }
 
 // 맴버 레이아웃(회원가입, 로그인 등)
-#wrap_member {
+.wrap_member {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -177,4 +177,30 @@ section {
   max-width: 1080px;
   margin: 0 auto;
   padding: 0 20px;
+}
+
+// Sidebar 공통
+.sidebar_layout {
+  display: flex;
+  gap: 20px;
+  padding-top: 40px;
+
+  .sidebar_wrap {
+    width: 280px;
+    padding: 12px 0;
+    border-radius: 8px;
+    background: #fff;
+  }
+  .sidebar .menu_item {
+    padding: 8px 20px;
+  }
+  .sidebar_content {
+    width: calc(100% - 300px);
+    padding: 20px;
+    border-radius: 8px;
+    background: #fff;
+  }
+  .content_title {
+    padding-bottom: 20px;
+  }
 }

@@ -53,6 +53,8 @@ declare module 'vue-router/auto-routes' {
     '/member/join/': RouteRecordInfo<'/member/join/', '/member/join', Record<never, never>, Record<never, never>>,
     '/member/login/': RouteRecordInfo<'/member/login/', '/member/login', Record<never, never>, Record<never, never>>,
     '/member/verify/': RouteRecordInfo<'/member/verify/', '/member/verify', Record<never, never>, Record<never, never>>,
+    '/mypage': RouteRecordInfo<'/mypage', '/mypage', Record<never, never>, Record<never, never>>,
+    '/mypage/profile/': RouteRecordInfo<'/mypage/profile/', '/mypage/profile', Record<never, never>, Record<never, never>>,
     '/verify': RouteRecordInfo<'/verify', '/verify', Record<never, never>, Record<never, never>>,
   }
 }

@@ -6,10 +6,13 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
+  updateEmail,
   updateProfile
 } from 'firebase/auth'
 import { auth } from '@/firebase/firebase'
 import { ref } from 'vue'
+import { doc, updateDoc } from 'firebase/firestore'
+import { db } from '@/firebase/firebase'
 
 // 서브밋 중복 클릭 방지용
 const submitCount = ref(0)
@@ -55,4 +58,12 @@ export async function signInWithEmail({ email, password }: { email: string; pass
 // 비밀번호 찾기(재설정)
 export async function sendPasswordReset(email: string) {
   await sendPasswordResetEmail(auth, email)
+}
+
+// 유저 닉네임 변경
+export async function updateUserName(displayName: string) {
+  if (auth.currentUser !== null) {
+    await updateProfile(auth.currentUser, { displayName })
+    // await updateDoc(doc(db, 'users', auth.currentUser.uid), { displayName: displayName })
+  }
 }

@@ -19,6 +19,29 @@
   color: $c-main;
 }
 
+// Table
+// Table : Flex
+.table_flex {
+  position: relative;
+
+  .tr {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid $c-tb-line;
+
+    .th,
+    .td {
+      padding: 14px 15px 12px;
+    }
+    .th {
+      font-weight: 700;
+    }
+    .td:has(> .form_group) {
+      padding: 4px 15px;
+    }
+  }
+}
+
 // Form
 legend {
   display: block;

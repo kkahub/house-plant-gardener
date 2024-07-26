@@ -373,7 +373,7 @@
 }
 
 // 맴버 관련 공통
-#wrap_member {
+.wrap_member {
   .member_box {
     .wrap_input {
       position: relative;
@@ -500,5 +500,58 @@
   .btn {
     display: inline-block;
     margin-top: 60px;
+  }
+}
+
+// 마이페이지 공통
+.sidebar_layout {
+  .sidebar .menu_item {
+    &.active {
+      a {
+        color: $c-key;
+      }
+    }
+    a {
+      display: block;
+
+      &:hover {
+        color: $c-title;
+      }
+    }
+  }
+  .content_title {
+    padding-bottom: 5px;
+  }
+  .form_group {
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+
+    label {
+      display: block;
+      font-weight: 700;
+    }
+    .flex_group {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    input {
+      width: 250px;
+    }
+    .btn {
+      white-space: nowrap;
+    }
+  }
+}
+
+// 마이페이지 > 프로필
+.wrap_profile {
+  .table_flex {
+    margin-top: 20px;
+
+    .th {
+      width: 140px;
+    }
   }
 }
