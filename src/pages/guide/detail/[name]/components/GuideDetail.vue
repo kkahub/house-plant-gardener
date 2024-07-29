@@ -131,11 +131,13 @@ import Similar from '@/pages/components/guide/details/Similar.vue'
 const route = useRoute()
 const router = useRouter()
 const info = ref()
-const code = ref(String(route.params.code))
+const params = String(route.params.name).split('-')
+const name = ref(params[0])
+const code = ref(params[1])
 const prevNote = ref('')
 const { isShow } = useIsShow()
 
-const { isLoading } = useAsyncState(() => getGuideDetail(code.value), null, {
+const { isLoading } = useAsyncState(() => getGuideDetail(name.value, code.value), null, {
   onSuccess: (result) => {
     if (result === undefined) {
       alert('잘못된 접근입니다.')
@@ -147,10 +149,11 @@ const { isLoading } = useAsyncState(() => getGuideDetail(code.value), null, {
 })
 
 // 북마크 컴포저블
-const { toggleBookmark, isBookmark } = useBookmark(code.value)
+const { toggleBookmark, isBookmark } = useBookmark(name.value, code.value)
 
 // 메모 컴포저블
 const { toggleNote, isNote, isNoteView, isEditNote, noteSave, noteContent, noteRemove } = useNote(
+  name.value,
   code.value
 )
 

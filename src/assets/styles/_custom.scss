@@ -140,9 +140,6 @@
   .gallery_title {
     max-width: 170px;
   }
-  .icon_note {
-    font-size: 21px;
-  }
 }
 
 // ** 식물도감 상세
@@ -544,6 +541,18 @@
     }
     .input_group + .btn {
       margin: 5px 0;
+    }
+  }
+}
+
+// 마이페이지 > 내 북마크
+.wrap_bookmark {
+  .list_gallery {
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 5px 0 30px;
+
+    > li {
+      width: 230px;
     }
   }
 }

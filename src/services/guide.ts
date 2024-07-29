@@ -74,8 +74,8 @@ const getGuideList = async ({
 }
 
 // 식물도감 조회수 가져오기
-export async function getReadCount(plantCode: string) {
-  const docSnap = await getDoc(doc(db, 'plantCode', plantCode))
+export async function getReadCount(name: string, plantCode: string) {
+  const docSnap = await getDoc(doc(db, 'plantId', `${name}_${plantCode}`))
 
   if (docSnap.data()?.readCount !== undefined) {
     return await docSnap.data()?.readCount
@@ -85,8 +85,12 @@ export async function getReadCount(plantCode: string) {
 }
 
 // 식물도감 조회수 증가
-export async function incrementReadCount(plantCode: string, readCount: number) {
-  await setDoc(doc(db, 'plantCode', plantCode), { readCount: increment(1) }, { merge: true })
+export async function incrementReadCount(name: string, plantCode: string, readCount: number) {
+  await setDoc(
+    doc(db, 'plantId', `${name}_${plantCode}`),
+    { readCount: increment(1) },
+    { merge: true }
+  )
 }
 
 // 식물도감 좋아요 추가
@@ -104,13 +108,13 @@ export async function removeLike(uid: string, plantCode: string) {
 }
 
 // 식물도감 좋아요 수 +-
-export async function likeCountComputed(plantCode: string, likeCount: number) {
-  await setDoc(doc(db, 'plantCode', plantCode), { likeCount }, { merge: true })
+export async function likeCountComputed(name: string, plantCode: string, likeCount: number) {
+  await setDoc(doc(db, 'plantId', `${name}_${plantCode}`), { likeCount }, { merge: true })
 }
 
 // 식물도감 좋아요 수 가져오기
-export async function getLikeCount(plantCode: string) {
-  const docSnap = await getDoc(doc(db, 'plantCode', plantCode))
+export async function getLikeCount(name: string, plantCode: string) {
+  const docSnap = await getDoc(doc(db, 'plantId', `${name}_${plantCode}`))
 
   if (docSnap.data()?.likeCount !== undefined) {
     return await docSnap.data()?.likeCount
@@ -140,13 +144,13 @@ export async function removeBookmark(uid: string, plantCode: string) {
 }
 
 // 식물도감 북마크 수 +-
-export async function updateBookmarkCount(plantCode: string, bookmarkCount: number) {
-  await setDoc(doc(db, 'plantCode', plantCode), { bookmarkCount }, { merge: true })
+export async function updateBookmarkCount(name: string, plantCode: string, bookmarkCount: number) {
+  await setDoc(doc(db, 'plantId', `${name}_${plantCode}`), { bookmarkCount }, { merge: true })
 }
 
 // 식물도감 북마크 수 가져오기
-export async function getBookmarkCount(plantCode: string) {
-  const docSnap = await getDoc(doc(db, 'plantCode', plantCode))
+export async function getBookmarkCount(name: string, plantCode: string) {
+  const docSnap = await getDoc(doc(db, 'plantId', `${name}_${plantCode}`))
 
   if (docSnap.data()?.bookmarkCount !== undefined) {
     return await docSnap.data()?.bookmarkCount
@@ -174,7 +178,7 @@ export async function getNoteContent(uid: string, plantCode: string) {
 export async function addNote(uid: string, plantCode: string, note: string) {
   await setDoc(doc(db, 'guide_notes', `${uid}_${plantCode}`), {
     uid,
-    plantCode,
+    plantId: `${uid}_${plantCode}`,
     note,
     createdAt: serverTimestamp()
   })
@@ -193,7 +197,7 @@ export async function hasNote(uid: string, plantCode: string) {
 }
 
 // 식물도감 상세페이지
-export const getGuideDetail = async (code: string) => {
+export const getGuideDetail = async (name: string, code: string) => {
   const params = {
     serviceKey: import.meta.env.VITE_PLANT_API_KEY,
     q1: code
@@ -215,8 +219,8 @@ export const getGuideDetail = async (code: string) => {
 
     // 로그인 회원만 조회수 가져온 후 증가
     if (isAuthenticated === true) {
-      const readCount = await getReadCount(code)
-      incrementReadCount(code, readCount)
+      const readCount = await getReadCount(name, code)
+      incrementReadCount(name, code, readCount)
     }
 
     // 가든 상세 정보 편집

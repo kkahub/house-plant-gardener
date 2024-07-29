@@ -42,8 +42,8 @@ declare module 'vue-router/auto-routes' {
     '/components/main/MainSlider': RouteRecordInfo<'/components/main/MainSlider', '/components/main/MainSlider', Record<never, never>, Record<never, never>>,
     '/guide': RouteRecordInfo<'/guide', '/guide', Record<never, never>, Record<never, never>>,
     '/guide/': RouteRecordInfo<'/guide/', '/guide', Record<never, never>, Record<never, never>>,
-    '/guide/detail/[code]/': RouteRecordInfo<'/guide/detail/[code]/', '/guide/detail/:code', { code: ParamValue<true> }, { code: ParamValue<false> }>,
-    '/guide/detail/[code]/components/GuideDetail': RouteRecordInfo<'/guide/detail/[code]/components/GuideDetail', '/guide/detail/:code/components/GuideDetail', { code: ParamValue<true> }, { code: ParamValue<false> }>,
+    '/guide/detail/[name]/': RouteRecordInfo<'/guide/detail/[name]/', '/guide/detail/:name', { name: ParamValue<true> }, { name: ParamValue<false> }>,
+    '/guide/detail/[name]/components/GuideDetail': RouteRecordInfo<'/guide/detail/[name]/components/GuideDetail', '/guide/detail/:name/components/GuideDetail', { name: ParamValue<true> }, { name: ParamValue<false> }>,
     '/indoor': RouteRecordInfo<'/indoor', '/indoor', Record<never, never>, Record<never, never>>,
     '/indoor/': RouteRecordInfo<'/indoor/', '/indoor', Record<never, never>, Record<never, never>>,
     '/indoor/detail/[name]/': RouteRecordInfo<'/indoor/detail/[name]/', '/indoor/detail/:name', { name: ParamValue<true> }, { name: ParamValue<false> }>,
@@ -54,6 +54,7 @@ declare module 'vue-router/auto-routes' {
     '/member/login/': RouteRecordInfo<'/member/login/', '/member/login', Record<never, never>, Record<never, never>>,
     '/member/verify/': RouteRecordInfo<'/member/verify/', '/member/verify', Record<never, never>, Record<never, never>>,
     '/mypage': RouteRecordInfo<'/mypage', '/mypage', Record<never, never>, Record<never, never>>,
+    '/mypage/bookmark/': RouteRecordInfo<'/mypage/bookmark/', '/mypage/bookmark', Record<never, never>, Record<never, never>>,
     '/mypage/profile/': RouteRecordInfo<'/mypage/profile/', '/mypage/profile', Record<never, never>, Record<never, never>>,
     '/verify': RouteRecordInfo<'/verify', '/verify', Record<never, never>, Record<never, never>>,
   }

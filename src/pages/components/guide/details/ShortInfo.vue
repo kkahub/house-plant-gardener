@@ -144,7 +144,7 @@ const props = defineProps({
 const { isShow } = useIsShow()
 
 // 좋아요 컴포저블
-const { toggleLike, isLike } = useLike(props.code)
+const { toggleLike, isLike } = useLike(props.name, props.code)
 </script>
 
 <style scoped></style>

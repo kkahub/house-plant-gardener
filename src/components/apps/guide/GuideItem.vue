@@ -1,6 +1,6 @@
 <template>
   <li>
-    <router-link :to="`/guide/detail/${item?.plantPilbkNo}`">
+    <router-link :to="`/guide/detail/${item?.plantGnrlNm}-${item?.plantPilbkNo}`">
       <div class="wrap_thum">
         <img v-if="noImg" :src="item?.imgUrl" />
         <div v-else class="no_img">
@@ -69,16 +69,19 @@ const readCount = ref(0)
 noImg.value = props.item?.imgUrl !== 'NONE'
 
 // 좋아요 컴포저블
-const { toggleLike, isLike, likeCount } = useLike(props.item?.plantPilbkNo)
+const { toggleLike, isLike, likeCount } = useLike(props.item?.plantGnrlNm, props.item?.plantPilbkNo)
 
 // 노트 컴포저블
 const { isNote } = useNote(props.item?.plantPilbkNo)
 
 // 북마크 컴포저블
-const { toggleBookmark, isBookmark, bookmarkCount } = useBookmark(props.item?.plantPilbkNo)
+const { toggleBookmark, isBookmark, bookmarkCount } = useBookmark(
+  props.item?.plantGnrlNm,
+  props.item?.plantPilbkNo
+)
 
 // 조회수 조회
-useAsyncState(() => getReadCount(props.item?.plantPilbkNo), 0, {
+useAsyncState(() => getReadCount(props.item?.plantGnrlNm, props.item?.plantPilbkNo), 0, {
   onSuccess: (result) => {
     readCount.value = result
   }
