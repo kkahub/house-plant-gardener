@@ -33,48 +33,36 @@
             <div class="tr">
               <div class="th">비밀번호</div>
               <div class="td">
-                <div class="form_group">
-                  <Form :validation-schema="schema" @submit="handleChangePassword">
-                    <div class="wrap_input">
-                      <Field
-                        v-model="userPassword"
-                        id="password"
-                        name="password"
-                        type="password"
-                        placeholder="비밀번호(문자, 숫자, 특수문자로 8~16자)"
-                        autocomplete="off"
-                      />
-                      <font-awesome-icon :icon="['fas', 'lock']" />
-                      <ErrorMessage name="password" class="form_notice" />
-                    </div>
-                    <div class="wrap_input">
-                      <Field
-                        id="passwordConfirm"
-                        name="passwordConfirm"
-                        type="password"
-                        placeholder="비밀번호 확인"
-                        autocomplete="off"
-                      />
-                      <font-awesome-icon :icon="['fas', 'lock']" />
-                      <ErrorMessage name="passwordConfirm" class="form_notice" />
-                    </div>
-                    <div class="flex_group">
-                      <input type="password" v-model="userPassword" placeholder="비밀번호" />
-                      <button type="submit" class="btn btn_dark" :loading="isLoadingPassword">
-                        변경하기
-                      </button>
-                    </div>
-                  </Form>
-                </div>
-                <div class="form_group">
+                <Form :validation-schema="schema" @submit="handleChangePassword">
                   <div class="flex_group">
-                    <input
-                      type="password"
-                      v-model="userPasswordConfirm"
-                      placeholder="비밀번호 확인"
-                    />
+                    <div class="input_group">
+                      <div class="wrap_input">
+                        <Field
+                          v-model="password"
+                          id="password"
+                          name="password"
+                          type="password"
+                          placeholder="비밀번호(문자, 숫자, 특수문자로 8~16자)"
+                          autocomplete="off"
+                        />
+                        <ErrorMessage name="password" class="form_notice" />
+                      </div>
+                      <div class="wrap_input">
+                        <Field
+                          id="passwordConfirm"
+                          name="passwordConfirm"
+                          type="password"
+                          placeholder="비밀번호 확인"
+                          autocomplete="off"
+                        />
+                        <ErrorMessage name="passwordConfirm" class="form_notice" />
+                      </div>
+                    </div>
+                    <button type="submit" class="btn btn_dark" :loading="isLoadingPassword">
+                      변경하기
+                    </button>
                   </div>
-                </div>
+                </Form>
               </div>
             </div>
           </div>
@@ -88,7 +76,7 @@
 import { ref, watchEffect } from 'vue'
 import { useAuthStore } from '@/stores/auth'
 import { useAsyncState } from '@vueuse/core'
-import { updateUserName } from '@/services/auth'
+import { updateUserName, changePassword } from '@/services/auth'
 import { Field, Form, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup'
 import { getErrorMessage } from '@/utils/firebase/error-message'
@@ -97,9 +85,7 @@ import Sidebar from '@/layouts/mypage/Sidebar.vue'
 const authStore = useAuthStore()
 const displayName = ref('')
 const userEmail = ref(authStore.user?.email)
-const userPassword = ref('')
-const userPasswordConfirm = ref('')
-const isConfirm = ref(false)
+const password = ref('')
 
 const { isLoading: isLoadingNickName, execute: executeNickName } = useAsyncState(
   updateUserName,
@@ -118,13 +104,6 @@ const handleChangeNickname = () => executeNickName(0, displayName.value)
 
 watchEffect(() => {
   displayName.value = authStore.user?.displayName
-
-  // 비밀번호 일치 확인
-  if (userPassword.value === userPasswordConfirm.value) {
-    isConfirm.value = true
-  } else {
-    isConfirm.value = false
-  }
 })
 
 const schema = yup.object().shape({
@@ -132,8 +111,8 @@ const schema = yup.object().shape({
     .string()
     .required('비밀번호를 입력해주세요.')
     .matches(
-      /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[!@#$%^&*_+-=])[A-Za-z\d!@#$%^&*_+-=]{8,16}$/,
-      '문자, 숫자, 특수문자 조합 8~16자로 해주세요.'
+      /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}[^\s]*$/,
+      '문자, 숫자, 특수문자 조합 8~16자로 해주세요.(공백제외)'
     ),
   passwordConfirm: yup
     .string()
@@ -141,18 +120,22 @@ const schema = yup.object().shape({
     .oneOf([yup.ref('password')], '비밀번호가 일치하지 않습니다.')
 })
 
-const { isLoading, execute } = useAsyncState(changePassword, null, {
-  immediate: false,
-  onSuccess: () => {
-    alert('성공')
-  },
-  onError: (err: any) => {
-    console.log('errorcode', err)
-    alert(`${getErrorMessage(err.code)}`)
+const { isLoading: isLoadingPassword, execute: executePassword } = useAsyncState(
+  changePassword,
+  null,
+  {
+    immediate: false,
+    onSuccess: () => {
+      alert('비밀번호를 변경 하셨습니다.')
+    },
+    onError: (err: any) => {
+      console.log('errorcode', err)
+      alert(`${getErrorMessage(err.code)}`)
+    }
   }
-})
+)
 
-const handleSubmit = () => execute(0, form.value)
+const handleChangePassword = () => executePassword(0, password.value)
 </script>
 
 <style scoped></style>

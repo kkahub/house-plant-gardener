@@ -192,7 +192,22 @@ section {
     background: #fff;
   }
   .sidebar .menu_item {
-    padding: 8px 20px;
+    padding: 10px 20px;
+
+    &.active {
+      a {
+        color: $c-key;
+      }
+    }
+    a {
+      display: block;
+      font-size: 18px;
+      font-weight: 700;
+
+      &:hover {
+        color: $c-title;
+      }
+    }
   }
   .sidebar_content {
     width: calc(100% - 300px);

@@ -505,25 +505,11 @@
 
 // 마이페이지 공통
 .sidebar_layout {
-  .sidebar .menu_item {
-    &.active {
-      a {
-        color: $c-key;
-      }
-    }
-    a {
-      display: block;
-
-      &:hover {
-        color: $c-title;
-      }
-    }
-  }
   .content_title {
     padding-bottom: 5px;
   }
   .form_group {
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 5px;
 
@@ -531,17 +517,14 @@
       display: block;
       font-weight: 700;
     }
-    .flex_group {
-      display: flex;
-      align-items: center;
-      gap: 5px;
-    }
-    input {
-      width: 250px;
-    }
     .btn {
       white-space: nowrap;
     }
+  }
+  .flex_group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
   }
 }
 
@@ -552,6 +535,15 @@
 
     .th {
       width: 140px;
+    }
+    input {
+      width: 300px;
+    }
+    .flex_group {
+      align-items: flex-start;
+    }
+    .input_group + .btn {
+      margin: 5px 0;
     }
   }
 }

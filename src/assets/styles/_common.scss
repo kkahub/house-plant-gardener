@@ -27,16 +27,18 @@
   .tr {
     display: flex;
     align-items: center;
-    border-bottom: 1px solid $c-tb-line;
 
+    &:not(:last-child) {
+      border-bottom: 1px solid $c-tb-line;
+    }
     .th,
     .td {
       padding: 14px 15px 12px;
     }
     .th {
-      font-weight: 700;
+      color: $c-title;
     }
-    .td:has(> .form_group) {
+    .td:has(> .form_group, > .flex_group, > form) {
       padding: 4px 15px;
     }
   }

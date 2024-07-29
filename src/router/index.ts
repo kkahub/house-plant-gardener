@@ -35,6 +35,14 @@ router.beforeEach((to, from) => {
     }
   }
 
+  // 로그아웃 상태 : 마이페이지 접근 할 때
+  if (to.path.includes('/mypage')) {
+    if (isAuthenticated === false) {
+      alert('마이페이지는 로그인 후 이용해주세요.')
+      return '/member/login'
+    }
+  }
+
   // 실내정원용 식물 필터 세션 종료
   if (to.matched[0].path !== '/indoor') {
     sessionStorage.removeItem('light')

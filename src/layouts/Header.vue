@@ -36,12 +36,13 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import { logout } from '@/services/auth'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 
 const position = ref(0)
 const isZero = ref(true)
 const route = useRoute()
+const router = useRouter()
 const path = ref('')
 const authStore = useAuthStore()
 
@@ -64,6 +65,7 @@ onMounted(() => {
 const handleLogout = async () => {
   await logout()
   alert('로그아웃 하셨습니다.')
+  router.push('/')
 }
 </script>
 

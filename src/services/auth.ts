@@ -7,6 +7,7 @@ import {
   signInWithPopup,
   signOut,
   updateEmail,
+  updatePassword,
   updateProfile
 } from 'firebase/auth'
 import { auth } from '@/firebase/firebase'
@@ -65,5 +66,12 @@ export async function updateUserName(displayName: string) {
   if (auth.currentUser !== null) {
     await updateProfile(auth.currentUser, { displayName })
     // await updateDoc(doc(db, 'users', auth.currentUser.uid), { displayName: displayName })
+  }
+}
+
+// 비밀번호 변경
+export async function changePassword(newPassword: string) {
+  if (auth.currentUser !== null) {
+    await updatePassword(auth.currentUser, newPassword)
   }
 }
