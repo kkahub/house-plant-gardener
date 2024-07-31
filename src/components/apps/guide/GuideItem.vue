@@ -72,7 +72,7 @@ noImg.value = props.item?.imgUrl !== 'NONE'
 const { toggleLike, isLike, likeCount } = useLike(props.item?.plantGnrlNm, props.item?.plantPilbkNo)
 
 // 노트 컴포저블
-const { isNote } = useNote(props.item?.plantPilbkNo)
+const { isNote } = useNote(props.item?.plantGnrlNm, props.item?.plantPilbkNo)
 
 // 북마크 컴포저블
 const { toggleBookmark, isBookmark, bookmarkCount } = useBookmark(

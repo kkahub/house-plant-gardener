@@ -9,7 +9,7 @@
       <div class="sidebar_layout mypage_wrap">
         <Sidebar />
         <div class="sidebar_content mypage_inner">
-          <h3 class="content_title">내 북마크{{ total }}</h3>
+          <h3 class="content_title">내 북마크</h3>
           <div class="guide_list_wrap">
             <div v-if="isLoading" class="guide_list_loading">
               <div class="loader_inner">

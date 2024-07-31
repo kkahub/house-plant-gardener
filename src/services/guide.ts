@@ -94,17 +94,17 @@ export async function incrementReadCount(name: string, plantCode: string, readCo
 }
 
 // 식물도감 좋아요 추가
-export async function addLike(uid: string, plantCode: string) {
-  await setDoc(doc(db, 'guide_likes', `${uid}_${plantCode}`), {
+export async function addLike(uid: string, plantId: string) {
+  await setDoc(doc(db, 'guide_likes', `${uid}_${plantId}`), {
     uid,
-    plantCode,
+    plantId: `${uid}_${plantId}`,
     createdAt: serverTimestamp()
   })
 }
 
 // 식물도감 좋아요 삭제
-export async function removeLike(uid: string, plantCode: string) {
-  await deleteDoc(doc(db, 'guide_likes', `${uid}_${plantCode}`))
+export async function removeLike(uid: string, plantId: string) {
+  await deleteDoc(doc(db, 'guide_likes', `${uid}_${plantId}`))
 }
 
 // 식물도감 좋아요 수 +-
@@ -124,23 +124,23 @@ export async function getLikeCount(name: string, plantCode: string) {
 }
 
 // 식물도감 좋아요 여부
-export async function hasLike(uid: string, plantCode: string) {
-  const docSnap = await getDoc(doc(db, 'guide_likes', `${uid}_${plantCode}`))
+export async function hasLike(uid: string, plantId: string) {
+  const docSnap = await getDoc(doc(db, 'guide_likes', `${uid}_${plantId}`))
   return docSnap.exists()
 }
 
 // 식물도감 북마크 추가
-export async function addBookmark(uid: string, plantCode: string) {
-  await setDoc(doc(db, 'guide_bookmarks', `${uid}_${plantCode}`), {
+export async function addBookmark(uid: string, plantId: string) {
+  await setDoc(doc(db, 'guide_bookmarks', `${uid}_${plantId}`), {
     uid,
-    plantCode,
+    plantId: `${uid}_${plantId}`,
     createdAt: serverTimestamp()
   })
 }
 
 // 식물도감 북마크 삭제
-export async function removeBookmark(uid: string, plantCode: string) {
-  await deleteDoc(doc(db, 'guide_bookmarks', `${uid}_${plantCode}`))
+export async function removeBookmark(uid: string, plantId: string) {
+  await deleteDoc(doc(db, 'guide_bookmarks', `${uid}_${plantId}`))
 }
 
 // 식물도감 북마크 수 +-
@@ -160,14 +160,14 @@ export async function getBookmarkCount(name: string, plantCode: string) {
 }
 
 // 식물도감 북마크 여부
-export async function hasBookmark(uid: string, plantCode: string) {
-  const docSnap = await getDoc(doc(db, 'guide_bookmarks', `${uid}_${plantCode}`))
+export async function hasBookmark(uid: string, plantId: string) {
+  const docSnap = await getDoc(doc(db, 'guide_bookmarks', `${uid}_${plantId}`))
   return docSnap.exists()
 }
 
 // 식물도감 노트 가져오기
-export async function getNoteContent(uid: string, plantCode: string) {
-  const docSnap = await getDoc(doc(db, 'guide_notes', `${uid}_${plantCode}`))
+export async function getNoteContent(uid: string, plantId: string) {
+  const docSnap = await getDoc(doc(db, 'guide_notes', `${uid}_${plantId}`))
 
   if (docSnap.data()?.note !== undefined) {
     return await docSnap.data()?.note
@@ -175,23 +175,23 @@ export async function getNoteContent(uid: string, plantCode: string) {
 }
 
 // 식물도감 노트 추가
-export async function addNote(uid: string, plantCode: string, note: string) {
-  await setDoc(doc(db, 'guide_notes', `${uid}_${plantCode}`), {
+export async function addNote(uid: string, plantId: string, note: string) {
+  await setDoc(doc(db, 'guide_notes', `${uid}_${plantId}`), {
     uid,
-    plantId: `${uid}_${plantCode}`,
+    plantId: `${uid}_${plantId}`,
     note,
     createdAt: serverTimestamp()
   })
 }
 
 // 식물도감 노트 삭제
-export async function removeNote(uid: string, plantCode: string) {
-  await deleteDoc(doc(db, 'guide_notes', `${uid}_${plantCode}`))
+export async function removeNote(uid: string, plantId: string) {
+  await deleteDoc(doc(db, 'guide_notes', `${uid}_${plantId}`))
 }
 
 // 식물도감 노트 여부
-export async function hasNote(uid: string, plantCode: string) {
-  const docSnap = await getDoc(doc(db, 'guide_notes', `${uid}_${plantCode}`))
+export async function hasNote(uid: string, plantId: string) {
+  const docSnap = await getDoc(doc(db, 'guide_notes', `${uid}_${plantId}`))
   const data = docSnap.data()
   return data === undefined ? false : true
 }
