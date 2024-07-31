@@ -1,5 +1,5 @@
 <template>
-  <section class="wrap_bookmark">
+  <section class="wrap_scrapbook">
     <div class="inner">
       <div class="page_header">
         <div class="title_wrap">
@@ -9,7 +9,7 @@
       <div class="sidebar_layout mypage_wrap">
         <Sidebar />
         <div class="sidebar_content mypage_inner">
-          <h3 class="content_title">내 북마크</h3>
+          <h3 class="content_title">내 식물도감</h3>
           <div class="guide_list_wrap">
             <div v-if="isLoading" class="guide_list_loading">
               <div class="loader_inner">
@@ -33,7 +33,7 @@
                   path="/guide?page="
                 />
               </div>
-              <div v-else class="no_data">검색된 식물이 없습니다.</div>
+              <div v-else class="no_data">스크랩한 식물도감이 없습니다.</div>
             </div>
           </div>
         </div>

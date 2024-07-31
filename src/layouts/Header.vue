@@ -37,8 +37,8 @@
             <li :class="{ active: path === '/mypage/profile' }">
               <a href="/mypage/profile">개인정보</a>
             </li>
-            <li :class="{ active: path === '/mypage/bookmark' }">
-              <a href="/mypage/bookmark">내 북마크</a>
+            <li :class="{ active: path === '/mypage/scrapbook' }">
+              <a href="/mypage/scrapbook">내 식물도감</a>
             </li>
             <li :class="{ active: path === '/mypage/note' }">
               <a href="/mypage/note">내 노트</a>
