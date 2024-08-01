@@ -30,7 +30,7 @@
         <li :class="{ active: path === '/guide' }"><a href="/guide">식물도감</a></li>
         <li :class="{ active: path === '/indoor' }"><a href="/indoor">실내식물</a></li>
         <!-- <li :class="{ active: path === '/community' }"><a href="/community">자유게시판</a></li> -->
-        <li :class="{ active: path.includes('/mypage') }">
+        <li v-if="authStore.isAuthenticated" :class="{ active: path.includes('/mypage') }">
           <a v-if="authStore.user.emailVerified" href="/mypage/profile">마이페이지</a>
           <a v-else href="/member/verify">메일 인증하기</a>
           <ul v-if="authStore.user.emailVerified" class="sub_menu">

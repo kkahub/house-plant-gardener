@@ -64,7 +64,7 @@ defineProps({
     }
   },
   guideKeyword: {
-    type: String,
+    type: [String, Array],
     default: ''
   },
   pageSize: {

@@ -1,10 +1,23 @@
 import { type GuideListData, type GuideList, type GuideDetail } from '@/types/guide'
 import * as xmlToJson from '../plugin/xmlToJson'
 import { db } from '@/firebase/firebase'
-import { deleteDoc, doc, getDoc, increment, serverTimestamp, setDoc } from 'firebase/firestore'
+import {
+  collection,
+  deleteDoc,
+  doc,
+  getDoc,
+  getDocs,
+  increment,
+  orderBy,
+  query,
+  serverTimestamp,
+  setDoc,
+  where
+} from 'firebase/firestore'
 import { useAuthStore } from '@/stores/auth'
+import { storeToRefs } from 'pinia'
 
-const { isAuthenticated } = useAuthStore()
+const { uid, isAuthenticated } = storeToRefs(useAuthStore())
 
 // 식물도감 리스트
 const getGuideList = async ({
@@ -73,6 +86,8 @@ const getGuideList = async ({
   }
 }
 
+export default getGuideList
+
 // 식물도감 조회수 가져오기
 export async function getReadCount(name: string, plantCode: string) {
   const docSnap = await getDoc(doc(db, 'plantId', `${name}_${plantCode}`))
@@ -95,16 +110,16 @@ export async function incrementReadCount(name: string, plantCode: string, readCo
 
 // 식물도감 좋아요 추가
 export async function addLike(uid: string, plantId: string) {
-  await setDoc(doc(db, 'guide_likes', `${uid}_${plantId}`), {
+  await setDoc(doc(db, 'guide_likes', plantId), {
     uid,
-    plantId: `${uid}_${plantId}`,
+    plantId,
     createdAt: serverTimestamp()
   })
 }
 
 // 식물도감 좋아요 삭제
 export async function removeLike(uid: string, plantId: string) {
-  await deleteDoc(doc(db, 'guide_likes', `${uid}_${plantId}`))
+  await deleteDoc(doc(db, 'guide_likes', plantId))
 }
 
 // 식물도감 좋아요 수 +-
@@ -125,22 +140,22 @@ export async function getLikeCount(name: string, plantCode: string) {
 
 // 식물도감 좋아요 여부
 export async function hasLike(uid: string, plantId: string) {
-  const docSnap = await getDoc(doc(db, 'guide_likes', `${uid}_${plantId}`))
+  const docSnap = await getDoc(doc(db, 'guide_likes', plantId))
   return docSnap.exists()
 }
 
 // 식물도감 북마크 추가
 export async function addBookmark(uid: string, plantId: string) {
-  await setDoc(doc(db, 'guide_bookmarks', `${uid}_${plantId}`), {
+  await setDoc(doc(db, 'guide_bookmarks', plantId), {
     uid,
-    plantId: `${uid}_${plantId}`,
+    plantId,
     createdAt: serverTimestamp()
   })
 }
 
 // 식물도감 북마크 삭제
 export async function removeBookmark(uid: string, plantId: string) {
-  await deleteDoc(doc(db, 'guide_bookmarks', `${uid}_${plantId}`))
+  await deleteDoc(doc(db, 'guide_bookmarks', plantId))
 }
 
 // 식물도감 북마크 수 +-
@@ -161,13 +176,13 @@ export async function getBookmarkCount(name: string, plantCode: string) {
 
 // 식물도감 북마크 여부
 export async function hasBookmark(uid: string, plantId: string) {
-  const docSnap = await getDoc(doc(db, 'guide_bookmarks', `${uid}_${plantId}`))
+  const docSnap = await getDoc(doc(db, 'guide_bookmarks', plantId))
   return docSnap.exists()
 }
 
 // 식물도감 노트 가져오기
 export async function getNoteContent(uid: string, plantId: string) {
-  const docSnap = await getDoc(doc(db, 'guide_notes', `${uid}_${plantId}`))
+  const docSnap = await getDoc(doc(db, 'guide_notes', plantId))
 
   if (docSnap.data()?.note !== undefined) {
     return await docSnap.data()?.note
@@ -176,9 +191,9 @@ export async function getNoteContent(uid: string, plantId: string) {
 
 // 식물도감 노트 추가
 export async function addNote(uid: string, plantId: string, note: string) {
-  await setDoc(doc(db, 'guide_notes', `${uid}_${plantId}`), {
+  await setDoc(doc(db, 'guide_notes', plantId), {
     uid,
-    plantId: `${uid}_${plantId}`,
+    plantId,
     note,
     createdAt: serverTimestamp()
   })
@@ -186,12 +201,12 @@ export async function addNote(uid: string, plantId: string, note: string) {
 
 // 식물도감 노트 삭제
 export async function removeNote(uid: string, plantId: string) {
-  await deleteDoc(doc(db, 'guide_notes', `${uid}_${plantId}`))
+  await deleteDoc(doc(db, 'guide_notes', plantId))
 }
 
 // 식물도감 노트 여부
 export async function hasNote(uid: string, plantId: string) {
-  const docSnap = await getDoc(doc(db, 'guide_notes', `${uid}_${plantId}`))
+  const docSnap = await getDoc(doc(db, 'guide_notes', plantId))
   const data = docSnap.data()
   return data === undefined ? false : true
 }
@@ -218,7 +233,7 @@ export const getGuideDetail = async (name: string, code: string) => {
     if (detailData === undefined) return
 
     // 로그인 회원만 조회수 가져온 후 증가
-    if (isAuthenticated === true) {
+    if (isAuthenticated.value === true) {
       const readCount = await getReadCount(name, code)
       incrementReadCount(name, code, readCount)
     }
@@ -290,4 +305,71 @@ export const getGuideDetail = async (name: string, code: string) => {
   }
 }
 
-export default getGuideList
+export const getGuideID = async () => {
+  const keyword = uid.value
+  const q = query(
+    collection(db, 'guide_bookmarks'),
+    where('uid', '==', keyword),
+    orderBy('createdAt', 'desc')
+  )
+  const querySnapshot = await getDocs(q)
+
+  return querySnapshot.docs.map((docu) => docu.data())
+}
+
+export const getBookmarkList = async ({
+  currentPage,
+  currentPageSize,
+  searchWord
+}: {
+  currentPage: number
+  currentPageSize: number
+  searchWord: string[]
+}) => {
+  const searchName = Object.values(searchWord).map((item) => item.split('_')[0])
+  const searchCode = Object.values(searchWord).map((item) => item.split('_')[1])
+
+  const listParams = {
+    serviceKey: import.meta.env.VITE_GUIDE_API_KEY,
+    pageNo: currentPage,
+    numOfRows: currentPageSize,
+    searchWord
+  }
+
+  const res = await Promise.all(
+    searchName.map((keyword) =>
+      fetch(
+        `/service/guide/plntIlstrSearch?serviceKey=${listParams.serviceKey}&numOfRows=${listParams.numOfRows}&pageNo=${listParams.pageNo}&sw=${keyword}`
+      )
+    )
+  )
+
+  const resArray = await Promise.all(
+    res.map(async (item, index) => {
+      // 식물 기본 정보 json변환
+      const listString = await item.text()
+      const listNode = new DOMParser().parseFromString(listString, 'text/xml')
+      const listObject: any = xmlToJson.convertJson(listNode)
+      const listData = listObject.response.body.items.item
+      let plantInfoList: GuideList[] | null = []
+
+      if (searchCode[index] === listData.plantPilbkNo) {
+        // 기본 정보 편집
+        const {
+          detailYn,
+          frstRgstnDtm,
+          lastUpdtDtm,
+          notRcmmGnrlNm,
+          plantSpecsScnm,
+          snnmScnm,
+          ...GuideList
+        } = listData
+        GuideList.total = 1
+        plantInfoList = { ...GuideList }
+      }
+      return plantInfoList
+    })
+  )
+
+  return resArray
+}

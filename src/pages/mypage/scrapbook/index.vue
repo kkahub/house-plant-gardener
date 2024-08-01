@@ -43,12 +43,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useAsyncState } from '@vueuse/core'
 import { usePagination } from '@/composables/usePagination'
 import { storeToRefs } from 'pinia'
 import { usePageStore } from '@/stores/pagination'
-import getGuideList from '@/services/guide'
+import getGuideList, { getGuideID, getBookmarkList } from '@/services/guide'
 import Sidebar from '@/layouts/mypage/Sidebar.vue'
 import GuideList from '@/components/apps/guide/GuideList.vue'
 import Pagination from '@/components/pagination/Pagination.vue'
@@ -59,17 +59,38 @@ const { keyword, currentPage } = storeToRefs(guidePageStore)
 const plantItems = ref()
 const isNoData = ref(false)
 const pageSize = ref(16)
+const userBookmark = ref()
+
+// 좋아요, 북마크한 식물 ID 가져오기
+const { execute: executeID } = useAsyncState(getGuideID, [], {
+  throwError: true,
+  onSuccess: (result) => {
+    if (result?.length === 0 || result === null) {
+      isNoData.value = true
+    } else {
+      isNoData.value = false
+      userBookmark.value = result
+    }
+  }
+})
+
+watch(userBookmark, () => {
+  console.log('체크', userBookmark.value)
+  keyword.value = userBookmark.value.map((item) => item.plantId)
+  executePage()
+})
 
 // 식물도감정보 데이터 가져오기
 const { isLoading, execute } = useAsyncState(
   () =>
-    getGuideList({
+    getBookmarkList({
       currentPage: currentPage.value,
       currentPageSize: pageSize.value,
       searchWord: keyword.value
     }),
   null,
   {
+    immediate: false,
     throwError: true,
     onSuccess: (result) => {
       if (result?.length === 0 || result === null) {
