@@ -19,19 +19,6 @@
             <div v-else>
               <div v-if="!isNoData" class="guide_list_inner">
                 <GuideList :plant-items="plantItems" />
-                <Pagination
-                  :page-array="pageArray"
-                  :start-page="startPage"
-                  :current-page="currentPage"
-                  :prev-page="prevPage"
-                  :next-page="nextPage"
-                  :get-page="getPage"
-                  :guide-keyword="keyword"
-                  :is-prev="isPrev"
-                  :is-next="isNext"
-                  :loading="isLoading"
-                  path="/guide?page="
-                />
               </div>
               <div v-else class="no_data">스크랩한 식물도감이 없습니다.</div>
             </div>
@@ -45,13 +32,12 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import { useAsyncState } from '@vueuse/core'
-import { usePagination } from '@/composables/usePagination'
 import { storeToRefs } from 'pinia'
 import { usePageStore } from '@/stores/pagination'
-import getGuideList, { getGuideID, getBookmarkList } from '@/services/guide'
+import { getGuideID, getBookmarkList } from '@/services/guide'
 import Sidebar from '@/layouts/mypage/Sidebar.vue'
 import GuideList from '@/components/apps/guide/GuideList.vue'
-import Pagination from '@/components/pagination/Pagination.vue'
+import type { BookmarkList } from '@/types/guide'
 
 const guidePageStore = usePageStore()
 const { keyword, currentPage } = storeToRefs(guidePageStore)
@@ -60,9 +46,10 @@ const plantItems = ref()
 const isNoData = ref(false)
 const pageSize = ref(16)
 const userBookmark = ref()
+const total = ref(0)
 
 // 좋아요, 북마크한 식물 ID 가져오기
-const { execute: executeID } = useAsyncState(getGuideID, [], {
+useAsyncState(getGuideID, [], {
   throwError: true,
   onSuccess: (result) => {
     if (result?.length === 0 || result === null) {
@@ -75,8 +62,7 @@ const { execute: executeID } = useAsyncState(getGuideID, [], {
 })
 
 watch(userBookmark, () => {
-  console.log('체크', userBookmark.value)
-  keyword.value = userBookmark.value.map((item) => item.plantId)
+  keyword.value = userBookmark.value.map((item: BookmarkList) => item.plantId)
   executePage()
 })
 
@@ -110,13 +96,6 @@ const { isLoading, execute } = useAsyncState(
 const executePage = async () => {
   await execute()
 }
-
-// Pagination
-const { pageArray, prevPage, nextPage, getPage, total, startPage, isPrev, isNext } = usePagination(
-  pageSize.value,
-  keyword.value,
-  executePage
-)
 </script>
 
 <style scoped></style>

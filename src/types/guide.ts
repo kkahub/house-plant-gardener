@@ -186,3 +186,15 @@ export interface GuideDetailData {
   useMthdDesc: string
   woodDesc: string
 }
+
+// 북마크 타입
+export interface BookmarkList {
+  createdAt: string
+  plantId: string
+  uid: string
+}
+export interface BookmarkData {
+  createdAt: string
+  plantId: string
+  uid: string
+}
