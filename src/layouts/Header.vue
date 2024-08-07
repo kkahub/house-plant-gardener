@@ -8,14 +8,14 @@
     <nav>
       <div class="menu_wrap">
         <div class="top_menu">
-          <ul v-if="!authStore.isAuthenticated" class="members">
+          <ul v-if="!isAuthenticated" class="members">
             <li><a href="/member/login">로그인</a></li>
             <li><a href="/member/join">회원가입</a></li>
           </ul>
-          <ul v-if="authStore.isAuthenticated" class="members">
+          <ul v-if="isAuthenticated" class="members">
             <li>
               <span>
-                <strong>{{ authStore.user.displayName }}</strong
+                <strong>{{ user.displayName }}</strong
                 >님, 반갑습니다.
               </span>
             </li>
@@ -30,10 +30,12 @@
         <li :class="{ active: path === '/guide' }"><a href="/guide">식물도감</a></li>
         <li :class="{ active: path === '/indoor' }"><a href="/indoor">실내식물</a></li>
         <!-- <li :class="{ active: path === '/community' }"><a href="/community">자유게시판</a></li> -->
-        <li v-if="authStore.isAuthenticated" :class="{ active: path.includes('/mypage') }">
-          <a v-if="authStore.user.emailVerified" href="/mypage/profile">마이페이지</a>
-          <a v-else href="/member/verify">메일 인증하기</a>
-          <ul v-if="authStore.user.emailVerified" class="sub_menu">
+        <li v-if="!isEmailVerified" :class="{ active: path.includes('/mypage') }">
+          <a href="/member/verify">메일 인증하기</a>
+        </li>
+        <li v-else :class="{ active: path.includes('/mypage') }">
+          <a href="/mypage/profile">마이페이지</a>
+          <ul class="sub_menu">
             <li :class="{ active: path === '/mypage/profile' }">
               <a href="/mypage/profile">개인정보</a>
             </li>
@@ -51,17 +53,19 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { logout } from '@/services/auth'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
+import { storeToRefs } from 'pinia'
 
 const position = ref(0)
 const isZero = ref(true)
 const route = useRoute()
 const router = useRouter()
 const path = ref('')
-const authStore = useAuthStore()
+const { isAuthenticated, user } = storeToRefs(useAuthStore())
+const isEmailVerified = ref(true)
 
 path.value = route.path
 position.value = window.scrollY
@@ -83,6 +87,18 @@ const handleLogout = async () => {
   alert('로그아웃 하셨습니다.')
   router.push('/')
 }
+
+watch(
+  isAuthenticated,
+  () => {
+    if (isAuthenticated.value === true) {
+      isEmailVerified.value = user.value.emailVerified
+    } else {
+      isEmailVerified.value = true
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <style lang="scss" scoped></style>
