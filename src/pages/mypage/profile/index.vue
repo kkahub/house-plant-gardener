@@ -81,11 +81,13 @@ import { Field, Form, ErrorMessage } from 'vee-validate'
 import * as yup from 'yup'
 import { getErrorMessage } from '@/utils/firebase/error-message'
 import Sidebar from '@/layouts/mypage/Sidebar.vue'
+import { useRouter } from 'vue-router'
 
 const authStore = useAuthStore()
 const displayName = ref('')
 const userEmail = ref(authStore.user?.email)
 const password = ref('')
+const router = useRouter()
 
 const { isLoading: isLoadingNickName, execute: executeNickName } = useAsyncState(
   updateUserName,
@@ -94,6 +96,7 @@ const { isLoading: isLoadingNickName, execute: executeNickName } = useAsyncState
     immediate: false,
     onSuccess: () => {
       alert('닉네임이 변경되었습니다.')
+      router.go(0)
     },
     onError: (err: any) => {
       alert(`${getErrorMessage(err.code)}`)
