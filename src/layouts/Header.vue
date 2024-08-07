@@ -88,6 +88,7 @@ const handleLogout = async () => {
   router.push('/')
 }
 
+// 로그인, 메일 인증 상태에 따른 메뉴
 watch(
   isAuthenticated,
   () => {

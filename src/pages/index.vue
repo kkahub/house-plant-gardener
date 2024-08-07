@@ -7,7 +7,7 @@
       <div class="title_wrap">
         <h2 class="page_title">식물 도감</h2>
         <p class="title_desc">국립수목원에서 제공하는 식물의 정보를 자세히 소개합니다.</p>
-        <router-link to="/guide" class="btn btn_lg btn_point">MORE</router-link>
+        <a href="/guide" class="btn btn_lg btn_point">MORE</a>
       </div>
       <div v-if="guideIsLoading" class="main_list_loading">
         <div class="loader_inner">
@@ -22,7 +22,7 @@
       <div class="title_wrap">
         <h2 class="page_title">실내 식물</h2>
         <p class="title_desc">집 환경에 적합한 실내정원용 식물을 소개합니다.</p>
-        <router-link to="/guide" class="btn btn_lg btn_point">MORE</router-link>
+        <a href="/indoor" class="btn btn_lg btn_point">MORE</a>
       </div>
       <div v-if="indoorIsLoading" class="main_list_loading">
         <div class="loader_inner">
