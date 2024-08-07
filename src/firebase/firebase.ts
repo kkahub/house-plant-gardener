@@ -24,7 +24,7 @@ const auth = getAuth(app)
 const db = getFirestore(app)
 const authStore = useAuthStore()
 onAuthStateChanged(auth, (user) => {
-  authStore.setUser(user)
+  if (user !== null) authStore.setUser(user)
 })
 
 export { auth, db }
