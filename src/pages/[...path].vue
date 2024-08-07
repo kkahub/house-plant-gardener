@@ -2,7 +2,7 @@
   <div class="not_found">
     <h1>
       <a class="logo" href="/">
-        <img src="@/assets/images/logo.png" alt="로고" />
+        <img src="@/public/assets/images/logo.png" alt="로고" />
         Gardeners Guide
       </a>
     </h1>

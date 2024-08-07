@@ -38,6 +38,8 @@
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
+import slideImg1 from '@/public/assets/images/slide/slide_img01.jpg'
+import slideImg2 from '@/public/assets/images/slide/slide_img02.jpg'
 
 import { Navigation, Pagination, Autoplay, A11y } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/vue'
@@ -46,13 +48,13 @@ const modules = [Navigation, Pagination, Autoplay, A11y]
 
 const slideContents = [
   {
-    url: '/src/assets/images/slide/slide_img01.jpg',
+    url: slideImg1,
     title: '궁금한 식물을\n식물도감에서 검색해보세요',
     desc: '국립수목원에서 제공하는 식물의 정보를 자세히 소개합니다.',
     link: '/guide'
   },
   {
-    url: '/src/assets/images/slide/slide_img02.jpg',
+    url: slideImg2,
     title: '실내 정원 식물을\n소개합니다',
     desc: '농사로에서 제공하는 실내에 키우기 적합한 식물을 소개합니다.',
     link: '/'

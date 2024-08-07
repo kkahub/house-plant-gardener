@@ -2,7 +2,7 @@
   <header id="header" :class="{ zero: isZero }">
     <h1>
       <a class="logo" href="/">
-        <img src="@/assets/images/logo.png" alt="로고" />Gardeners Guide
+        <img src="@/public/assets/images/logo.png" alt="로고" />Gardeners Guide
       </a>
     </h1>
     <nav>
