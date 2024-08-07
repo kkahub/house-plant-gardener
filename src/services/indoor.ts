@@ -47,26 +47,9 @@ const getIndoorList = async ({
     waterCycle
   }
 
-  console.log(
-    `/service/indoor/gardenList?apiKey=apiKey` +
-      `&pageNo=${listParams.pageNo}` +
-      `&numOfRows=${listParams.numOfRows}` +
-      `&sText=${listParams.searchWord}` +
-      `&lightChkVal=${listParams.light}` +
-      `&grwhstleChkVal=${listParams.growForm}` +
-      `&lefcolrChkVal=${listParams.leafColor}` +
-      `&lefmrkChkVal=${listParams.leafPattern}` +
-      `&flclrChkVal=${listParams.flowerColor}` +
-      `&fmldecolrChkVal=${listParams.fruitColor}` +
-      `&ignSeasonChkVal=${listParams.flowering}` +
-      `&winterLwetChkVal=${listParams.minTemp}` +
-      `&waterCycleSel=${listParams.waterCycle}` +
-      `&sType=sCntntsSj&wordType=cntntsSj`
-  )
-
   try {
     const res = await fetch(
-      `/service/indoor/gardenList?apiKey=${listParams.apiKey}` +
+      `${import.meta.env.VITE_INDOOR_API_URL}/gardenList?apiKey=${listParams.apiKey}` +
         `&pageNo=${listParams.pageNo}` +
         `&numOfRows=${listParams.numOfRows}` +
         `&sText=${listParams.searchWord}` +
