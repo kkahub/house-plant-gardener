@@ -193,8 +193,11 @@ export interface BookmarkList {
   plantId: string
   uid: string
 }
-export interface BookmarkData {
+
+// 노트 타입
+export interface NoteList {
   createdAt: string
+  note: string
   plantId: string
   uid: string
 }

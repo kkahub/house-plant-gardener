@@ -40,8 +40,8 @@
             <li :class="{ active: path === '/mypage/scrapbook' }">
               <a href="/mypage/scrapbook">내 식물도감</a>
             </li>
-            <li :class="{ active: path === '/mypage/note' }">
-              <a href="/mypage/note">내 노트</a>
+            <li :class="{ active: path === '/mypage/mynote' }">
+              <a href="/mypage/mynote">내 노트</a>
             </li>
           </ul>
         </li>

@@ -54,6 +54,7 @@ declare module 'vue-router/auto-routes' {
     '/member/login/': RouteRecordInfo<'/member/login/', '/member/login', Record<never, never>, Record<never, never>>,
     '/member/verify/': RouteRecordInfo<'/member/verify/', '/member/verify', Record<never, never>, Record<never, never>>,
     '/mypage': RouteRecordInfo<'/mypage', '/mypage', Record<never, never>, Record<never, never>>,
+    '/mypage/mynote/': RouteRecordInfo<'/mypage/mynote/', '/mypage/mynote', Record<never, never>, Record<never, never>>,
     '/mypage/profile/': RouteRecordInfo<'/mypage/profile/', '/mypage/profile', Record<never, never>, Record<never, never>>,
     '/mypage/scrapbook/': RouteRecordInfo<'/mypage/scrapbook/', '/mypage/scrapbook', Record<never, never>, Record<never, never>>,
     '/verify': RouteRecordInfo<'/verify', '/verify', Record<never, never>, Record<never, never>>,

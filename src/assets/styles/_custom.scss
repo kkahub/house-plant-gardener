@@ -580,3 +580,18 @@
     }
   }
 }
+
+// 마이페이지 > 내 노트
+.wrap_mynote {
+  .guide_list_loading {
+    height: 400px;
+  }
+  .list_gallery {
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 5px 0 30px;
+
+    > li {
+      width: 230px;
+    }
+  }
+}

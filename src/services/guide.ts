@@ -305,7 +305,7 @@ export const getGuideDetail = async (name: string, code: string) => {
   }
 }
 
-export const getGuideID = async () => {
+export const getBookmarkID = async () => {
   const keyword = uid.value
   const q = query(
     collection(db, 'guide_bookmarks'),
@@ -344,10 +344,89 @@ export const getBookmarkList = async ({
     )
   )
 
-  let plantInfoList: GuideList[] | null = []
+  const resArray = await Promise.all(
+    res.map(async (item, index) => {
+      let plantInfoList: GuideList[] | null = []
+
+      // 식물 기본 정보 json변환
+      const listString = await item.text()
+      const listNode = new DOMParser().parseFromString(listString, 'text/xml')
+      const listObject: any = xmlToJson.convertJson(listNode)
+      const listData = listObject.response.body.items.item
+      const code: string = searchCode[index]
+      let accordItem = []
+
+      // 여러개일 경우 일치하는 아이템 찾기
+      if (listData.length !== undefined) {
+        accordItem = listData.filter(
+          (item: GuideListData) => code === (item.plantPilbkNo as unknown)
+        )
+      } else {
+        accordItem = [listData]
+      }
+
+      const {
+        detailYn,
+        frstRgstnDtm,
+        lastUpdtDtm,
+        notRcmmGnrlNm,
+        plantSpecsScnm,
+        snnmScnm,
+        ...GuideList
+      } = accordItem[0]
+
+      GuideList.total = searchCode.length
+
+      return (plantInfoList = { ...GuideList })
+    })
+  )
+
+  return resArray
+}
+
+export const getNoteID = async () => {
+  const keyword = uid.value
+  const q = query(
+    collection(db, 'guide_notes'),
+    where('uid', '==', keyword),
+    orderBy('createdAt', 'desc')
+  )
+  const querySnapshot = await getDocs(q)
+
+  return querySnapshot.docs.map((docu) => docu.data())
+}
+
+export const getNoteList = async ({
+  currentPage,
+  currentPageSize,
+  searchWord
+}: {
+  currentPage: number
+  currentPageSize: number
+  searchWord: string | string[]
+}) => {
+  const searchName = Object.values(searchWord).map((item) => item.split('_')[0])
+  const searchCode = Object.values(searchWord).map((item) => item.split('_')[1])
+
+  const listParams = {
+    serviceKey: import.meta.env.VITE_GUIDE_API_KEY,
+    pageNo: currentPage,
+    numOfRows: currentPageSize,
+    searchWord
+  }
+
+  const res = await Promise.all(
+    searchName.map((keyword) =>
+      fetch(
+        `/service/guide/plntIlstrSearch?serviceKey=${listParams.serviceKey}&numOfRows=${listParams.numOfRows}&pageNo=${listParams.pageNo}&sw=${keyword}`
+      )
+    )
+  )
 
   const resArray = await Promise.all(
     res.map(async (item, index) => {
+      let plantInfoList: GuideList[] | null = []
+
       // 식물 기본 정보 json변환
       const listString = await item.text()
       const listNode = new DOMParser().parseFromString(listString, 'text/xml')

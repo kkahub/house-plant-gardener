@@ -1,5 +1,5 @@
 <template>
-  <section class="wrap_scrapbook">
+  <section class="wrap_mynote">
     <div class="inner">
       <div class="page_header">
         <div class="title_wrap">
@@ -9,7 +9,7 @@
       <div class="sidebar_layout mypage_wrap">
         <Sidebar />
         <div class="sidebar_content mypage_inner">
-          <h3 class="content_title">내 식물도감</h3>
+          <h3 class="content_title">내 노트</h3>
           <div class="guide_list_wrap">
             <div v-if="isLoading" class="guide_list_loading">
               <div class="loader_inner">
@@ -20,7 +20,7 @@
               <div v-if="!isNoData" class="guide_list_inner">
                 <GuideList :plant-items="plantItems" />
               </div>
-              <div v-else class="no_data">스크랩한 식물도감이 없습니다.</div>
+              <div v-else class="no_data">노트를 작성한 식물도감이 없습니다.</div>
             </div>
           </div>
         </div>
@@ -34,10 +34,10 @@ import { ref, watch } from 'vue'
 import { useAsyncState } from '@vueuse/core'
 import { storeToRefs } from 'pinia'
 import { usePageStore } from '@/stores/pagination'
-import { getBookmarkID, getBookmarkList } from '@/services/guide'
+import { getNoteID, getBookmarkList } from '@/services/guide'
 import Sidebar from '@/layouts/mypage/Sidebar.vue'
 import GuideList from '@/components/apps/guide/GuideList.vue'
-import type { BookmarkList } from '@/types/guide'
+import type { NoteList } from '@/types/guide'
 
 const guidePageStore = usePageStore()
 const { keyword, currentPage } = storeToRefs(guidePageStore)
@@ -45,24 +45,24 @@ const { keyword, currentPage } = storeToRefs(guidePageStore)
 const plantItems = ref()
 const isNoData = ref(false)
 const pageSize = ref(16)
-const userBookmark = ref()
+const userNote = ref()
 const total = ref(0)
 
-// 좋아요, 북마크한 식물 ID 가져오기
-useAsyncState(getBookmarkID, [], {
+// 노트한 식물 ID 가져오기
+useAsyncState(getNoteID, [], {
   throwError: true,
   onSuccess: (result) => {
     if (result?.length === 0 || result === null) {
       isNoData.value = true
     } else {
       isNoData.value = false
-      userBookmark.value = result
+      userNote.value = result
     }
   }
 })
 
-watch(userBookmark, () => {
-  keyword.value = userBookmark.value.map((item: BookmarkList) => item.plantId)
+watch(userNote, () => {
+  keyword.value = userNote.value.map((item: NoteList) => item.plantId)
   executePage()
 })
 
