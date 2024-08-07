@@ -100,10 +100,6 @@
   h2.title {
     font-size: 30px;
   }
-
-  .list_gallery {
-    padding-top: 40px;
-  }
   .main_slider {
     padding: 0;
 
@@ -151,6 +147,14 @@
         margin-top: 40px;
         text-align: center;
       }
+    }
+  }
+  .list_gallery {
+    padding: 40px 0 0;
+  }
+  .list_gallery.guide_list {
+    .wrap_title {
+      justify-content: center;
     }
   }
 }

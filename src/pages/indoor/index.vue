@@ -34,7 +34,7 @@
         </div>
         <div v-else>
           <div v-if="!isNoData" class="indoor_list_inner">
-            <IndoorList :plant-items="plantItems" :light="light" />
+            <IndoorList :plant-items="plantItems" />
             <Pagination
               :page-array="pageArray"
               :start-page="startPage"

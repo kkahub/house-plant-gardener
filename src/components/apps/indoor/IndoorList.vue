@@ -1,6 +1,6 @@
 <template>
   <ul class="list_gallery guide_list">
-    <IndoorItem v-for="item in plantItems" :key="item.plantPilbkNo" :item="item" :light="light" />
+    <IndoorItem v-for="item in plantItems" :key="item.plantPilbkNo" :item="item" />
   </ul>
 </template>
 
@@ -11,9 +11,6 @@ defineProps({
   plantItems: {
     type: Object,
     default: () => {}
-  },
-  light: {
-    type: String
   }
 })
 </script>

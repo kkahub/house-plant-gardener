@@ -21,9 +21,6 @@ defineProps({
     type: Object,
     default: () => ({})
   },
-  light: {
-    type: String
-  },
   growForm: {
     type: String
   },
