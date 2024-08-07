@@ -615,44 +615,43 @@ textarea {
   .info_gallery {
     position: relative;
     padding: 15px 0 0;
+  }
+  .wrap_title {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+  }
+  .gallery_title {
+    @include ellipsis;
+    font-size: 22px;
+  }
+  .wrap_btn {
+    position: absolute;
+    right: 0;
+    z-index: 1;
+    display: flex;
+    gap: 8px;
 
-    .wrap_title {
-      display: flex;
-      justify-content: space-between;
-      position: relative;
-      width: 100%;
+    button {
+      font-size: 21px;
+      color: $c-txt-sub;
     }
-    .gallery_title {
-      @include ellipsis;
-      font-size: 22px;
+    .icon_note {
+      font-size: 21px;
     }
-    .wrap_btn {
-      position: absolute;
-      right: 0;
-      z-index: 1;
-      display: flex;
-      gap: 8px;
+  }
+  .family_genus {
+    padding-top: 12px;
 
-      button {
-        font-size: 21px;
-        color: $c-txt-sub;
-      }
-      .icon_note {
-        font-size: 21px;
-      }
+    dfn {
+      display: block;
+      font-size: 14px;
     }
-    .family_genus {
-      padding-top: 12px;
-
-      dfn {
-        display: block;
-        font-size: 14px;
-      }
-      .orignal_name {
-        margin-top: 2px;
-        color: $c-txt-sub;
-        letter-spacing: -0.02em;
-      }
+    .orignal_name {
+      margin-top: 2px;
+      color: $c-txt-sub;
+      letter-spacing: -0.02em;
     }
   }
   .count_info {
