@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAsyncState } from '@vueuse/core'
 import { usePagination } from '@/composables/usePagination'
@@ -174,6 +174,18 @@ const handleSearch = () => {
   sessionStorage.setItem('minTemp', minTemp.value)
   sessionStorage.setItem('waterCycle', waterCycle.value)
 }
+
+// 뒤로가기 할 때 페이지 값 없으면 1로 설정
+watch(
+  route,
+  () => {
+    if (route.query.page === undefined) {
+      currentPage.value = 1
+      executePage()
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <style scoped></style>
