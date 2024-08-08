@@ -38,7 +38,8 @@ const getGuideList = async ({
 
   try {
     const res = await fetch(
-      `https://proxy.cors.sh/http://openapi.nature.go.kr/openapi/service/rest/PlantService` +
+      `https://cors-anywhere.herokuapp.com/` +
+        `http://openapi.nature.go.kr/openapi/service/rest/PlantService` +
         `/plntIlstrSearch?serviceKey=${listParams.serviceKey}` +
         `&numOfRows=${listParams.numOfRows}` +
         `&pageNo=${listParams.pageNo}` +
@@ -52,7 +53,6 @@ const getGuideList = async ({
 
     // 식물 기본 정보 json변환
     const listString = await res.text()
-    console.log('확인 guide', listString)
     const listNode = new DOMParser().parseFromString(listString, 'text/xml')
     const listObject: any = xmlToJson.convertJson(listNode)
     const listData = listObject.response.body.items.item
@@ -230,7 +230,14 @@ export const getGuideDetail = async (name: string, code: string) => {
 
   try {
     const res = await fetch(
-      `/service/guide/plntIlstrInfo?serviceKey=${params.serviceKey}&q1=${params.q1}`
+      `https://cors-anywhere.herokuapp.com/` +
+        `http://openapi.nature.go.kr/openapi/service/rest/PlantService` +
+        `/plntIlstrInfo?serviceKey=${params.serviceKey}&q1=${params.q1}`,
+      {
+        headers: {
+          'x-cors-api-key': 'temp_008dc0812a8ed83e95a028ec31b5b912'
+        }
+      }
     )
 
     // 식물 상세 정보 json변환
@@ -349,7 +356,14 @@ export const getBookmarkList = async ({
   const res = await Promise.all(
     searchName.map((keyword) =>
       fetch(
-        `/service/guide/plntIlstrSearch?serviceKey=${listParams.serviceKey}&numOfRows=${listParams.numOfRows}&pageNo=${listParams.pageNo}&sw=${keyword}`
+        `https://cors-anywhere.herokuapp.com/` +
+          `http://openapi.nature.go.kr/openapi/service/rest/PlantService` +
+          `/plntIlstrSearch?serviceKey=${listParams.serviceKey}&numOfRows=${listParams.numOfRows}&pageNo=${listParams.pageNo}&sw=${keyword}`,
+        {
+          headers: {
+            'x-cors-api-key': 'temp_008dc0812a8ed83e95a028ec31b5b912'
+          }
+        }
       )
     )
   )
@@ -428,7 +442,14 @@ export const getNoteList = async ({
   const res = await Promise.all(
     searchName.map((keyword) =>
       fetch(
-        `/service/guide/plntIlstrSearch?serviceKey=${listParams.serviceKey}&numOfRows=${listParams.numOfRows}&pageNo=${listParams.pageNo}&sw=${keyword}`
+        `https://cors-anywhere.herokuapp.com/` +
+          `http://openapi.nature.go.kr/openapi/service/rest/PlantService` +
+          `/plntIlstrSearch?serviceKey=${listParams.serviceKey}&numOfRows=${listParams.numOfRows}&pageNo=${listParams.pageNo}&sw=${keyword}`,
+        {
+          headers: {
+            'x-cors-api-key': 'temp_008dc0812a8ed83e95a028ec31b5b912'
+          }
+        }
       )
     )
   )
