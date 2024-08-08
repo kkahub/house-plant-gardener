@@ -64,12 +64,7 @@ const getIndoorList = async ({
         `&ignSeasonChkVal=${listParams.flowering}` +
         `&winterLwetChkVal=${listParams.minTemp}` +
         `&waterCycleSel=${listParams.waterCycle}` +
-        `&sType=sCntntsSj&wordType=cntntsSj`,
-      {
-        headers: {
-          'x-cors-api-key': 'temp_f3c47c5d1594c06913239e2418417e87'
-        }
-      }
+        `&sType=sCntntsSj&wordType=cntntsSj`
     )
 
     // 식물 기본 정보 json변환
@@ -261,12 +256,7 @@ export const getIndoorBasic = async (name: string, code: string) => {
         `/service/garden/gardenList?apiKey=${listParams.apiKey}` +
         `&numOfRows=500` +
         `&sText=${listParams.searchWord}` +
-        `&sType=sCntntsSj&wordType=sCntntsSj`,
-      {
-        headers: {
-          'x-cors-api-key': 'temp_f3c47c5d1594c06913239e2418417e87'
-        }
-      }
+        `&sType=sCntntsSj&wordType=sCntntsSj`
     )
 
     // 식물 기본 정보 json변환
@@ -343,12 +333,7 @@ export const getIndoorDetail = async (code: string) => {
       `https://cors-anywhere.herokuapp.com/` +
         `http://api.nongsaro.go.kr` +
         `/service/garden/gardenDtl?apiKey=${params.apiKey}` +
-        `&cntntsNo=${code}`,
-      {
-        headers: {
-          'x-cors-api-key': 'temp_f3c47c5d1594c06913239e2418417e87'
-        }
-      }
+        `&cntntsNo=${code}`
     )
 
     // 식물 상세 정보 json변환

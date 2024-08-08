@@ -43,12 +43,7 @@ const getGuideList = async ({
         `/plntIlstrSearch?serviceKey=${listParams.serviceKey}` +
         `&numOfRows=${listParams.numOfRows}` +
         `&pageNo=${listParams.pageNo}` +
-        `&sw=${listParams.searchWord}`,
-      {
-        headers: {
-          'x-cors-api-key': 'temp_008dc0812a8ed83e95a028ec31b5b912'
-        }
-      }
+        `&sw=${listParams.searchWord}`
     )
 
     // 식물 기본 정보 json변환
@@ -232,12 +227,7 @@ export const getGuideDetail = async (name: string, code: string) => {
     const res = await fetch(
       `https://cors-anywhere.herokuapp.com/` +
         `http://openapi.nature.go.kr/openapi/service/rest/PlantService` +
-        `/plntIlstrInfo?serviceKey=${params.serviceKey}&q1=${params.q1}`,
-      {
-        headers: {
-          'x-cors-api-key': 'temp_008dc0812a8ed83e95a028ec31b5b912'
-        }
-      }
+        `/plntIlstrInfo?serviceKey=${params.serviceKey}&q1=${params.q1}`
     )
 
     // 식물 상세 정보 json변환
