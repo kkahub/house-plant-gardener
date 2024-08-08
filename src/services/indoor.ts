@@ -49,7 +49,8 @@ const getIndoorList = async ({
 
   try {
     const res = await fetch(
-      `https://proxy.cors.sh/http://api.nongsaro.go.kr` +
+      `https://cors-anywhere.herokuapp.com/` +
+        `http://api.nongsaro.go.kr` +
         `/service/garden/gardenList?apiKey=${listParams.apiKey}` +
         `&pageNo=${listParams.pageNo}` +
         `&numOfRows=${listParams.numOfRows}` +
@@ -255,7 +256,8 @@ export const getIndoorBasic = async (name: string, code: string) => {
 
   try {
     const res = await fetch(
-      `https://proxy.cors.sh/http://api.nongsaro.go.kr` +
+      `https://cors-anywhere.herokuapp.com/` +
+        `http://api.nongsaro.go.kr` +
         `/service/garden/gardenList?apiKey=${listParams.apiKey}` +
         `&numOfRows=500` +
         `&sText=${listParams.searchWord}` +
@@ -338,8 +340,10 @@ export const getIndoorDetail = async (code: string) => {
 
   try {
     const res = await fetch(
-      `https://proxy.cors.sh/http://api.nongsaro.go.kr` +
-        `/service/garden/gardenDtl?apiKey=${params.apiKey}&cntntsNo=${code}`,
+      `https://cors-anywhere.herokuapp.com/` +
+        `http://api.nongsaro.go.kr` +
+        `/service/garden/gardenDtl?apiKey=${params.apiKey}` +
+        `&cntntsNo=${code}`,
       {
         headers: {
           'x-cors-api-key': 'temp_f3c47c5d1594c06913239e2418417e87'
