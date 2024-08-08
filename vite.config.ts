@@ -16,16 +16,14 @@ export default defineConfig({
     //     target: 'http://openapi.nature.go.kr/openapi/service/rest/PlantService',
     //     changeOrigin: true,
     //     rewrite: (path) => path.replace(/^\/service\/guide/, ''),
-    //     secure: false,
-    //     ws: true
+    //     secure: false
     //   },
     //   // 농촌진흥청 실내정원용 식물
     //   '/service/indoor': {
     //     target: 'http://api.nongsaro.go.kr/service/garden',
     //     changeOrigin: true,
     //     rewrite: (path) => path.replace(/^\/service\/indoor/, ''),
-    //     secure: false,
-    //     ws: true
+    //     secure: false
     //   }
     // }
   },

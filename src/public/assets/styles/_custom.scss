@@ -149,6 +149,9 @@
       }
     }
   }
+  .main_list_loading {
+    padding: 150px 0;
+  }
   .list_gallery {
     padding: 40px 0 0;
   }
@@ -233,6 +236,9 @@
 // * 실내식물
 // ** 실내식물 리스트
 .wrap_indoor_list {
+  .indoor_list_loading {
+    padding: 150px 0;
+  }
   .wrap_search {
     justify-content: flex-start;
     gap: 10px;
