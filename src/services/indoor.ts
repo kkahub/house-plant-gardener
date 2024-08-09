@@ -48,10 +48,10 @@ const getIndoorList = async ({
   }
 
   try {
+    // `https://cors-anywhere.herokuapp.com/` +
+    // `http://api.nongsaro.go.kr/service/garden/` +
     const res = await fetch(
-      `https://cors-anywhere.herokuapp.com/` +
-        `http://api.nongsaro.go.kr` +
-        `/service/garden/gardenList?apiKey=${listParams.apiKey}` +
+      `/service/indoor/gardenList?apiKey=${listParams.apiKey}` +
         `&pageNo=${listParams.pageNo}` +
         `&numOfRows=${listParams.numOfRows}` +
         `&sText=${listParams.searchWord}` +

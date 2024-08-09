@@ -18,6 +18,8 @@ const {
 const { initializeApp, cert } = require('firebase-admin/app')
 const { getFirestore, FieldValue, Timestamp } = require('firebase-admin/firestore')
 const serviceAccount = require('./serviceAccountKey.json')
+const cors = require('cors')({ origin: true })
+
 const { logger } = functions
 
 const app = initializeApp({
