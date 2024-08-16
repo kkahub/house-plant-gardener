@@ -49,22 +49,26 @@ const getIndoorList = async ({
 
   try {
     // `https://cors-anywhere.herokuapp.com/` +
-    // `http://api.nongsaro.go.kr/service/garden/` +
+    // `http://api.nongsaro.go.kr/service/garden` +
+    // `/service/indoor/gardenList?apiKey=${listParams.apiKey}` +
     const res = await fetch(
-      `/service/indoor/gardenList?apiKey=${listParams.apiKey}` +
-        `&pageNo=${listParams.pageNo}` +
-        `&numOfRows=${listParams.numOfRows}` +
-        `&sText=${listParams.searchWord}` +
-        `&lightChkVal=${listParams.light}` +
-        `&grwhstleChkVal=${listParams.growForm}` +
-        `&lefcolrChkVal=${listParams.leafColor}` +
-        `&lefmrkChkVal=${listParams.leafPattern}` +
-        `&flclrChkVal=${listParams.flowerColor}` +
-        `&fmldecolrChkVal=${listParams.fruitColor}` +
-        `&ignSeasonChkVal=${listParams.flowering}` +
-        `&winterLwetChkVal=${listParams.minTemp}` +
-        `&waterCycleSel=${listParams.waterCycle}` +
-        `&sType=sCntntsSj&wordType=cntntsSj`
+      `https://us-central1-house-plant-gardener.cloudfunctions.net/apicall`
+      // +
+      // `http://api.nongsaro.go.kr/service/garden` +
+      // `/gardenList?apiKey=${listParams.apiKey}` +
+      // `&pageNo=${listParams.pageNo}` +
+      // `&numOfRows=${listParams.numOfRows}` +
+      // `&sText=${listParams.searchWord}` +
+      // `&lightChkVal=${listParams.light}` +
+      // `&grwhstleChkVal=${listParams.growForm}` +
+      // `&lefcolrChkVal=${listParams.leafColor}` +
+      // `&lefmrkChkVal=${listParams.leafPattern}` +
+      // `&flclrChkVal=${listParams.flowerColor}` +
+      // `&fmldecolrChkVal=${listParams.fruitColor}` +
+      // `&ignSeasonChkVal=${listParams.flowering}` +
+      // `&winterLwetChkVal=${listParams.minTemp}` +
+      // `&waterCycleSel=${listParams.waterCycle}` +
+      // `&sType=sCntntsSj&wordType=cntntsSj`
     )
 
     // 식물 기본 정보 json변환
