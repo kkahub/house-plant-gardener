@@ -1,3 +1,10 @@
+export interface GuideListParams {
+  serviceKey: string
+  pageNo: number
+  numOfRows: number
+  sw: string
+}
+
 /**
  *
  * 식물도감 기본정보

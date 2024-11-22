@@ -29,35 +29,63 @@ const app = initializeApp({
 const db = getFirestore(app)
 const region = 'asia-northeast3'
 
-const listParams = {
-  // apiKey: import.meta.env.VITE_INDOOR_PLANT_API_KEY,
-  pageNo: 1,
-  numOfRows: 16
-}
-
-exports.apicall = functions.https.onRequest((req, response) => {
+// 식물도감 리스트 서버 호출
+exports.guide = functions.region(region).https.onRequest((req, response) => {
   cors(req, response, () => {
-    // if (
-    //   req.get('origin') === 'https://us-central1-house-plant-gardener.cloudfunctions.net/apicall' ||
-    //   req.get('origin') === 'http://localhost:5000'
-    // ) {
-    request(
-      {
-        url:
-          `http://api.nongsaro.go.kr/service/garden` +
-          `/gardenList?apiKey=20240308LQZJEZGH2S9BGFDHKFOMA` +
-          `&pageNo=${listParams.pageNo}` +
-          `&sType=sCntntsSj&wordType=cntntsSj`,
-        headers: {
-          method: 'POST',
-          credentials: 'include'
+    if (
+      req.get('origin') ===
+        'https://asia-northeast3-house-plant-gardener.cloudfunctions.net/guide' ||
+      req.get('origin') === 'http://localhost:5173'
+    ) {
+      const baseApiUrl = `http://openapi.nature.go.kr/openapi/service/rest/PlantService/plntIlstrSearch?serviceKey=${process.env.GUIDE_APIKEY}`
+      const queryParams = Object.entries(req.query)
+        .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+        .join('&')
+      const apiUrl = `${baseApiUrl}&${queryParams}`
+
+      request(
+        {
+          url: apiUrl
+        },
+        function (error, res, body) {
+          if (error) {
+            response.status(500).send({ error: '500에러 발생', details: error })
+          } else {
+            response.send(body)
+          }
         }
-      },
-      function (error, res, body) {
-        response.send(res)
-      }
-    )
-    // }
+      )
+    } else {
+      response.status(403).send('Forbidden')
+    }
+  })
+})
+
+// 실내정원용 식물 리스트 서버 호출
+exports.indoor = functions.region(region).https.onRequest((req, response) => {
+  cors(req, response, () => {
+    if (
+      req.get('origin') ===
+        'https://asia-northeast3-house-plant-gardener.cloudfunctions.net/indoor' ||
+      req.get('origin') === 'http://localhost:5173'
+    ) {
+      const baseApiUrl = `http://api.nongsaro.go.kr/service/garden/gardenList?apiKey=${process.env.INDOOR_APIKEY}`
+      const queryParams = Object.entries(req.query).map(([key, value]) => `${key}=${encodeURIComponent(value)}`).join('&')
+      const apiUrl = `${baseApiUrl}&${queryParams}`
+      
+      request(
+        { url: apiUrl },
+        function (error, res, body) {
+          if (error) {
+            response.status(500).send({ error: '500에러 발생', details: error })
+          } else {
+            response.send(body)
+          }
+        }
+      )
+    } else {
+      response.status(403).send('Forbidden')
+    }
   })
 })
 

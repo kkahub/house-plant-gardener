@@ -1,4 +1,9 @@
-import { type GuideListData, type GuideList, type GuideDetail } from '@/types/guide'
+import {
+  type GuideListParams,
+  type GuideListData,
+  type GuideList,
+  type GuideDetail
+} from '@/types/guide'
 import * as xmlToJson from '../plugin/xmlToJson'
 import { db } from '@/firebase/firebase'
 import {
@@ -33,18 +38,28 @@ const getGuideList = async ({
     serviceKey: import.meta.env.VITE_GUIDE_API_KEY,
     pageNo: currentPage,
     numOfRows: currentPageSize,
-    searchWord
+    sw: searchWord
+  }
+
+  const getGuideList = async (params: GuideListParams) => {
+    const queryString = Object.entries(params)
+      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .join('&')
+
+    const response = await fetch(
+      `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/guide?st=1&${queryString}`,
+      { mode: 'cors' }
+    )
+
+    if (!response.ok) {
+      throw new Error(`API 요청 실패 사유: ${response.statusText}`)
+    }
+
+    return response
   }
 
   try {
-    const res = await fetch(
-      `https://cors-anywhere.herokuapp.com/` +
-        `http://openapi.nature.go.kr/openapi/service/rest/PlantService` +
-        `/plntIlstrSearch?serviceKey=${listParams.serviceKey}` +
-        `&numOfRows=${listParams.numOfRows}` +
-        `&pageNo=${listParams.pageNo}` +
-        `&sw=${listParams.searchWord}`
-    )
+    const res = await getGuideList(listParams)
 
     // 식물 기본 정보 json변환
     const listString = await res.text()

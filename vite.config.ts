@@ -11,13 +11,13 @@ export default defineConfig({
   plugins: [VueRouter({}), vue(), Pages(), Layouts()],
   server: {
     // proxy: {
-    //   // 산림청 국립수목원 식물자원 서비스
-    //   '/service/guide': {
-    //     target: 'http://openapi.nature.go.kr/openapi/service/rest/PlantService',
-    //     changeOrigin: true,
-    //     rewrite: (path) => path.replace(/^\/service\/guide/, ''),
-    //     secure: false
-    //   },
+    // // 산림청 국립수목원 식물자원 서비스
+    // '/service/guide': {
+    //   target: 'http://openapi.nature.go.kr/openapi/service/rest/PlantService',
+    //   changeOrigin: true,
+    //   rewrite: (path) => path.replace(/^\/service\/guide/, ''),
+    //   secure: false
+    // }
     //   // 농촌진흥청 실내정원용 식물
     //   '/service/indoor': {
     //     target: 'http://api.nongsaro.go.kr/service/garden',

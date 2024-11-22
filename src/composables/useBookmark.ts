@@ -53,7 +53,7 @@ export const useBookmark = (name: string, code: string) => {
     isBookmark.value = !isBookmark.value
   }
 
-  watch(isAuthenticated, () => getBookmarkStatus(), { immediate: true })
+  watch(isAuthenticated, () => getBookmarkStatus())
 
   return {
     isBookmark,

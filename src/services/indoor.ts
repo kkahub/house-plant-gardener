@@ -1,4 +1,9 @@
-import { type IndoorListData, type IndoorList, type IndoorDetail } from '@/types/indoor'
+import {
+  type IndoorListParams,
+  type IndoorListData,
+  type IndoorList,
+  type IndoorDetail
+} from '@/types/indoor'
 import * as xmlToJson from '../plugin/xmlToJson'
 import { db } from '@/firebase/firebase'
 import { deleteDoc, doc, getDoc, increment, serverTimestamp, setDoc } from 'firebase/firestore'
@@ -35,45 +40,41 @@ const getIndoorList = async ({
     apiKey: import.meta.env.VITE_INDOOR_PLANT_API_KEY,
     pageNo: currentPage,
     numOfRows: currentPageSize,
-    searchWord,
-    light,
-    growForm,
-    leafColor,
-    leafPattern,
-    flowerColor,
-    fruitColor,
-    flowering,
-    minTemp,
-    waterCycle
+    sText: searchWord,
+    lightChkVal: light,
+    grwhstleChkVal: growForm,
+    lefcolrChkVal: leafColor,
+    lefmrkChkVal: leafPattern,
+    flclrChkVal: flowerColor,
+    fmldecolrChkVal: fruitColor,
+    ignSeasonChkVal: flowering,
+    winterLwetChkVal: minTemp,
+    waterCycleSel: waterCycle
+  }
+
+  const getIndoorList = async (params: IndoorListParams) => {
+    const queryString = Object.entries(params)
+      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .join('&')
+
+    const response = await fetch(
+      `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/indoor?sType=sCntntsSj&wordType=cntntsSj&${queryString}`,
+      { mode: 'cors' }
+    )
+
+    if (!response.ok) {
+      throw new Error(`API 요청 실패 사유: ${response.statusText}`)
+    }
+
+    return response
   }
 
   try {
-    // `https://cors-anywhere.herokuapp.com/` +
-    // `http://api.nongsaro.go.kr/service/garden` +
-    // `/service/indoor/gardenList?apiKey=${listParams.apiKey}` +
-    const res = await fetch(
-      `https://us-central1-house-plant-gardener.cloudfunctions.net/apicall`
-      // +
-      // `http://api.nongsaro.go.kr/service/garden` +
-      // `/gardenList?apiKey=${listParams.apiKey}` +
-      // `&pageNo=${listParams.pageNo}` +
-      // `&numOfRows=${listParams.numOfRows}` +
-      // `&sText=${listParams.searchWord}` +
-      // `&lightChkVal=${listParams.light}` +
-      // `&grwhstleChkVal=${listParams.growForm}` +
-      // `&lefcolrChkVal=${listParams.leafColor}` +
-      // `&lefmrkChkVal=${listParams.leafPattern}` +
-      // `&flclrChkVal=${listParams.flowerColor}` +
-      // `&fmldecolrChkVal=${listParams.fruitColor}` +
-      // `&ignSeasonChkVal=${listParams.flowering}` +
-      // `&winterLwetChkVal=${listParams.minTemp}` +
-      // `&waterCycleSel=${listParams.waterCycle}` +
-      // `&sType=sCntntsSj&wordType=cntntsSj`
-    )
+    const res = await getIndoorList(listParams)
 
     // 식물 기본 정보 json변환
-    const listString = await res.text()
-    const listNode = new DOMParser().parseFromString(listString, 'text/xml')
+    const listOrigin = await res.text()
+    const listNode = new DOMParser().parseFromString(listOrigin, 'text/xml')
     const listObject: any = xmlToJson.convertJson(listNode)
     const listData = listObject.response.body.items.item
     const plantInfoList: IndoorList[] | null = []

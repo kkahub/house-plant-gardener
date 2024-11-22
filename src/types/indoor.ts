@@ -1,3 +1,19 @@
+export interface IndoorListParams {
+  apiKey: string
+  pageNo: number
+  numOfRows: number
+  sText: string
+  lightChkVal: string
+  grwhstleChkVal: string
+  lefcolrChkVal: string
+  lefmrkChkVal: string
+  flclrChkVal: string
+  fmldecolrChkVal: string
+  ignSeasonChkVal: string
+  winterLwetChkVal: string
+  waterCycleSel: string
+}
+
 /**
  *
  * 실내정원용 식물 리스트

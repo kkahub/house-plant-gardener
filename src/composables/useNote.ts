@@ -1,4 +1,4 @@
-import { ref, watch } from 'vue'
+import { nextTick, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 import { getNoteContent, addNote, removeNote, hasNote } from '@/services/guide'
@@ -75,8 +75,7 @@ export const useNote = (name: string, code: string) => {
       isNoteView.value = false
     }
   }
-
-  watch(isAuthenticated, () => getNoteStatus(), { immediate: true })
+  watch(isAuthenticated, () => getNoteStatus())
 
   return {
     isNote,

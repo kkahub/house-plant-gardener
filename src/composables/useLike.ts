@@ -44,7 +44,7 @@ export const useLike = (name: string, code: string) => {
     isLike.value = !isLike.value
   }
 
-  watch(isAuthenticated, () => getLikeStatus(), { immediate: true })
+  watch(isAuthenticated, () => getLikeStatus())
 
   return {
     isLike,
