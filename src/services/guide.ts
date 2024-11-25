@@ -24,6 +24,23 @@ import { storeToRefs } from 'pinia'
 
 const { uid, isAuthenticated } = storeToRefs(useAuthStore())
 
+const getGuideListRequest = async (params: GuideListParams) => {
+  const queryString = Object.entries(params)
+    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+    .join('&')
+
+  const response = await fetch(
+    `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/guideList?st=1&${queryString}`,
+    { mode: 'cors' }
+  )
+
+  if (!response.ok) {
+    throw new Error(`API 요청 실패 사유: ${response.statusText}`)
+  }
+
+  return response
+}
+
 // 식물도감 리스트
 const getGuideList = async ({
   currentPage,
@@ -35,31 +52,13 @@ const getGuideList = async ({
   searchWord: string
 }) => {
   const listParams = {
-    serviceKey: import.meta.env.VITE_GUIDE_API_KEY,
     pageNo: currentPage,
     numOfRows: currentPageSize,
     sw: searchWord
   }
 
-  const getGuideList = async (params: GuideListParams) => {
-    const queryString = Object.entries(params)
-      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
-      .join('&')
-
-    const response = await fetch(
-      `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/guide?st=1&${queryString}`,
-      { mode: 'cors' }
-    )
-
-    if (!response.ok) {
-      throw new Error(`API 요청 실패 사유: ${response.statusText}`)
-    }
-
-    return response
-  }
-
   try {
-    const res = await getGuideList(listParams)
+    const res = await getGuideListRequest(listParams)
 
     // 식물 기본 정보 json변환
     const listString = await res.text()
@@ -234,16 +233,28 @@ export async function hasNote(uid: string, plantId: string) {
 // 식물도감 상세페이지
 export const getGuideDetail = async (name: string, code: string) => {
   const params = {
-    serviceKey: import.meta.env.VITE_PLANT_API_KEY,
     q1: code
   }
 
-  try {
-    const res = await fetch(
-      `https://cors-anywhere.herokuapp.com/` +
-        `http://openapi.nature.go.kr/openapi/service/rest/PlantService` +
-        `/plntIlstrInfo?serviceKey=${params.serviceKey}&q1=${params.q1}`
+  const getGuideDetailRequest = async (params: { q1: string }) => {
+    const queryString = Object.entries(params)
+      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .join('&')
+
+    const response = await fetch(
+      `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/guideDetail?${queryString}`,
+      { mode: 'cors' }
     )
+
+    if (!response.ok) {
+      throw new Error(`API 요청 실패 사유: ${response.statusText}`)
+    }
+
+    return response
+  }
+
+  try {
+    const res = await getGuideDetailRequest(params)
 
     // 식물 상세 정보 json변환
     const detailString = await res.text()
@@ -352,25 +363,13 @@ export const getBookmarkList = async ({
   const searchCode = Object.values(searchWord).map((item) => item.split('_')[1])
 
   const listParams = {
-    serviceKey: import.meta.env.VITE_GUIDE_API_KEY,
     pageNo: currentPage,
     numOfRows: currentPageSize,
-    searchWord
+    sw: searchWord
   }
 
   const res = await Promise.all(
-    searchName.map((keyword) =>
-      fetch(
-        `https://cors-anywhere.herokuapp.com/` +
-          `http://openapi.nature.go.kr/openapi/service/rest/PlantService` +
-          `/plntIlstrSearch?serviceKey=${listParams.serviceKey}&numOfRows=${listParams.numOfRows}&pageNo=${listParams.pageNo}&sw=${keyword}`,
-        {
-          headers: {
-            'x-cors-api-key': 'temp_008dc0812a8ed83e95a028ec31b5b912'
-          }
-        }
-      )
-    )
+    searchName.map((keyword) => getGuideListRequest({ ...listParams, sw: keyword }))
   )
 
   const resArray = await Promise.all(
@@ -438,25 +437,13 @@ export const getNoteList = async ({
   const searchCode = Object.values(searchWord).map((item) => item.split('_')[1])
 
   const listParams = {
-    serviceKey: import.meta.env.VITE_GUIDE_API_KEY,
     pageNo: currentPage,
     numOfRows: currentPageSize,
-    searchWord
+    sw: searchWord
   }
 
   const res = await Promise.all(
-    searchName.map((keyword) =>
-      fetch(
-        `https://cors-anywhere.herokuapp.com/` +
-          `http://openapi.nature.go.kr/openapi/service/rest/PlantService` +
-          `/plntIlstrSearch?serviceKey=${listParams.serviceKey}&numOfRows=${listParams.numOfRows}&pageNo=${listParams.pageNo}&sw=${keyword}`,
-        {
-          headers: {
-            'x-cors-api-key': 'temp_008dc0812a8ed83e95a028ec31b5b912'
-          }
-        }
-      )
-    )
+    searchName.map((keyword) => getGuideListRequest({ ...listParams, sw: keyword }))
   )
 
   const resArray = await Promise.all(

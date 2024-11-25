@@ -1,8 +1,8 @@
 import {
   type IndoorListParams,
+  type IndoorBaseParams,
   type IndoorListData,
-  type IndoorList,
-  type IndoorDetail
+  type IndoorList
 } from '@/types/indoor'
 import * as xmlToJson from '../plugin/xmlToJson'
 import { db } from '@/firebase/firebase'
@@ -37,7 +37,6 @@ const getIndoorList = async ({
   waterCycle: string
 }) => {
   const listParams = {
-    apiKey: import.meta.env.VITE_INDOOR_PLANT_API_KEY,
     pageNo: currentPage,
     numOfRows: currentPageSize,
     sText: searchWord,
@@ -52,13 +51,13 @@ const getIndoorList = async ({
     waterCycleSel: waterCycle
   }
 
-  const getIndoorList = async (params: IndoorListParams) => {
+  const getIndoorListRequest = async (params: IndoorListParams) => {
     const queryString = Object.entries(params)
       .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
       .join('&')
 
     const response = await fetch(
-      `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/indoor?sType=sCntntsSj&wordType=cntntsSj&${queryString}`,
+      `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/indoorList?sType=sCntntsSj&wordType=cntntsSj&${queryString}`,
       { mode: 'cors' }
     )
 
@@ -70,7 +69,7 @@ const getIndoorList = async ({
   }
 
   try {
-    const res = await getIndoorList(listParams)
+    const res = await getIndoorListRequest(listParams)
 
     // 식물 기본 정보 json변환
     const listOrigin = await res.text()
@@ -250,19 +249,29 @@ export async function hasNote(uid: string, plantCode: string) {
 // 식물도감 상세 기본 정보
 export const getIndoorBasic = async (name: string, code: string) => {
   const listParams = {
-    apiKey: import.meta.env.VITE_INDOOR_PLANT_API_KEY,
-    searchWord: name
+    numOfRows: 500,
+    sText: name
+  }
+
+  const getIndoorBasicRequest = async (params: IndoorBaseParams) => {
+    const queryString = Object.entries(params)
+      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .join('&')
+
+    const response = await fetch(
+      `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/indoorList?sType=sCntntsSj&wordType=sCntntsSj&${queryString}`,
+      { mode: 'cors' }
+    )
+
+    if (!response.ok) {
+      throw new Error(`API 요청 실패 사유: ${response.statusText}`)
+    }
+
+    return response
   }
 
   try {
-    const res = await fetch(
-      `https://cors-anywhere.herokuapp.com/` +
-        `http://api.nongsaro.go.kr` +
-        `/service/garden/gardenList?apiKey=${listParams.apiKey}` +
-        `&numOfRows=500` +
-        `&sText=${listParams.searchWord}` +
-        `&sType=sCntntsSj&wordType=sCntntsSj`
-    )
+    const res = await getIndoorBasicRequest(listParams)
 
     // 식물 기본 정보 json변환
     const detailBaseString = await res.text()
@@ -329,17 +338,28 @@ export const getIndoorBasic = async (name: string, code: string) => {
 // 식물도감 상세 정보
 export const getIndoorDetail = async (code: string) => {
   const params = {
-    apiKey: import.meta.env.VITE_INDOOR_PLANT_API_KEY,
-    code
+    cntntsNo: code
+  }
+
+  const getIndoorDetailRequest = async (params: { cntntsNo: string }) => {
+    const queryString = Object.entries(params)
+      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .join('&')
+
+    const response = await fetch(
+      `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/indoorDetail?${queryString}`,
+      { mode: 'cors' }
+    )
+
+    if (!response.ok) {
+      throw new Error(`API 요청 실패 사유: ${response.statusText}`)
+    }
+
+    return response
   }
 
   try {
-    const res = await fetch(
-      `https://cors-anywhere.herokuapp.com/` +
-        `http://api.nongsaro.go.kr` +
-        `/service/garden/gardenDtl?apiKey=${params.apiKey}` +
-        `&cntntsNo=${code}`
-    )
+    const res = await getIndoorDetailRequest(params)
 
     // 식물 상세 정보 json변환
     const detailString = await res.text()

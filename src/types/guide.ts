@@ -1,5 +1,5 @@
+/* 식물도감 리스트 파라미터 타입  */
 export interface GuideListParams {
-  serviceKey: string
   pageNo: number
   numOfRows: number
   sw: string

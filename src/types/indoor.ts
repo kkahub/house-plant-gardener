@@ -1,5 +1,5 @@
+/* 실내정원용 식물 리스트 파라미터 타입  */
 export interface IndoorListParams {
-  apiKey: string
   pageNo: number
   numOfRows: number
   sText: string
@@ -12,6 +12,12 @@ export interface IndoorListParams {
   ignSeasonChkVal: string
   winterLwetChkVal: string
   waterCycleSel: string
+}
+
+/* 실내정원용 식물 상세페이지 기본정보 파라미터 타입  */
+export interface IndoorBaseParams {
+  numOfRows: number
+  sText: string
 }
 
 /**
@@ -88,9 +94,6 @@ export interface IndoorListData {
  *
  */
 
-export interface IndoorDetail {
-  brdMthdDesc: string
-}
 export interface IndoorDetailData {
   bfofMthod: string
 }
