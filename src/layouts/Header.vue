@@ -85,6 +85,7 @@ onMounted(() => {
 const handleLogout = async () => {
   await logout()
   alert('로그아웃 하셨습니다.')
+  console.log(isAuthenticated.value)
   router.push('/')
 }
 

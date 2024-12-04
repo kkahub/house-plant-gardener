@@ -38,6 +38,15 @@ const getGuideListRequest = async (params: GuideListParams) => {
     throw new Error(`API 요청 실패 사유: ${response.statusText}`)
   }
 
+  // const blob = await response.blob()
+  // console.log(blob)
+
+  // return new Promise((resolve, reject) => {
+  //   const reader = new FileReader()
+  //   reader.onloadend = () => resolve(reader.result) // Base64로 변환
+  //   reader.onerror = reject
+  //   reader.readAsDataURL(blob)
+  // })
   return response
 }
 

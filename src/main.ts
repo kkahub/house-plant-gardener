@@ -6,6 +6,7 @@ import { far } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import focus from './directives/focus'
 
+import { createHead } from '@unhead/vue'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
@@ -15,11 +16,14 @@ import router from './router'
 import axios from 'axios'
 
 const app = createApp(App)
+const head = createHead()
 
 app.config.globalProperties.axios = axios
 
-app.use(createPinia())
-app.use(router)
+app
+    .use(createPinia())
+    .use(router)
+    .use(head)
 
 app.directive('focus', focus)
 
