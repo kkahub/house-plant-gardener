@@ -50,6 +50,27 @@ const getGuideListRequest = async (params: GuideListParams) => {
   return response
 }
 
+const changeBase64Img = async (imgUrl: string) => {
+  try {
+    console.log(imgUrl)
+    const response = await fetch(imgUrl)
+    if (!response.ok) {
+      throw new Error(`API 요청 실패 사유: ${response.statusText}`)
+    }
+
+    const blob = await response.blob()
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.onloadend = () => resolve(reader.result) // Base64로 변환
+      reader.onerror = reject
+      reader.readAsDataURL(blob)
+    })
+  } catch (error) {
+    console.log(error)
+    return null
+  }
+}
+
 // 식물도감 리스트
 const getGuideList = async ({
   currentPage,
@@ -104,6 +125,9 @@ const getGuideList = async ({
           } = item
           const list: any = GuideList
           list.total = Number(listObject.response.body.totalCount)
+
+          const base64Img = changeBase64Img(list.imgUrl)
+
           plantInfoList.push(list)
         })
       }
