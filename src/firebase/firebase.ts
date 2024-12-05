@@ -4,8 +4,6 @@ import { getAuth, onAuthStateChanged } from 'firebase/auth'
 import { useAuthStore } from '@/stores/auth'
 import { getFirestore } from 'firebase/firestore'
 
-// TODO: Replace the following with your app's Firebase project configuration
-// See: https://firebase.google.com/docs/web/learn-more#config-object
 const firebaseConfig = {
   apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
@@ -28,5 +26,3 @@ onAuthStateChanged(auth, (user) => {
 })
 
 export { auth, db }
-
-// export default

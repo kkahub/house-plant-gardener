@@ -53,7 +53,7 @@
 </template>
 
 <script setup lang="ts">
-import { onMounted, ref, watch } from 'vue'
+import { onMounted, ref, watch, watchEffect } from 'vue'
 import { logout } from '@/services/auth'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
@@ -64,7 +64,8 @@ const isZero = ref(true)
 const route = useRoute()
 const router = useRouter()
 const path = ref('')
-const { isAuthenticated, user } = storeToRefs(useAuthStore())
+const authStore = useAuthStore()
+const { isAuthenticated, user } = storeToRefs(authStore)
 const isEmailVerified = ref(true)
 
 path.value = route.path
@@ -84,6 +85,7 @@ onMounted(() => {
 
 const handleLogout = async () => {
   await logout()
+  // window.localStorage.removeItem('auth/user')
   alert('로그아웃 하셨습니다.')
   router.push('/')
 }

@@ -6,14 +6,11 @@ import {
   signInWithEmailAndPassword,
   signInWithPopup,
   signOut,
-  updateEmail,
   updatePassword,
   updateProfile
 } from 'firebase/auth'
 import { auth } from '@/firebase/firebase'
 import { ref } from 'vue'
-import { doc, updateDoc } from 'firebase/firestore'
-import { db } from '@/firebase/firebase'
 
 // 서브밋 중복 클릭 방지용
 const submitCount = ref(0)
