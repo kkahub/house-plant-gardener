@@ -9,6 +9,7 @@ import focus from './directives/focus'
 import { createHead } from '@unhead/vue'
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import { useAuthStore } from './stores/auth'
 
 import App from './App.vue'
 import router from './router'
@@ -20,10 +21,10 @@ const head = createHead()
 
 app.config.globalProperties.axios = axios
 
-app
-    .use(createPinia())
-    .use(router)
-    .use(head)
+app.use(createPinia()).use(router).use(head)
+
+const authStore = useAuthStore()
+authStore.fetchUser()
 
 app.directive('focus', focus)
 

@@ -1,7 +1,8 @@
 import { defineStore } from 'pinia'
 import { StorageSerializers, useLocalStorage } from '@vueuse/core'
 import { computed } from 'vue'
-import type { User } from 'firebase/auth'
+import { onAuthStateChanged, type User } from 'firebase/auth'
+import { auth } from '@/firebase/firebase'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = useLocalStorage('auth/user', null, {
@@ -10,7 +11,7 @@ export const useAuthStore = defineStore('auth', () => {
   const isAuthenticated = computed(() => !!user.value)
   const uid = computed(() => user.value?.uid || null)
 
-  const setUser = (userData: User) => {
+  const setUser = (userData: User | null) => {
     user.value = userData
     if (userData) {
       user.value = {
@@ -25,10 +26,17 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
+  const fetchUser = () => {
+    onAuthStateChanged(auth, (user) => {
+      setUser(user)
+    })
+  }
+
   return {
     user,
     isAuthenticated,
     uid,
-    setUser
+    setUser,
+    fetchUser
   }
 })

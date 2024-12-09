@@ -1,4 +1,4 @@
-import { nextTick, ref, watch } from 'vue'
+import { ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
 import { useAuthStore } from '@/stores/auth'
 import { getNoteContent, addNote, removeNote, hasNote } from '@/services/guide'
