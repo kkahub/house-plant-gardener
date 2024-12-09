@@ -75,6 +75,7 @@ export const useNote = (name: string, code: string) => {
       isNoteView.value = false
     }
   }
+
   watch(isAuthenticated, () => getNoteStatus(), { immediate: true })
 
   return {

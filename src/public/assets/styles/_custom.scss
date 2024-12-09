@@ -4,85 +4,91 @@
     background: #fff;
   }
   #container {
+    margin-top: 0;
     padding-top: 0;
+    transition: all 0.15s ease-in;
   }
+  &.zero {
+    #header {
+      border-bottom: 0;
+      background: transparent;
 
-  #header.zero {
-    border-bottom: 0;
-    background: transparent;
-
-    .logo {
-      color: #fff;
-    }
-    .members {
-      li {
-        &:not(:first-child)::before {
-          content: '';
-          background: $c-dark;
-        }
-        a,
-        button {
-          color: $c-txt-light;
-
-          &:hover {
-            color: #fff;
-          }
-        }
-        span,
-        strong {
-          color: $c-txt-light;
-        }
+      .logo {
+        color: #fff;
       }
-    }
-    #gnb {
-      > li {
-        &:hover {
-          > .sub_menu {
-            background: rgba(0, 0, 0, 0.5);
+      .members {
+        li {
+          &:not(:first-child)::before {
+            content: '';
+            background: $c-dark;
           }
-        }
-        &.active {
-          > a {
-            color: #fff;
+          a,
+          button {
+            color: $c-txt-light;
 
             &:hover {
               color: #fff;
             }
           }
-          &::after {
-            content: '';
-            background: $c-main;
+          span,
+          strong {
+            color: $c-txt-light;
           }
         }
-        > a {
-          color: $c-txt-light;
-
+      }
+      #gnb {
+        > li {
           &:hover {
-            color: #fff;
+            > .sub_menu {
+              background: rgba(0, 0, 0, 0.5);
+            }
+          }
+          &.active {
+            > a {
+              color: #fff;
+
+              &:hover {
+                color: #fff;
+              }
+            }
+            &::after {
+              content: '';
+              background: $c-main;
+            }
+          }
+          > a {
+            color: $c-txt-light;
+
+            &:hover {
+              color: #fff;
+            }
+          }
+          &:hover {
+            &::after {
+              content: '';
+              position: absolute;
+              bottom: 0;
+              width: 100%;
+              height: 3px;
+              background: $c-main;
+            }
           }
         }
-        &:hover {
-          &::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            width: 100%;
-            height: 3px;
-            background: $c-main;
+      }
+      .sub_menu {
+        > li {
+          a {
+            color: $c-txt-light;
+
+            &:hover {
+              color: #fff;
+            }
           }
         }
       }
     }
-    .sub_menu {
-      > li {
-        a {
-          color: $c-txt-light;
-
-          &:hover {
-            color: #fff;
-          }
-        }
-      }
+    #container {
+      margin-top: -80px;
     }
   }
   .title_wrap {

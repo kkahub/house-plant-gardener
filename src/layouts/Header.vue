@@ -1,5 +1,5 @@
 <template>
-  <header id="header" :class="{ zero: isZero }">
+  <header id="header">
     <h1>
       <a class="logo" href="/">
         <img src="@/public/assets/images/logo.png" alt="로고" />Gardeners Guide
@@ -59,8 +59,6 @@ import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { storeToRefs } from 'pinia'
 
-const position = ref(0)
-const isZero = ref(true)
 const route = useRoute()
 const router = useRouter()
 const path = ref('')
@@ -69,23 +67,9 @@ const { isAuthenticated, user } = storeToRefs(authStore)
 const isEmailVerified = ref(true)
 
 path.value = route.path
-position.value = window.scrollY
-
-const mainScrollHandler = () => {
-  position.value = window.scrollY
-  if (position.value === 0) {
-    isZero.value = true
-  } else {
-    isZero.value = false
-  }
-}
-onMounted(() => {
-  document.addEventListener('scroll', mainScrollHandler)
-})
 
 const handleLogout = async () => {
   await logout()
-  // window.localStorage.removeItem('auth/user')
   alert('로그아웃 하셨습니다.')
   router.push('/')
 }
