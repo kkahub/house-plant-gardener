@@ -201,7 +201,7 @@ export async function hasBookmark(uid: string, plantId: string) {
 
 // 식물도감 노트 가져오기
 export async function getNoteContent(uid: string, plantId: string) {
-  const docSnap = await getDoc(doc(db, 'guide_notes', plantId))
+  const docSnap = await getDoc(doc(db, 'guide_notes', `${uid}_${plantId}`))
 
   if (docSnap.data()?.note !== undefined) {
     return await docSnap.data()?.note
