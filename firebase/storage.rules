@@ -7,7 +7,7 @@ service firebase.storage {
   match /b/{bucket}/o {
     match /{allPaths=**} {
       //allow read, write: if false;
-      allow read, write: if request.time < timestamp.date(2024, 12, 29);
+      allow read, write: if request.time < timestamp.date(2025, 11, 30);
     }
   }
 }

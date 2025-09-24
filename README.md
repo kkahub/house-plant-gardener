@@ -66,3 +66,20 @@ House Plant Gardeners Project
 **산림청 국립수목원 식물자원 서비스 :** [API 소개>>](https://www.data.go.kr/data/15000312/openapi.do)
 
 **농촌진흥청 실내정원용 식물 :** [API 소개>>](https://www.data.go.kr/data/15059042/openapi.do)
+
+## 프로젝트 주의사항
+
+- yarn install 후에도 파이어베이스 별도 설치 필요
+  -- npm install -g firebase-tools
+  -- firebase --version 로 확인
+  -- cd firebase
+  -- firebase login
+  -- cd functions
+  -- yarn install
+  -- /firebase/functions/serviceAccountKey.json 파일 넣기
+  -- ./.env 파일 넣기
+
+<br/><br/>
+
+- 보안규칙 배포
+  -- firebase deploy --only firestore
