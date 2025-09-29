@@ -403,11 +403,11 @@ export const getBookmarkList = async ({
   const listParams = {
     pageNo: currentPage,
     numOfRows: currentPageSize,
-    sw: searchWord
+    reqSearchWrd: searchWord
   }
 
   const res = await Promise.all(
-    searchName.map((keyword) => getGuideListRequest({ ...listParams, sw: keyword }))
+    searchName.map((keyword) => getGuideListRequest({ ...listParams, reqSearchWrd: keyword }))
   )
 
   const resArray = await Promise.all(
@@ -477,11 +477,11 @@ export const getNoteList = async ({
   const listParams = {
     pageNo: currentPage,
     numOfRows: currentPageSize,
-    sw: searchWord
+    reqSearchWrd: searchWord
   }
 
   const res = await Promise.all(
-    searchName.map((keyword) => getGuideListRequest({ ...listParams, sw: keyword }))
+    searchName.map((keyword) => getGuideListRequest({ ...listParams, reqSearchWrd: keyword }))
   )
 
   const resArray = await Promise.all(
