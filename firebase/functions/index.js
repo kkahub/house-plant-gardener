@@ -32,7 +32,7 @@ const region = 'asia-northeast3'
 // 식물도감 리스트 서버 호출
 exports.guideList = functions.region(region).https.onRequest((req, response) => {
   cors(req, response, () => {
-    const baseApiUrl = `http://openapi.nature.go.kr/openapi/service/rest/PlantService/plntIlstrSearch?serviceKey=${process.env.GUIDE_APIKEY}`
+    const baseApiUrl = `https://apis.data.go.kr/1400119/PlantResource/plantPilbkSearch?serviceKey=${process.env.GUIDE_APIKEY}`
     const queryParams = Object.entries(req.query)
       .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
       .join('&')

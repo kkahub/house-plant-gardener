@@ -2,6 +2,8 @@ import {
   type GuideListParams,
   type GuideListData,
   type GuideList,
+  type GuideImgParams,
+  type GuideImgData,
   type GuideDetail
 } from '@/types/guide'
 import * as xmlToJson from '../plugin/xmlToJson'
@@ -30,7 +32,8 @@ const getGuideListRequest = async (params: GuideListParams) => {
     .join('&')
 
   const response = await fetch(
-    `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/guideList?st=1&${queryString}`,
+    `https://apis.data.go.kr/1400119/PlantResource/plantPilbkSearch?serviceKey=${import.meta.env.VITE_GUIDE_API_KEY}&${queryString}`,
+    // `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/guideList?st=1&${queryString}`,
     { mode: 'cors' }
   )
 
@@ -39,6 +42,24 @@ const getGuideListRequest = async (params: GuideListParams) => {
   }
 
   return response
+}
+
+const getGuideImgRequest = async (params: GuideImgParams) => {
+  const queryString = Object.entries(params)
+    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+    .join('&')
+
+  const response = await fetch(
+    `https://api.odcloud.kr/api/15116414/v1/uddi:b63f89a7-c57b-43c6-8868-f68d44ce17e5?serviceKey=${import.meta.env.VITE_GUIDE_API_KEY}&${queryString}`,
+    // `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/guideList?st=1&${queryString}`,
+    { mode: 'cors' }
+  )
+
+  if (!response.ok) {
+    throw new Error(`API 요청 실패 사유: ${response.statusText}`)
+  }
+
+  return response.json()
 }
 
 // 식물도감 리스트
@@ -54,11 +75,16 @@ const getGuideList = async ({
   const listParams = {
     pageNo: currentPage,
     numOfRows: currentPageSize,
-    sw: searchWord
+    reqSearchWrd: searchWord
+  }
+  const imgParams = {
+    page: 0,
+    perPage: 0
   }
 
   try {
     const res = await getGuideListRequest(listParams)
+    const imgRes = await getGuideImgRequest(imgParams)
 
     // 식물 기본 정보 json변환
     const listString = await res.text()
@@ -67,35 +93,46 @@ const getGuideList = async ({
     const listData = listObject.response.body.items.item
     const plantInfoList: GuideList[] | null = []
 
+    // 식물 이미지 매칭
+    const imgData = imgRes.data
+
     if (listData !== undefined) {
       // 기본 정보 편집
       if (listData.length === undefined) {
         // 리스트가 한 개일 때 한 객체로만 들어옴
         const {
-          detailYn,
-          frstRgstnDtm,
+          apgFamilyKorNm,
+          apgFamilyNm,
           lastUpdtDtm,
           notRcmmGnrlNm,
           plantSpecsScnm,
-          snnmScnm,
-          ...GuideList
+          ...GuideItem
         } = listData
-        GuideList.total = 1
-        plantInfoList.push(GuideList)
+        GuideItem.total = 1
+        plantInfoList.push(GuideItem)
       } else {
         listData.map((item: GuideListData) => {
           const {
-            detailYn,
-            frstRgstnDtm,
+            apgFamilyKorNm,
+            apgFamilyNm,
             lastUpdtDtm,
             notRcmmGnrlNm,
             plantSpecsScnm,
-            snnmScnm,
-            ...GuideList
+            ...GuideItem
           } = item
-          const list: any = GuideList
-          list.total = Number(listObject.response.body.totalCount)
-          plantInfoList.push(list)
+
+          const infoItem: any = GuideItem
+
+          // const matchedImage = imgData.find((item: any) => {
+          //   item.국명 === infoItem.plantGnrlNm
+          // })
+
+          // if (matchedImage) {
+          //   infoItem.imgUrl = matchedImage.이미지파일경로
+          // }
+
+          infoItem.total = Number(listObject.response.body.totalCount)
+          plantInfoList.push(infoItem)
         })
       }
     }
@@ -233,16 +270,17 @@ export async function hasNote(uid: string, plantId: string) {
 // 식물도감 상세페이지
 export const getGuideDetail = async (name: string, code: string) => {
   const params = {
-    q1: code
+    reqPlantPilbkNo: code
   }
 
-  const getGuideDetailRequest = async (params: { q1: string }) => {
+  const getGuideDetailRequest = async (params: { reqPlantPilbkNo: string }) => {
     const queryString = Object.entries(params)
       .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
       .join('&')
 
     const response = await fetch(
-      `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/guideDetail?${queryString}`,
+      `https://apis.data.go.kr/1400119/PlantResource/plantPilbkInfo?serviceKey=${import.meta.env.VITE_GUIDE_API_KEY}&${queryString}`,
+      // `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/guideDetail?${queryString}`,
       { mode: 'cors' }
     )
 
