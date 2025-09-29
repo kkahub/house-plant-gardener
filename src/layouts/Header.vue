@@ -1,9 +1,7 @@
 <template>
   <header id="header">
     <h1>
-      <a class="logo" href="/">
-        <img src="@/public/assets/images/logo.png" alt="로고" />Gardeners Guide
-      </a>
+      <a class="logo" href="/"> <img src="/public/images/logo.png" alt="로고" />Gardeners Guide </a>
     </h1>
     <nav>
       <div class="menu_wrap">

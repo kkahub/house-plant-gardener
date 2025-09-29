@@ -38,8 +38,8 @@
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-import slideImg1 from '@/public/assets/images/slide/slide_img01.jpg'
-import slideImg2 from '@/public/assets/images/slide/slide_img02.jpg'
+import slideImg1 from '/public/images/slide/slide_img01.jpg'
+import slideImg2 from '/public/images/slide/slide_img02.jpg'
 
 import { Navigation, Pagination, Autoplay, A11y } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/vue'

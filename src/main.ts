@@ -1,5 +1,5 @@
 // SCSS
-import './public/assets/styles/styles.scss'
+import '/public/styles/styles.scss'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
