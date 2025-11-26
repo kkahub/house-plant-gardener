@@ -57,6 +57,7 @@ export interface GuideList {
   genusNm: string
   plantGnrlNm: string
   plantPilbkNo: string
+  plantSpecsScnm: string
   total: number
 }
 

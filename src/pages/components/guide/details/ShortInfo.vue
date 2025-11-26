@@ -59,6 +59,7 @@
 </template>
 
 <script setup lang="ts">
+import type { PropType } from 'vue'
 import { useIsShow } from '@/composables/useIsShow'
 import { useLike } from '@/composables/useLike'
 
@@ -116,16 +117,16 @@ const props = defineProps({
     default: ''
   },
   toggleBookmark: {
-    type: Function,
-    default: () => {}
+    type: Function as PropType<(isNote: boolean) => void>,
+    required: true
   },
   isBookmark: {
     type: Boolean,
     default: false
   },
   toggleNote: {
-    type: Function,
-    default: () => {}
+    type: Function as PropType<() => void>,
+    required: true
   },
   isNote: {
     type: Boolean,

@@ -44,14 +44,15 @@ const getGuideListRequest = async (params: GuideListParams) => {
   return response
 }
 
-const getGuideImgRequest = async (params: GuideImgParams) => {
-  const queryString = Object.entries(params)
-    .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
-    .join('&')
+// const getGuideImgRequest = async (params: GuideImgParams) => {
+const getGuideImgRequest = async () => {
+  // const queryString = Object.entries(params)
+  //   .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+  // .join('&')
 
   const response = await fetch(
-    `https://api.odcloud.kr/api/15116414/v1/uddi:b63f89a7-c57b-43c6-8868-f68d44ce17e5?serviceKey=${import.meta.env.VITE_GUIDE_API_KEY}&${queryString}`,
-    // `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/guideList?st=1&${queryString}`,
+    `/service/guideImg?token=${import.meta.env.VITE_PLANT_IMAGE_API_TOKEN}`,
+    // `https://trefle.io/api/v1/plants?token=${import.meta.env.VITE_GUIDE_API_KEY}&filter[common_name]=${queryString}`,
     { mode: 'cors' }
   )
 
@@ -77,14 +78,14 @@ const getGuideList = async ({
     numOfRows: currentPageSize,
     reqSearchWrd: searchWord
   }
-  const imgParams = {
+  const nameParams = {
     page: 0,
     perPage: 0
   }
 
   try {
     const res = await getGuideListRequest(listParams)
-    const imgRes = await getGuideImgRequest(imgParams)
+    const imgRes = await getGuideImgRequest()
 
     // 식물 기본 정보 json변환
     const listString = await res.text()
@@ -93,40 +94,35 @@ const getGuideList = async ({
     const listData = listObject.response.body.items.item
     const plantInfoList: GuideList[] | null = []
 
-    // 식물 이미지 매칭
-    const imgData = imgRes.data
-
     if (listData !== undefined) {
       // 기본 정보 편집
       if (listData.length === undefined) {
         // 리스트가 한 개일 때 한 객체로만 들어옴
-        const {
-          apgFamilyKorNm,
-          apgFamilyNm,
-          lastUpdtDtm,
-          notRcmmGnrlNm,
-          plantSpecsScnm,
-          ...GuideItem
-        } = listData
+        const { apgFamilyKorNm, apgFamilyNm, lastUpdtDtm, notRcmmGnrlNm, ...GuideItem } = listData
         GuideItem.total = 1
         plantInfoList.push(GuideItem)
       } else {
         listData.map((item: GuideListData) => {
-          const {
-            apgFamilyKorNm,
-            apgFamilyNm,
-            lastUpdtDtm,
-            notRcmmGnrlNm,
-            plantSpecsScnm,
-            ...GuideItem
-          } = item
+          const { apgFamilyKorNm, apgFamilyNm, lastUpdtDtm, notRcmmGnrlNm, ...GuideItem } = item
 
           const infoItem: any = GuideItem
 
-          // const matchedImage = imgData.find((item: any) => {
-          //   item.국명 === infoItem.plantGnrlNm
-          // })
+          const plantNameList: string[] = listData.map((item: any) => {
+            const nameArray = item.plantSpecsScnm.split(' ')
+            return `${nameArray[0]} ${nameArray[1]}`
+          })
 
+          // 식물 이미지 매칭
+          const imgData = imgRes.data
+
+          const matchedImage = imgData.find((item: any) => {
+            const nameArray = `${item.family} ${item.genus}`
+            const isImg = plantNameList.indexOf(nameArray)
+            // if (!isImg) {
+            // }
+            console.log(isImg)
+          })
+          matchedImage
           // if (matchedImage) {
           //   infoItem.imgUrl = matchedImage.이미지파일경로
           // }
@@ -431,15 +427,8 @@ export const getBookmarkList = async ({
         accordItem = [listData]
       }
 
-      const {
-        detailYn,
-        frstRgstnDtm,
-        lastUpdtDtm,
-        notRcmmGnrlNm,
-        plantSpecsScnm,
-        snnmScnm,
-        ...GuideList
-      } = accordItem[0]
+      const { detailYn, frstRgstnDtm, lastUpdtDtm, notRcmmGnrlNm, snnmScnm, ...GuideList } =
+        accordItem[0]
 
       GuideList.total = searchCode.length
 
@@ -505,15 +494,8 @@ export const getNoteList = async ({
         accordItem = [listData]
       }
 
-      const {
-        detailYn,
-        frstRgstnDtm,
-        lastUpdtDtm,
-        notRcmmGnrlNm,
-        plantSpecsScnm,
-        snnmScnm,
-        ...GuideList
-      } = accordItem[0]
+      const { detailYn, frstRgstnDtm, lastUpdtDtm, notRcmmGnrlNm, snnmScnm, ...GuideList } =
+        accordItem[0]
 
       GuideList.total = searchCode.length
 

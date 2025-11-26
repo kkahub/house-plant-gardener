@@ -98,6 +98,17 @@ const { isLoading, execute } = useAsyncState(
   }
 )
 
+// // Trefle 이미지 데이터 가져오기
+// const { isLoading: isLoadingImg, execute: executeImg } = useAsyncState(
+//   () =>
+//     getGuideImgList({
+//       currentPage: currentPage.value,
+//       currentPageSize: pageSize.value,
+//       searchWord: keyword.value,
+//       isTrefle: true
+//     }),
+// )
+
 const executePage = async () => {
   await execute()
 }
