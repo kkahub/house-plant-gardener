@@ -2,9 +2,11 @@ import {
   type GuideListParams,
   type GuideListData,
   type GuideList,
-  type GuideImgParams,
-  type GuideImgData,
-  type GuideDetail
+  type GuideListWithImage,
+  type TrefleDataItem,
+  type GuideDetail,
+  type GuideListResponse,
+  type GuideDetailResponse
 } from '@/types/guide'
 import * as xmlToJson from '../plugin/xmlToJson'
 import { db } from '@/firebase/firebase'
@@ -33,7 +35,6 @@ const getGuideListRequest = async (params: GuideListParams) => {
 
   const response = await fetch(
     `https://apis.data.go.kr/1400119/PlantResource/plantPilbkSearch?serviceKey=${import.meta.env.VITE_GUIDE_API_KEY}&${queryString}`,
-    // `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/guideList?st=1&${queryString}`,
     { mode: 'cors' }
   )
 
@@ -44,15 +45,15 @@ const getGuideListRequest = async (params: GuideListParams) => {
   return response
 }
 
-// const getGuideImgRequest = async (params: GuideImgParams) => {
-const getGuideImgRequest = async () => {
-  // const queryString = Object.entries(params)
-  //   .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
-  // .join('&')
+const trefleCache = new Map<string, any>()
+
+const getGuideImgRequest2 = async (params: string) => {
+  if (trefleCache.has(params)) {
+    return trefleCache.get(params)
+  }
 
   const response = await fetch(
-    `/service/guideImg?token=${import.meta.env.VITE_PLANT_IMAGE_API_TOKEN}`,
-    // `https://trefle.io/api/v1/plants?token=${import.meta.env.VITE_GUIDE_API_KEY}&filter[common_name]=${queryString}`,
+    `/service/guideImg/search?token=${import.meta.env.VITE_PLANT_IMAGE_API_TOKEN}&q=${params}`,
     { mode: 'cors' }
   )
 
@@ -60,7 +61,11 @@ const getGuideImgRequest = async () => {
     throw new Error(`API 요청 실패 사유: ${response.statusText}`)
   }
 
-  return response.json()
+  const data = await response.json()
+
+  trefleCache.set(params, data)
+
+  return data
 }
 
 // 식물도감 리스트
@@ -72,68 +77,57 @@ const getGuideList = async ({
   currentPage: number
   currentPageSize: number
   searchWord: string
-}) => {
+}): Promise<GuideListWithImage[] | null | []> => {
   const listParams = {
     pageNo: currentPage,
     numOfRows: currentPageSize,
     reqSearchWrd: searchWord
   }
-  const nameParams = {
-    page: 0,
-    perPage: 0
-  }
 
   try {
     const res = await getGuideListRequest(listParams)
-    const imgRes = await getGuideImgRequest()
 
     // 식물 기본 정보 json변환
     const listString = await res.text()
     const listNode = new DOMParser().parseFromString(listString, 'text/xml')
-    const listObject: any = xmlToJson.convertJson(listNode)
+    const listObject = xmlToJson.convertJson(listNode) as GuideListResponse
     const listData = listObject.response.body.items.item
-    const plantInfoList: GuideList[] | null = []
-
+    const plantInfoList: GuideList[] = []
+    
     if (listData !== undefined) {
       // 기본 정보 편집
-      if (listData.length === undefined) {
-        // 리스트가 한 개일 때 한 객체로만 들어옴
-        const { apgFamilyKorNm, apgFamilyNm, lastUpdtDtm, notRcmmGnrlNm, ...GuideItem } = listData
-        GuideItem.total = 1
-        plantInfoList.push(GuideItem)
-      } else {
-        listData.map((item: GuideListData) => {
-          const { apgFamilyKorNm, apgFamilyNm, lastUpdtDtm, notRcmmGnrlNm, ...GuideItem } = item
-
-          const infoItem: any = GuideItem
-
-          const plantNameList: string[] = listData.map((item: any) => {
-            const nameArray = item.plantSpecsScnm.split(' ')
-            return `${nameArray[0]} ${nameArray[1]}`
-          })
-
-          // 식물 이미지 매칭
-          const imgData = imgRes.data
-
-          const matchedImage = imgData.find((item: any) => {
-            const nameArray = `${item.family} ${item.genus}`
-            const isImg = plantNameList.indexOf(nameArray)
-            // if (!isImg) {
-            // }
-            console.log(isImg)
-          })
-          matchedImage
-          // if (matchedImage) {
-          //   infoItem.imgUrl = matchedImage.이미지파일경로
-          // }
-
-          infoItem.total = Number(listObject.response.body.totalCount)
-          plantInfoList.push(infoItem)
-        })
-      }
+      const items = Array.isArray(listData) ? listData : [listData]
+      items.forEach((item: GuideListData) => {
+        const { apgFamilyKorNm, apgFamilyNm, lastUpdtDtm, notRcmmGnrlNm, ...GuideItem } = item
+        const infoItem: GuideList = GuideItem
+        infoItem.total = Number(listObject.response.body.totalCount)
+        plantInfoList.push(infoItem)
+      })
+    } else {
+      return []
     }
-    return plantInfoList
+
+    // 이미지 정보 요청
+    const updatedPlantInfoList: GuideListWithImage[] = await Promise.all(
+      plantInfoList.map(async (plantInfo) => {
+        const nameArray = plantInfo.plantSpecsScnm.split(' ')
+        const searchName = `${nameArray[0]} ${nameArray[1]}`
+        const trefleRes = await getGuideImgRequest2(searchName)
+        const trefleData = trefleRes.data
+
+        const matchedData = trefleData.find(
+          (item: TrefleDataItem) => item.scientific_name === searchName && item.image_url !== null
+        )
+
+        return {
+          ...plantInfo,
+          imgSrc: matchedData ? matchedData.image_url : null
+        }
+      })
+    )
+    return updatedPlantInfoList
   } catch (error) {
+    console.error(error)
     return null
   }
 }
@@ -276,7 +270,6 @@ export const getGuideDetail = async (name: string, code: string) => {
 
     const response = await fetch(
       `https://apis.data.go.kr/1400119/PlantResource/plantPilbkInfo?serviceKey=${import.meta.env.VITE_GUIDE_API_KEY}&${queryString}`,
-      // `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/guideDetail?${queryString}`,
       { mode: 'cors' }
     )
 
@@ -293,7 +286,7 @@ export const getGuideDetail = async (name: string, code: string) => {
     // 식물 상세 정보 json변환
     const detailString = await res.text()
     const detailNode = new DOMParser().parseFromString(detailString, 'text/xml')
-    const detailObject: any = xmlToJson.convertJson(detailNode)
+    const detailObject = xmlToJson.convertJson(detailNode) as GuideDetailResponse
     const detailData = detailObject.response.body.item
 
     // 도감 검색 결과 없음
@@ -304,6 +297,15 @@ export const getGuideDetail = async (name: string, code: string) => {
       const readCount = await getReadCount(name, code)
       incrementReadCount(name, code, readCount)
     }
+    
+    // Trefle API를 통해 이미지 정보 가져오기
+    const nameArray = detailData.plantSpecsScnm.split(' ')
+    const searchName = `${nameArray[0]} ${nameArray[1]}`
+    const trefleRes = await getGuideImgRequest2(searchName)
+    const trefleData = trefleRes.data
+    const matchedData = trefleData.find(
+      (item: TrefleDataItem) => item.scientific_name === searchName && item.image_url !== null
+    )
 
     // 가든 상세 정보 편집
     const {
@@ -364,7 +366,10 @@ export const getGuideDetail = async (name: string, code: string) => {
       ...info
     } = detailData
 
-    const GuideDetail: GuideDetail = info
+    const GuideDetail: GuideDetail = {
+      ...info,
+      imgSrc: matchedData ? matchedData.image_url : null,
+    }
 
     return GuideDetail
   } catch (error) {
@@ -413,7 +418,7 @@ export const getBookmarkList = async ({
       // 식물 기본 정보 json변환
       const listString = await item.text()
       const listNode = new DOMParser().parseFromString(listString, 'text/xml')
-      const listObject: any = xmlToJson.convertJson(listNode)
+      const listObject = xmlToJson.convertJson(listNode) as GuideDetailResponse
       const listData = listObject.response.body.items.item
       const code: string = searchCode[index]
       let accordItem = []

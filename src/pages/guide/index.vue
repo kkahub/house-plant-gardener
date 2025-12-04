@@ -4,7 +4,9 @@
       <div class="page_header">
         <div class="title_wrap">
           <h2 class="page_title">식물 도감</h2>
-          <p class="title_desc">국립수목원에서 제공하는 식물의 정보를 자세히 소개합니다.</p>
+          <p class="title_desc">
+            Trefle에서 제공하는 식물 이미지와<br>국립수목원에서 제공하는 식물의 정보를 자세히 소개합니다.
+          </p>
         </div>
         <SearchBar
           v-model:keyword="keyword"
@@ -55,14 +57,15 @@ import getGuideList from '@/services/guide'
 import SearchBar from '@/pages/components/guide/SearchBar.vue'
 import GuideList from '@/components/apps/guide/GuideList.vue'
 import Pagination from '@/components/pagination/Pagination.vue'
+import type { GuideListWithImage } from '@/types/guide'
 
 const guidePageStore = usePageStore()
 const { keyword, currentPage } = storeToRefs(guidePageStore)
 
-const plantItems = ref()
+const plantItems = ref<GuideListWithImage[]>([])
 const prevKeyword = ref('')
 const isNoData = ref(false)
-const pageSize = ref(16)
+const pageSize = ref(8)
 
 const route = useRoute()
 const router = useRouter()
@@ -97,17 +100,6 @@ const { isLoading, execute } = useAsyncState(
     }
   }
 )
-
-// // Trefle 이미지 데이터 가져오기
-// const { isLoading: isLoadingImg, execute: executeImg } = useAsyncState(
-//   () =>
-//     getGuideImgList({
-//       currentPage: currentPage.value,
-//       currentPageSize: pageSize.value,
-//       searchWord: keyword.value,
-//       isTrefle: true
-//     }),
-// )
 
 const executePage = async () => {
   await execute()

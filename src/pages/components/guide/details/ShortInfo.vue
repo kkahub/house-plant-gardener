@@ -1,7 +1,7 @@
 <template>
   <div class="wrap_img">
     <div class="inner_img">
-      <img v-if="imgSrc !== 'NONE'" :src="imgSrc" :alt="imgAlt + ' 사진'" />
+      <img v-if="imgSrc !== null" :src="imgSrc" :alt="imgAlt + ' 사진'" />
       <div v-else class="no_img">
         <div class="msg">
           <font-awesome-icon :icon="['fas', 'seedling']" />

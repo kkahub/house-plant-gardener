@@ -11,27 +11,23 @@ export interface GuideImgParams {
   perPage: number
 }
 
-/* 식물도감 이미지 데이터 */
-export interface GuideImgData {
-  국명: string
-  이미지종류: string
-  이미지파일경로: string
-  학명: string
+/* 식물도감 리스트 응답 타입 */
+export interface GuideListResponse {
+  response: {
+    body: {
+      items: {
+        item: GuideListData[] | GuideListData
+      }
+      totalCount: string
+    }
+  }
 }
 
-/* 식물도감 기본정보 원데이터 */
-export interface GuideListData {
-  apgFamilyKorNm: string
-  apgFamilyNm: string
-  familyKorNm: string
-  familyNm: string
-  genusKorNm: string
-  genusNm: string
-  lastUpdtDtm: string
-  notRcmmGnrlNm: string
-  plantGnrlNm: string
-  plantPilbkNo: string
-  plantSpecsScnm: string
+/* Trefle 식물도감 원데이터 */
+export interface TrefleDataItem {
+  scientific_name: string
+  image_url: string | null
+  [key: string]: any
 }
 
 /**
@@ -50,6 +46,21 @@ export interface GuideListData {
  * plantPilbkNo: 식물도감번호
  * plantSpecsScnm: 학명
  */
+
+/* 식물도감 기본정보 원데이터 */
+export interface GuideListData {
+  apgFamilyKorNm: string
+  apgFamilyNm: string
+  familyKorNm: string
+  familyNm: string
+  genusKorNm: string
+  genusNm: string
+  lastUpdtDtm: string
+  notRcmmGnrlNm: string
+  plantGnrlNm: string
+  plantPilbkNo: string
+  plantSpecsScnm: string
+}
 export interface GuideList {
   familyKorNm: string
   familyNm: string
@@ -59,6 +70,19 @@ export interface GuideList {
   plantPilbkNo: string
   plantSpecsScnm: string
   total: number
+}
+
+export interface GuideListWithImage extends GuideList {
+  imgSrc: string | null
+}
+
+/* 식물도감 상세페이지 응답 타입 */
+export interface GuideDetailResponse {
+  response: {
+    body: {
+      item: GuideDetailData
+    }
+  }
 }
 
 /* 식물도감 상세페이지 원데이터 */
@@ -207,6 +231,7 @@ export interface GuideDetail {
   stemDesc: string
   sz: string
   useMthdDesc: string
+  imgSrc?: string | null
 }
 
 // 북마크 타입
@@ -223,3 +248,4 @@ export interface NoteList {
   plantId: string
   uid: string
 }
+

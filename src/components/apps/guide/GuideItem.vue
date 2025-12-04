@@ -2,7 +2,7 @@
   <li>
     <router-link :to="`/guide/detail/${item?.plantGnrlNm}-${item?.plantPilbkNo}`">
       <div class="wrap_thum">
-        <img v-if="noImg" :src="item?.imgUrl" />
+        <img v-if="noImg" :src="item?.imgSrc" />
         <div v-else class="no_img">
           <div class="msg">
             <font-awesome-icon :icon="['fas', 'seedling']" />
@@ -66,7 +66,7 @@ const noImg = ref(true)
 const readCount = ref(0)
 
 // 썸네일 이미지 없을 때
-noImg.value = props.item?.imgUrl !== 'NONE'
+noImg.value = props.item?.imgSrc !== null
 
 // 좋아요 컴포저블
 const { toggleLike, isLike, likeCount } = useLike(props.item?.plantGnrlNm, props.item?.plantPilbkNo)

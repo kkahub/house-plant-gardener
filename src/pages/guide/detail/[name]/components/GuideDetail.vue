@@ -10,7 +10,7 @@
       <div class="card_gallery">
         <ShortInfo
           :code="code"
-          :img-src="info?.imgUrl"
+          :img-src="info?.imgSrc"
           :img-alt="info?.familyKorNm"
           :name="info?.plantGnrlNm"
           :scientific-name="info?.plantSpecsScnm"
