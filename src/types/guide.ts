@@ -23,13 +23,6 @@ export interface GuideListResponse {
   }
 }
 
-/* Trefle 식물도감 원데이터 */
-export interface TrefleDataItem {
-  scientific_name: string
-  image_url: string | null
-  [key: string]: any
-}
-
 /**
  *
  * 식물도감 기본정보
@@ -61,14 +54,24 @@ export interface GuideListData {
   plantPilbkNo: string
   plantSpecsScnm: string
 }
-export interface GuideList {
-  familyKorNm: string
-  familyNm: string
-  genusKorNm: string
-  genusNm: string
-  plantGnrlNm: string
-  plantPilbkNo: string
-  plantSpecsScnm: string
+
+/* Trefle 식물도감 원데이터 */
+export interface TrefleDataItem {
+  scientific_name: string
+  image_url: string | null
+  [key: string]: any
+}
+
+export type GuideList = Pick<
+  GuideListData,
+  | 'familyKorNm'
+  | 'familyNm'
+  | 'genusKorNm'
+  | 'genusNm'
+  | 'plantGnrlNm'
+  | 'plantPilbkNo'
+  | 'plantSpecsScnm'
+> & {
   total: number
 }
 
@@ -203,34 +206,36 @@ export interface GuideDetailData {
  * useMthdDesc:	사용법
  *
  */
-export interface GuideDetail {
-  brdMthdDesc: string
-  grwEvrntDesc: string
-  rrngType: string
-  cprtCtnt: string
-  dstrb: string
-  osDstrb: string
-  familyKorNm: string
-  familyNm: string
-  farmSpftDesc: string
-  flwrDesc: string
-  fritDesc: string
-  rootDesc: string
-  genusKorNm: string
-  genusNm: string
-  imgUrl: string
-  leafDesc: string
-  note: string
-  orplcNm: string
-  plantGnrlNm: string
-  plantSpecsScnm: string
-  shpe: string
-  smlrPlntDesc: string
-  spft: string
-  sporeDesc: string
-  stemDesc: string
-  sz: string
-  useMthdDesc: string
+export type GuideDetail = Pick<
+  GuideDetailData,
+  | 'brdMthdDesc'
+  | 'grwEvrntDesc'
+  | 'rrngType'
+  | 'cprtCtnt'
+  | 'dstrb'
+  | 'osDstrb'
+  | 'familyKorNm'
+  | 'familyNm'
+  | 'farmSpftDesc'
+  | 'flwrDesc'
+  | 'fritDesc'
+  | 'rootDesc'
+  | 'genusKorNm'
+  | 'genusNm'
+  | 'imgUrl'
+  | 'leafDesc'
+  | 'note'
+  | 'orplcNm'
+  | 'plantGnrlNm'
+  | 'plantSpecsScnm'
+  | 'shpe'
+  | 'smlrPlntDesc'
+  | 'spft'
+  | 'sporeDesc'
+  | 'stemDesc'
+  | 'sz'
+  | 'useMthdDesc'
+> & {
   imgSrc?: string | null
 }
 
@@ -248,4 +253,3 @@ export interface NoteList {
   plantId: string
   uid: string
 }
-

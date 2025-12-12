@@ -3,7 +3,7 @@
     <div class="member_header">
       <h1>
         <a class="logo" href="/">
-          <img src="/public/images/logo.png" alt="로고" />
+          <img src="/images/logo.png" alt="로고" />
           Gardeners Guide
         </a>
       </h1>

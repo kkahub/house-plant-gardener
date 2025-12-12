@@ -3,7 +3,7 @@
     <div class="member_header">
       <h1>
         <a class="logo" href="/">
-          <img src="/public/images/logo.png" alt="로고" />
+          <img src="/images/logo.png" alt="로고" />
           Gardeners Guide
         </a>
       </h1>
@@ -76,7 +76,7 @@ const schema = yup.object().shape({
     .string()
     .required('비밀번호를 입력해주세요.')
     .matches(
-      /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}[^\s]*$/,
+      /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?])(?!.*\s).{8,16}$/,
       '문자, 숫자, 특수문자 조합 8~16자로 해주세요.(공백제외)'
     ),
   passwordConfirm: yup

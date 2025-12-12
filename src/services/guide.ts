@@ -92,16 +92,27 @@ const getGuideList = async ({
     const listNode = new DOMParser().parseFromString(listString, 'text/xml')
     const listObject = xmlToJson.convertJson(listNode) as GuideListResponse
     const listData = listObject.response.body.items.item
+    const totalCount = Number(listObject.response.body.totalCount)
     const plantInfoList: GuideList[] = []
-    
+
     if (listData !== undefined) {
       // 기본 정보 편집
       const items = Array.isArray(listData) ? listData : [listData]
       items.forEach((item: GuideListData) => {
-        const { apgFamilyKorNm, apgFamilyNm, lastUpdtDtm, notRcmmGnrlNm, ...GuideItem } = item
-        const infoItem: GuideList = GuideItem
-        infoItem.total = Number(listObject.response.body.totalCount)
-        plantInfoList.push(infoItem)
+        plantInfoList.push({
+          familyKorNm: item.familyKorNm,
+          familyNm: item.familyNm,
+          genusKorNm: item.genusKorNm,
+          genusNm: item.genusNm,
+          plantGnrlNm: item.plantGnrlNm,
+          plantPilbkNo: item.plantPilbkNo,
+          plantSpecsScnm: item.plantSpecsScnm,
+          total: totalCount
+        })
+        // const { apgFamilyKorNm, apgFamilyNm, lastUpdtDtm, notRcmmGnrlNm, ...GuideItem } = item
+        // const infoItem: GuideList = GuideItem
+        // infoItem.total = Number(listObject.response.body.totalCount)
+        // plantInfoList.push(infoItem)
       })
     } else {
       return []
@@ -297,7 +308,7 @@ export const getGuideDetail = async (name: string, code: string) => {
       const readCount = await getReadCount(name, code)
       incrementReadCount(name, code, readCount)
     }
-    
+
     // Trefle API를 통해 이미지 정보 가져오기
     const nameArray = detailData.plantSpecsScnm.split(' ')
     const searchName = `${nameArray[0]} ${nameArray[1]}`
@@ -368,7 +379,7 @@ export const getGuideDetail = async (name: string, code: string) => {
 
     const GuideDetail: GuideDetail = {
       ...info,
-      imgSrc: matchedData ? matchedData.image_url : null,
+      imgSrc: matchedData ? matchedData.image_url : null
     }
 
     return GuideDetail
@@ -413,35 +424,41 @@ export const getBookmarkList = async ({
 
   const resArray = await Promise.all(
     res.map(async (item, index) => {
-      let plantInfoList: GuideList[] | null = []
-
       // 식물 기본 정보 json변환
       const listString = await item.text()
       const listNode = new DOMParser().parseFromString(listString, 'text/xml')
-      const listObject = xmlToJson.convertJson(listNode) as GuideDetailResponse
+      const listObject = xmlToJson.convertJson(listNode) as GuideListResponse
       const listData = listObject.response.body.items.item
       const code: string = searchCode[index]
-      let accordItem = []
+      let accordItem: GuideListData[] = []
 
       // 여러개일 경우 일치하는 아이템 찾기
-      if (listData.length !== undefined) {
-        accordItem = listData.filter(
-          (item: GuideListData) => code === (item.plantPilbkNo as unknown)
-        )
-      } else {
-        accordItem = [listData]
+      if (listData) {
+        const items = Array.isArray(listData) ? listData : [listData]
+        const filteredItems = items.filter((item: GuideListData) => code === item.plantPilbkNo)
+        if (filteredItems.length > 0) {
+          accordItem = filteredItems
+        }
       }
 
-      const { detailYn, frstRgstnDtm, lastUpdtDtm, notRcmmGnrlNm, snnmScnm, ...GuideList } =
+      if (accordItem.length === 0) {
+        // 일치하는 항목이 없을 경우에 대한 처리 (예: null 반환 또는 에러 처리)
+        return null // 또는 적절한 기본값
+      }
+
+      const { apgFamilyKorNm, apgFamilyNm, lastUpdtDtm, notRcmmGnrlNm, ...guideItem } =
         accordItem[0]
 
-      GuideList.total = searchCode.length
+      const result: GuideList = {
+        ...guideItem,
+        total: searchCode.length
+      }
 
-      return (plantInfoList = { ...GuideList })
+      return result
     })
   )
 
-  return resArray
+  return resArray.filter((item): item is GuideList => item !== null)
 }
 
 export const getNoteID = async () => {
@@ -480,33 +497,38 @@ export const getNoteList = async ({
 
   const resArray = await Promise.all(
     res.map(async (item, index) => {
-      let plantInfoList: GuideList[] | null = []
-
       // 식물 기본 정보 json변환
       const listString = await item.text()
       const listNode = new DOMParser().parseFromString(listString, 'text/xml')
-      const listObject: any = xmlToJson.convertJson(listNode)
+      const listObject = xmlToJson.convertJson(listNode) as GuideListResponse
       const listData = listObject.response.body.items.item
       const code: string = searchCode[index]
-      let accordItem = []
+      let accordItem: GuideListData[] = []
 
       // 여러개일 경우 일치하는 아이템 찾기
-      if (listData.length !== undefined) {
-        accordItem = listData.filter(
-          (item: GuideListData) => code === (item.plantPilbkNo as unknown)
-        )
-      } else {
-        accordItem = [listData]
+      if (listData) {
+        const items = Array.isArray(listData) ? listData : [listData]
+        const filteredItems = items.filter((item: GuideListData) => code === item.plantPilbkNo)
+        if (filteredItems.length > 0) {
+          accordItem = filteredItems
+        }
       }
 
-      const { detailYn, frstRgstnDtm, lastUpdtDtm, notRcmmGnrlNm, snnmScnm, ...GuideList } =
+      if (accordItem.length === 0) {
+        return null
+      }
+
+      const { apgFamilyKorNm, apgFamilyNm, lastUpdtDtm, notRcmmGnrlNm, ...guideItem } =
         accordItem[0]
 
-      GuideList.total = searchCode.length
+      const result: GuideList = {
+        ...guideItem,
+        total: searchCode.length
+      }
 
-      return (plantInfoList = { ...GuideList })
+      return result
     })
   )
 
-  return resArray
+  return resArray.filter((item): item is GuideList => item !== null)
 }
