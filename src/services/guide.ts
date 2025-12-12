@@ -109,11 +109,8 @@ const getGuideList = async ({
           plantSpecsScnm: item.plantSpecsScnm,
           total: totalCount
         })
-        // const { apgFamilyKorNm, apgFamilyNm, lastUpdtDtm, notRcmmGnrlNm, ...GuideItem } = item
-        // const infoItem: GuideList = GuideItem
-        // infoItem.total = Number(listObject.response.body.totalCount)
-        // plantInfoList.push(infoItem)
       })
+      console.log(`plantInfoList: `, plantInfoList)
     } else {
       return []
     }
