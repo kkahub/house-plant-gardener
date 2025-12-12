@@ -115,6 +115,33 @@ exports.indoorDetail = functions.region(region).https.onRequest((req, response) 
   })
 })
 
+// 식물도감 Trefle 이미지 호출
+exports.trefleImg = functions.region(region).https.onRequest((req, response) => {
+  cors(req, response, () => {
+    const proxyPathDelete = req.path.replace('/service/guideImg/', '')
+    const baseApiUrl = `https://trefle.io/api/v1/plants/${proxyPathDelete}`
+    const queryParams = Object.entries(req.query)
+      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
+      .join('&')
+    const token = process.env.VITE_PLANT_IMAGE_API_TOKEN
+    const apiUrl = `${baseApiUrl}?token=${token}&${queryParams}`
+
+    request(
+      {
+        url: apiUrl
+      },
+      function (error, res, body) {
+        if (error) {
+          logger.error('Trefle API request error:', error)
+          response.status(500).send({ error: 'Error calling Trefle API', details: error })
+        } else {
+          response.send(body)
+        }
+      }
+    )
+  })
+})
+
 // exports.onCreateLike = onDocumentCreated(
 //   {
 //     region,

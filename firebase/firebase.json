@@ -27,8 +27,8 @@
     ],
     "rewrites": [
       {
-        "source": "/service/guideImg/search",
-        "function": "app"
+        "source": "/service/guideImg/**",
+        "function": "trefleImg"
       },
       {
         "source": "**",
