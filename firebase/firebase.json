@@ -27,6 +27,10 @@
     ],
     "rewrites": [
       {
+        "source": "/service/guideImg/search",
+        "function": "app"
+      },
+      {
         "source": "**",
         "function": "app",
         "destination": "/index.html"
