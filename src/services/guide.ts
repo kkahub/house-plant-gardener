@@ -110,7 +110,6 @@ const getGuideList = async ({
           total: totalCount
         })
       })
-      console.log(`plantInfoList: `, plantInfoList)
     } else {
       return []
     }
