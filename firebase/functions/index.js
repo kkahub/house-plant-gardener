@@ -56,7 +56,7 @@ exports.guideList = functions.region(region).https.onRequest((req, response) => 
 // 식물도감 상세페이지 서버 호출
 exports.guideDetail = functions.region(region).https.onRequest((req, response) => {
   cors(req, response, () => {
-    const baseApiUrl = `http://openapi.nature.go.kr/openapi/service/rest/PlantService/plntIlstrInfo?serviceKey=${process.env.GUIDE_APIKEY}`
+    const baseApiUrl = `https://apis.data.go.kr/1400119/PlantResource/plantPilbkInfo?serviceKey=${process.env.GUIDE_APIKEY}`
     const queryParams = Object.entries(req.query)
       .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
       .join('&')
@@ -123,7 +123,7 @@ exports.trefleImg = functions.region(region).https.onRequest((req, response) => 
     const queryParams = Object.entries(req.query)
       .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
       .join('&')
-    const token = process.env.VITE_PLANT_IMAGE_API_TOKEN
+    const token = process.env.TREFLE_TOKEN
     const apiUrl = `${baseApiUrl}?token=${token}&${queryParams}`
 
     request(
@@ -135,7 +135,11 @@ exports.trefleImg = functions.region(region).https.onRequest((req, response) => 
           logger.error('Trefle API request error:', error)
           response.status(500).send({ error: 'Error calling Trefle API', details: error })
         } else {
-          response.send(body)
+          // 429 등 오류 응답이 CDN에 캐시되지 않도록 성공일 때만 캐시
+          if (res.statusCode === 200) {
+            response.set('Cache-Control', 'public, max-age=86400, s-maxage=604800')
+          }
+          response.status(res.statusCode).send(body)
         }
       }
     )

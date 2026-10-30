@@ -158,8 +158,8 @@ export async function removeLike(uid: string, plantCode: string) {
 }
 
 // 식물도감 좋아요 수 +-
-export async function likeCountComputed(plantCode: string, likeCount: number) {
-  await setDoc(doc(db, 'plantCode', plantCode), { likeCount }, { merge: true })
+export async function likeCountComputed(plantCode: string, step: 1 | -1) {
+  await setDoc(doc(db, 'plantCode', plantCode), { likeCount: increment(step) }, { merge: true })
 }
 
 // 식물도감 좋아요 수 가져오기
@@ -194,8 +194,8 @@ export async function removeBookmark(uid: string, plantCode: string) {
 }
 
 // 식물도감 북마크 수 +-
-export async function updateBookmarkCount(plantCode: string, bookmarkCount: number) {
-  await setDoc(doc(db, 'plantCode', plantCode), { bookmarkCount }, { merge: true })
+export async function updateBookmarkCount(plantCode: string, step: 1 | -1) {
+  await setDoc(doc(db, 'plantCode', plantCode), { bookmarkCount: increment(step) }, { merge: true })
 }
 
 // 식물도감 북마크 수 가져오기

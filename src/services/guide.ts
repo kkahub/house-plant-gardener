@@ -34,7 +34,7 @@ const getGuideListRequest = async (params: GuideListParams) => {
     .join('&')
 
   const response = await fetch(
-    `https://apis.data.go.kr/1400119/PlantResource/plantPilbkSearch?serviceKey=${import.meta.env.VITE_GUIDE_API_KEY}&${queryString}`,
+    `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/guideList?${queryString}`,
     { mode: 'cors' }
   )
 
@@ -53,15 +53,17 @@ const getGuideImgRequest2 = async (params: string) => {
   }
 
   const response = await fetch(
-    `/service/guideImg/search?token=${import.meta.env.VITE_PLANT_IMAGE_API_TOKEN}&q=${params}`,
+    `/service/guideImg/search?q=${params}`,
     { mode: 'cors' }
   )
 
-  if (!response.ok) {
-    throw new Error(`API 요청 실패 사유: ${response.statusText}`)
-  }
+  // 429(요청 제한) 등 실패 시 이미지 없이 리스트는 보여주고, 캐시하지 않아 다음에 재요청
+  if (!response.ok) return { data: [] }
 
   const data = await response.json()
+
+  // Trefle 오류 응답(토큰 오류 등)은 200이어도 data가 없으므로 캐시하지 않음
+  if (!Array.isArray(data.data)) return { data: [] }
 
   trefleCache.set(params, data)
 
@@ -176,8 +178,8 @@ export async function removeLike(uid: string, plantId: string) {
 }
 
 // 식물도감 좋아요 수 +-
-export async function likeCountComputed(name: string, plantCode: string, likeCount: number) {
-  await setDoc(doc(db, 'plantId', `${name}_${plantCode}`), { likeCount }, { merge: true })
+export async function likeCountComputed(name: string, plantCode: string, step: 1 | -1) {
+  await setDoc(doc(db, 'plantId', `${name}_${plantCode}`), { likeCount: increment(step) }, { merge: true })
 }
 
 // 식물도감 좋아요 수 가져오기
@@ -212,8 +214,8 @@ export async function removeBookmark(uid: string, plantId: string) {
 }
 
 // 식물도감 북마크 수 +-
-export async function updateBookmarkCount(name: string, plantCode: string, bookmarkCount: number) {
-  await setDoc(doc(db, 'plantId', `${name}_${plantCode}`), { bookmarkCount }, { merge: true })
+export async function updateBookmarkCount(name: string, plantCode: string, step: 1 | -1) {
+  await setDoc(doc(db, 'plantId', `${name}_${plantCode}`), { bookmarkCount: increment(step) }, { merge: true })
 }
 
 // 식물도감 북마크 수 가져오기
@@ -276,7 +278,7 @@ export const getGuideDetail = async (name: string, code: string) => {
       .join('&')
 
     const response = await fetch(
-      `https://apis.data.go.kr/1400119/PlantResource/plantPilbkInfo?serviceKey=${import.meta.env.VITE_GUIDE_API_KEY}&${queryString}`,
+      `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/guideDetail?${queryString}`,
       { mode: 'cors' }
     )
 

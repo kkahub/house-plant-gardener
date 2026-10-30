@@ -44,11 +44,11 @@ export const useBookmark = (name: string, code: string) => {
       }
       await removeBookmark(uid.value, `${guideName.value}_${guideCode.value}`)
       bookmarkCount.value -= 1
-      updateBookmarkCount(guideName.value, guideCode.value, bookmarkCount.value)
+      updateBookmarkCount(guideName.value, guideCode.value, -1)
     } else {
       await addBookmark(uid.value, `${guideName.value}_${guideCode.value}`)
       bookmarkCount.value += 1
-      updateBookmarkCount(guideName.value, guideCode.value, bookmarkCount.value)
+      updateBookmarkCount(guideName.value, guideCode.value, 1)
     }
     isBookmark.value = !isBookmark.value
   }

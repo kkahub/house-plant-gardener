@@ -35,11 +35,11 @@ export const useLike = (name: string, code: string) => {
     if (isLike.value) {
       await removeLike(uid.value, `${guideName.value}_${guideCode.value}`)
       likeCount.value -= 1
-      likeCountComputed(guideName.value, guideCode.value, likeCount.value)
+      likeCountComputed(guideName.value, guideCode.value, -1)
     } else {
       await addLike(uid.value, `${guideName.value}_${guideCode.value}`)
       likeCount.value += 1
-      likeCountComputed(guideName.value, guideCode.value, likeCount.value)
+      likeCountComputed(guideName.value, guideCode.value, 1)
     }
     isLike.value = !isLike.value
   }
