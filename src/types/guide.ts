@@ -62,6 +62,14 @@ export interface TrefleDataItem {
   [key: string]: any
 }
 
+/* iNaturalist 식물 이미지 (Functions에서 매칭 후 필요한 값만 전달) */
+export interface INatPhoto {
+  id: number
+  licenseCode: string
+  mediumUrl: string
+  attribution: string
+}
+
 export type GuideList = Pick<
   GuideListData,
   | 'familyKorNm'
@@ -77,6 +85,7 @@ export type GuideList = Pick<
 
 export interface GuideListWithImage extends GuideList {
   imgSrc: string | null
+  inatImg: INatPhoto | null
 }
 
 /* 식물도감 상세페이지 응답 타입 */
@@ -237,6 +246,7 @@ export type GuideDetail = Pick<
   | 'useMthdDesc'
 > & {
   imgSrc?: string | null
+  inatImg?: INatPhoto | null
 }
 
 // 북마크 타입

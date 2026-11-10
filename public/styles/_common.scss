@@ -674,6 +674,7 @@ textarea {
   }
 }
 .wrap_thum {
+  @include wh(245px);
   overflow: hidden;
   position: relative;
   border-radius: 10px;
@@ -690,14 +691,8 @@ textarea {
   }
   .swiper_wrap,
   img {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    min-width: 100%;
-    min-height: 100%;
-    max-width: 370px;
-    max-height: 370px;
+    @include wh(100%);
+    object-fit: cover;
   }
 }
 

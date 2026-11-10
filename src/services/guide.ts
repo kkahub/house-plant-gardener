@@ -3,7 +3,8 @@ import {
   type GuideListData,
   type GuideList,
   type GuideListWithImage,
-  type TrefleDataItem,
+  // type TrefleDataItem,
+  type INatPhoto,
   type GuideDetail,
   type GuideListResponse,
   type GuideDetailResponse
@@ -45,27 +46,43 @@ const getGuideListRequest = async (params: GuideListParams) => {
   return response
 }
 
-const trefleCache = new Map<string, any>()
+// const trefleCache = new Map<string, any>()
 
-const getGuideImgRequest2 = async (params: string) => {
-  if (trefleCache.has(params)) {
-    return trefleCache.get(params)
+// const getGuideImgRequest2 = async (params: string) => {
+//   if (trefleCache.has(params)) {
+//     return trefleCache.get(params)
+//   }
+
+//   const response = await fetch(`/service/guideImg/search?q=${params}`, { mode: 'cors' })
+
+//   if (!response.ok) return { data: [] }
+
+//   const data = await response.json()
+
+//   if (!Array.isArray(data.data)) return { data: [] }
+
+//   trefleCache.set(params, data)
+
+//   return data
+// }
+
+const inatCache = new Map<string, INatPhoto | null>()
+
+// 학명 매칭과 라이선스 필터는 Functions에서 처리하고, 일치하는 사진이 없으면 null
+const getGuideInatRequest = async (params: string): Promise<INatPhoto | null> => {
+  if (inatCache.has(params)) {
+    return inatCache.get(params)!
   }
 
-  const response = await fetch(
-    `/service/guideImg/search?q=${params}`,
-    { mode: 'cors' }
-  )
+  const response = await fetch(`/service/guideInat/photo?name=${encodeURIComponent(params)}`, {
+    mode: 'cors'
+  })
 
-  // 429(요청 제한) 등 실패 시 이미지 없이 리스트는 보여주고, 캐시하지 않아 다음에 재요청
-  if (!response.ok) return { data: [] }
+  if (!response.ok) return null
 
-  const data = await response.json()
+  const data: INatPhoto | null = await response.json().catch(() => null)
 
-  // Trefle 오류 응답(토큰 오류 등)은 200이어도 data가 없으므로 캐시하지 않음
-  if (!Array.isArray(data.data)) return { data: [] }
-
-  trefleCache.set(params, data)
+  inatCache.set(params, data)
 
   return data
 }
@@ -121,16 +138,20 @@ const getGuideList = async ({
       plantInfoList.map(async (plantInfo) => {
         const nameArray = plantInfo.plantSpecsScnm.split(' ')
         const searchName = `${nameArray[0]} ${nameArray[1]}`
-        const trefleRes = await getGuideImgRequest2(searchName)
-        const trefleData = trefleRes.data
+        // const trefleRes = await getGuideImgRequest2(searchName)
+        // const trefleData = trefleRes.data
 
-        const matchedData = trefleData.find(
-          (item: TrefleDataItem) => item.scientific_name === searchName && item.image_url !== null
-        )
+        // const matchedData = trefleData.find(
+        //   (item: TrefleDataItem) => item.scientific_name === searchName && item.image_url !== null
+        // )
+
+        const inatImg = await getGuideInatRequest(searchName)
 
         return {
           ...plantInfo,
-          imgSrc: matchedData ? matchedData.image_url : null
+          // imgSrc: matchedData ? matchedData.image_url : null,
+          imgSrc: inatImg ? inatImg.mediumUrl : null,
+          inatImg
         }
       })
     )
@@ -179,7 +200,11 @@ export async function removeLike(uid: string, plantId: string) {
 
 // 식물도감 좋아요 수 +-
 export async function likeCountComputed(name: string, plantCode: string, step: 1 | -1) {
-  await setDoc(doc(db, 'plantId', `${name}_${plantCode}`), { likeCount: increment(step) }, { merge: true })
+  await setDoc(
+    doc(db, 'plantId', `${name}_${plantCode}`),
+    { likeCount: increment(step) },
+    { merge: true }
+  )
 }
 
 // 식물도감 좋아요 수 가져오기
@@ -215,7 +240,11 @@ export async function removeBookmark(uid: string, plantId: string) {
 
 // 식물도감 북마크 수 +-
 export async function updateBookmarkCount(name: string, plantCode: string, step: 1 | -1) {
-  await setDoc(doc(db, 'plantId', `${name}_${plantCode}`), { bookmarkCount: increment(step) }, { merge: true })
+  await setDoc(
+    doc(db, 'plantId', `${name}_${plantCode}`),
+    { bookmarkCount: increment(step) },
+    { merge: true }
+  )
 }
 
 // 식물도감 북마크 수 가져오기
@@ -307,14 +336,18 @@ export const getGuideDetail = async (name: string, code: string) => {
       incrementReadCount(name, code, readCount)
     }
 
-    // Trefle API를 통해 이미지 정보 가져오기
     const nameArray = detailData.plantSpecsScnm.split(' ')
     const searchName = `${nameArray[0]} ${nameArray[1]}`
-    const trefleRes = await getGuideImgRequest2(searchName)
-    const trefleData = trefleRes.data
-    const matchedData = trefleData.find(
-      (item: TrefleDataItem) => item.scientific_name === searchName && item.image_url !== null
-    )
+
+    // Trefle API를 통해 이미지 정보 가져오기
+    // const trefleRes = await getGuideImgRequest2(searchName)
+    // const trefleData = trefleRes.data
+    // const matchedData = trefleData.find(
+    //   (item: TrefleDataItem) => item.scientific_name === searchName && item.image_url !== null
+    // )
+
+    // iNaturalist API를 통해 이미지 정보 가져오기
+    const inatImg = await getGuideInatRequest(searchName)
 
     // 가든 상세 정보 편집
     const {
@@ -377,7 +410,9 @@ export const getGuideDetail = async (name: string, code: string) => {
 
     const GuideDetail: GuideDetail = {
       ...info,
-      imgSrc: matchedData ? matchedData.image_url : null
+      // imgSrc: matchedData ? matchedData.image_url : null,
+      imgSrc: inatImg ? inatImg.mediumUrl : null,
+      inatImg
     }
 
     return GuideDetail
@@ -439,9 +474,9 @@ export const getBookmarkList = async ({
         }
       }
 
+      // 일치하는 항목이 없을 경우
       if (accordItem.length === 0) {
-        // 일치하는 항목이 없을 경우에 대한 처리 (예: null 반환 또는 에러 처리)
-        return null // 또는 적절한 기본값
+        return null
       }
 
       const { apgFamilyKorNm, apgFamilyNm, lastUpdtDtm, notRcmmGnrlNm, ...guideItem } =

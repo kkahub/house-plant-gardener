@@ -38,6 +38,18 @@
   display: inline-block;
 }
 
+// 모양
+// 사각 박스 사이즈
+@mixin wh($w: null, $h: null) {
+  @if $h == null {
+    width: $w;
+    height: $w;
+  } @else {
+    width: $w;
+    height: $h;
+  }
+}
+
 // ... 말줄임
 @mixin ellipsis {
   overflow: hidden;

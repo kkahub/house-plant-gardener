@@ -30,6 +30,12 @@ export default defineConfig({
         target: 'https://asia-northeast3-house-plant-gardener.cloudfunctions.net',
         changeOrigin: true,
         rewrite: (path) => `/trefleImg${path}`
+      },
+      // iNaturalist 식물 이미지
+      '/service/guideInat': {
+        target: 'https://asia-northeast3-house-plant-gardener.cloudfunctions.net',
+        changeOrigin: true,
+        rewrite: (path) => `/inaturalistImg${path}`
       }
     }
   },

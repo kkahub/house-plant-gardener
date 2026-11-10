@@ -2,7 +2,10 @@
   <li>
     <router-link :to="`/guide/detail/${item?.plantGnrlNm}-${item?.plantPilbkNo}`">
       <div class="wrap_thum">
-        <img v-if="noImg" :src="item?.imgSrc" />
+        <template v-if="item.imgSrc">
+          <img :src="item.imgSrc" />
+          <div v-if="item.inatImg?.attribution" class="source">{{ item.inatImg.attribution }}</div>
+        </template>
         <div v-else class="no_img">
           <div class="msg">
             <font-awesome-icon :icon="['fas', 'seedling']" />
@@ -51,22 +54,18 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, type PropType } from 'vue'
 import { useLike } from '@/composables/useLike'
 import { useBookmark } from '@/composables/useBookmark'
 import { useNote } from '@/composables/useNote'
 import { useAsyncState } from '@vueuse/core'
 import { getReadCount } from '@/services/guide'
+import type { GuideListWithImage } from '@/types/guide'
 
 const props = defineProps({
-  item: Object,
-  default: () => ({})
+  item: { type: Object as PropType<GuideListWithImage>, default: () => ({}) }
 })
-const noImg = ref(true)
 const readCount = ref(0)
-
-// 썸네일 이미지 없을 때
-noImg.value = props.item?.imgSrc !== null
 
 // 좋아요 컴포저블
 const { toggleLike, isLike, likeCount } = useLike(props.item?.plantGnrlNm, props.item?.plantPilbkNo)

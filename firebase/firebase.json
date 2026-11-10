@@ -31,6 +31,10 @@
         "function": "trefleImg"
       },
       {
+        "source": "/service/guideInat/**",
+        "function": "inaturalistImg"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }
