@@ -3,7 +3,6 @@ import {
   type GuideListData,
   type GuideList,
   type GuideListWithImage,
-  // type TrefleDataItem,
   type INatPhoto,
   type GuideDetail,
   type GuideListResponse,
@@ -46,29 +45,9 @@ const getGuideListRequest = async (params: GuideListParams) => {
   return response
 }
 
-// const trefleCache = new Map<string, any>()
-
-// const getGuideImgRequest2 = async (params: string) => {
-//   if (trefleCache.has(params)) {
-//     return trefleCache.get(params)
-//   }
-
-//   const response = await fetch(`/service/guideImg/search?q=${params}`, { mode: 'cors' })
-
-//   if (!response.ok) return { data: [] }
-
-//   const data = await response.json()
-
-//   if (!Array.isArray(data.data)) return { data: [] }
-
-//   trefleCache.set(params, data)
-
-//   return data
-// }
-
 const inatCache = new Map<string, INatPhoto | null>()
 
-// 학명 매칭과 라이선스 필터는 Functions에서 처리하고, 일치하는 사진이 없으면 null
+// 일치하는 사진 찾기
 const getGuideInatRequest = async (params: string): Promise<INatPhoto | null> => {
   if (inatCache.has(params)) {
     return inatCache.get(params)!
@@ -85,6 +64,16 @@ const getGuideInatRequest = async (params: string): Promise<INatPhoto | null> =>
   inatCache.set(params, data)
 
   return data
+}
+
+export const getGuideImage = (scientificName: string) => {
+  const [genus, species] = scientificName.split(' ')
+  return getGuideInatRequest(`${genus} ${species}`).catch(() => null)
+}
+
+export const getShortAttribution = (attribution = '') => {
+  const cutIndex = attribution.search(/(^|, )(some|no) /i)
+  return cutIndex === -1 ? attribution.split(',')[0] : attribution.slice(0, cutIndex)
 }
 
 // 식물도감 리스트
@@ -136,20 +125,10 @@ const getGuideList = async ({
     // 이미지 정보 요청
     const updatedPlantInfoList: GuideListWithImage[] = await Promise.all(
       plantInfoList.map(async (plantInfo) => {
-        const nameArray = plantInfo.plantSpecsScnm.split(' ')
-        const searchName = `${nameArray[0]} ${nameArray[1]}`
-        // const trefleRes = await getGuideImgRequest2(searchName)
-        // const trefleData = trefleRes.data
-
-        // const matchedData = trefleData.find(
-        //   (item: TrefleDataItem) => item.scientific_name === searchName && item.image_url !== null
-        // )
-
-        const inatImg = await getGuideInatRequest(searchName)
+        const inatImg = await getGuideImage(plantInfo.plantSpecsScnm)
 
         return {
           ...plantInfo,
-          // imgSrc: matchedData ? matchedData.image_url : null,
           imgSrc: inatImg ? inatImg.mediumUrl : null,
           inatImg
         }
@@ -176,7 +155,7 @@ export async function getReadCount(name: string, plantCode: string) {
 }
 
 // 식물도감 조회수 증가
-export async function incrementReadCount(name: string, plantCode: string, readCount: number) {
+export async function incrementReadCount(name: string, plantCode: string) {
   await setDoc(
     doc(db, 'plantId', `${name}_${plantCode}`),
     { readCount: increment(1) },
@@ -319,7 +298,7 @@ export const getGuideDetail = async (name: string, code: string) => {
   }
 
   try {
-    const res = await getGuideDetailRequest(params)
+    const res = await getGuideDetailRequest(params).catch(() => getGuideDetailRequest(params))
 
     // 식물 상세 정보 json변환
     const detailString = await res.text()
@@ -330,24 +309,10 @@ export const getGuideDetail = async (name: string, code: string) => {
     // 도감 검색 결과 없음
     if (detailData === undefined) return
 
-    // 로그인 회원만 조회수 가져온 후 증가
+    // 로그인 회원만 조회수 증가
     if (isAuthenticated.value === true) {
-      const readCount = await getReadCount(name, code)
-      incrementReadCount(name, code, readCount)
+      incrementReadCount(name, code)
     }
-
-    const nameArray = detailData.plantSpecsScnm.split(' ')
-    const searchName = `${nameArray[0]} ${nameArray[1]}`
-
-    // Trefle API를 통해 이미지 정보 가져오기
-    // const trefleRes = await getGuideImgRequest2(searchName)
-    // const trefleData = trefleRes.data
-    // const matchedData = trefleData.find(
-    //   (item: TrefleDataItem) => item.scientific_name === searchName && item.image_url !== null
-    // )
-
-    // iNaturalist API를 통해 이미지 정보 가져오기
-    const inatImg = await getGuideInatRequest(searchName)
 
     // 가든 상세 정보 편집
     const {
@@ -409,10 +374,7 @@ export const getGuideDetail = async (name: string, code: string) => {
     } = detailData
 
     const GuideDetail: GuideDetail = {
-      ...info,
-      // imgSrc: matchedData ? matchedData.image_url : null,
-      imgSrc: inatImg ? inatImg.mediumUrl : null,
-      inatImg
+      ...info
     }
 
     return GuideDetail
@@ -482,16 +444,20 @@ export const getBookmarkList = async ({
       const { apgFamilyKorNm, apgFamilyNm, lastUpdtDtm, notRcmmGnrlNm, ...guideItem } =
         accordItem[0]
 
-      const result: GuideList = {
+      const inatImg = await getGuideImage(guideItem.plantSpecsScnm)
+
+      const result: GuideListWithImage = {
         ...guideItem,
-        total: searchCode.length
+        total: searchCode.length,
+        imgSrc: inatImg ? inatImg.mediumUrl : null,
+        inatImg
       }
 
       return result
     })
   )
 
-  return resArray.filter((item): item is GuideList => item !== null)
+  return resArray.filter((item): item is GuideListWithImage => item !== null)
 }
 
 export const getNoteID = async () => {
@@ -504,64 +470,4 @@ export const getNoteID = async () => {
   const querySnapshot = await getDocs(q)
 
   return querySnapshot.docs.map((docu) => docu.data())
-}
-
-export const getNoteList = async ({
-  currentPage,
-  currentPageSize,
-  searchWord
-}: {
-  currentPage: number
-  currentPageSize: number
-  searchWord: string | string[]
-}) => {
-  const searchName = Object.values(searchWord).map((item) => item.split('_')[0])
-  const searchCode = Object.values(searchWord).map((item) => item.split('_')[1])
-
-  const listParams = {
-    pageNo: currentPage,
-    numOfRows: currentPageSize,
-    reqSearchWrd: searchWord
-  }
-
-  const res = await Promise.all(
-    searchName.map((keyword) => getGuideListRequest({ ...listParams, reqSearchWrd: keyword }))
-  )
-
-  const resArray = await Promise.all(
-    res.map(async (item, index) => {
-      // 식물 기본 정보 json변환
-      const listString = await item.text()
-      const listNode = new DOMParser().parseFromString(listString, 'text/xml')
-      const listObject = xmlToJson.convertJson(listNode) as GuideListResponse
-      const listData = listObject.response.body.items.item
-      const code: string = searchCode[index]
-      let accordItem: GuideListData[] = []
-
-      // 여러개일 경우 일치하는 아이템 찾기
-      if (listData) {
-        const items = Array.isArray(listData) ? listData : [listData]
-        const filteredItems = items.filter((item: GuideListData) => code === item.plantPilbkNo)
-        if (filteredItems.length > 0) {
-          accordItem = filteredItems
-        }
-      }
-
-      if (accordItem.length === 0) {
-        return null
-      }
-
-      const { apgFamilyKorNm, apgFamilyNm, lastUpdtDtm, notRcmmGnrlNm, ...guideItem } =
-        accordItem[0]
-
-      const result: GuideList = {
-        ...guideItem,
-        total: searchCode.length
-      }
-
-      return result
-    })
-  )
-
-  return resArray.filter((item): item is GuideList => item !== null)
 }

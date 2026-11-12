@@ -5,12 +5,6 @@ export interface GuideListParams {
   reqSearchWrd: string
 }
 
-/* 식물도감 이미지 파라미터 타입 */
-export interface GuideImgParams {
-  page: number
-  perPage: number
-}
-
 /* 식물도감 리스트 응답 타입 */
 export interface GuideListResponse {
   response: {
@@ -53,13 +47,6 @@ export interface GuideListData {
   plantGnrlNm: string
   plantPilbkNo: string
   plantSpecsScnm: string
-}
-
-/* Trefle 식물도감 원데이터 */
-export interface TrefleDataItem {
-  scientific_name: string
-  image_url: string | null
-  [key: string]: any
 }
 
 /* iNaturalist 식물 이미지 (Functions에서 매칭 후 필요한 값만 전달) */
@@ -244,10 +231,7 @@ export type GuideDetail = Pick<
   | 'stemDesc'
   | 'sz'
   | 'useMthdDesc'
-> & {
-  imgSrc?: string | null
-  inatImg?: INatPhoto | null
-}
+>
 
 // 북마크 타입
 export interface BookmarkList {

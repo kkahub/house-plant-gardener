@@ -27,10 +27,6 @@
     ],
     "rewrites": [
       {
-        "source": "/service/guideImg/**",
-        "function": "trefleImg"
-      },
-      {
         "source": "/service/guideInat/**",
         "function": "inaturalistImg"
       },

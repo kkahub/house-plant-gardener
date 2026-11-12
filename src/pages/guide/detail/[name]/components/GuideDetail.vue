@@ -1,17 +1,31 @@
 <template>
   <section class="wrap_guide_detail">
-    <div v-if="isLoading" class="inner con_loader">
-      <div class="loader_inner">
-        <div class="loader">로딩중...</div>
-      </div>
-    </div>
-    <div v-else class="inner">
+    <div class="inner">
       <!-- 기본 정보 -->
       <div class="card_gallery">
+        <div class="wrap_img">
+          <div class="inner_img">
+            <div v-if="img === undefined" class="loader_inner">
+              <div class="loader">로딩중...</div>
+            </div>
+            <template v-else-if="img">
+              <img :src="img.mediumUrl" :alt="name + ' 사진'" />
+              <div v-if="source" class="source">{{ source }}</div>
+            </template>
+            <div v-else class="no_img">
+              <div class="msg">
+                <font-awesome-icon :icon="['fas', 'seedling']" />
+                도감에 등록된 이미지가 없습니다.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div v-if="isLoading" class="short_info loader_inner">
+          <div class="loader">로딩중...</div>
+        </div>
         <ShortInfo
+          v-else
           :code="code"
-          :img-src="info?.imgSrc"
-          :img-alt="info?.familyKorNm"
           :name="info?.plantGnrlNm"
           :scientific-name="info?.plantSpecsScnm"
           :family-kr="info?.familyKorNm"
@@ -22,6 +36,7 @@
           :spread-kr="info?.dstrb"
           :spread="info?.osDstrb"
           :copy="info?.cprtCtnt"
+          :is-error="info === 'error'"
           :toggle-bookmark="toggleBookmark"
           :is-bookmark="isBookmark"
           :toggle-note="toggleNote"
@@ -31,91 +46,94 @@
         />
       </div>
       <!-- // 기본 정보 -->
-      <!-- 노트 -->
-      <ShortNote
-        :is-bookmark="isBookmark"
-        :is-note="isNote"
-        :is-note-view="isNoteView"
-        :is-edit-note="isEditNote"
-        :note-save="noteSave"
-        :edit-note="editNote"
-        :prev-note="prevNote"
-        :note-remove="noteRemove"
-        v-model:note-content="noteContent"
-      />
-      <!-- // 노트 -->
-      <!-- 상세 정보 -->
-      <div class="card_detail">
-        <!-- 재배 정보 -->
-        <DetailsCard
-          title="재배 정보"
-          v-if="
-            isShow(info?.grwEvrntDesc) ||
-            isShow(info?.rrngType) ||
-            isShow(info?.farmSpftDesc) ||
-            isShow(info?.brdMthdDesc)
-          "
-        >
-          <Growing
-            :grow-condition="info?.grwEvrntDesc"
-            :annual="info?.rrngType"
-            :grow-special="info?.farmSpftDesc"
-            :breeding="info?.brdMthdDesc"
-          />
-        </DetailsCard>
-        <!-- // 재배 정보 -->
-        <!-- 외형 -->
-        <DetailsCard
-          title="외형"
-          v-if="
-            isShow(info?.shpe) ||
-            isShow(info?.leafDesc) ||
-            isShow(info?.flwrDesc) ||
-            isShow(info?.fritDesc) ||
-            isShow(info?.stemDesc) ||
-            isShow(info?.rootDesc) ||
-            isShow(info?.sz) ||
-            isShow(info?.sporeDesc)
-          "
-        >
-          <Features
-            :shape="info?.shpe"
-            :leaf="info?.leafDesc"
-            :flower="info?.flwrDesc"
-            :fruit="info?.fritDesc"
-            :stem="info?.stemDesc"
-            :root="info?.rootDesc"
-            :size="info?.sz"
-            :spore="info?.sporeDesc"
-          />
-        </DetailsCard>
-        <!-- // 외형 -->
-        <!-- 특징 -->
-        <DetailsCard
-          title="특징"
-          v-if="isShow(info?.spft) || isShow(info?.useMthdDesc) || isShow(info?.note)"
-        >
-          <Signature :special="info?.spft" :use="info?.useMthdDesc" :note="info?.note" />
-        </DetailsCard>
-        <!-- // 특징 -->
-        <!-- 유사식물 -->
-        <DetailsCard title="유사식물" v-if="isShow(info?.smlrPlntDesc)">
-          <Similar :similar-plant="info?.smlrPlntDesc" />
-        </DetailsCard>
-        <!-- //유사식물 -->
-      </div>
-      <!-- // 상세 정보 -->
-      <div class="btn_group right">
-        <router-link to="/guide" class="btn btn_dark">목록으로</router-link>
-      </div>
+      <template v-if="!isLoading && info !== 'error'">
+        <!-- 노트 -->
+        <ShortNote
+          :is-bookmark="isBookmark"
+          :is-note="isNote"
+          :is-note-view="isNoteView"
+          :is-edit-note="isEditNote"
+          :note-save="noteSave"
+          :edit-note="editNote"
+          :prev-note="prevNote"
+          :note-remove="noteRemove"
+          v-model:note-content="noteContent"
+        />
+        <!-- // 노트 -->
+        <!-- 상세 정보 -->
+        <div class="card_detail">
+          <!-- 재배 정보 -->
+          <DetailsCard
+            title="재배 정보"
+            v-if="
+              isShow(info?.grwEvrntDesc) ||
+              isShow(info?.rrngType) ||
+              isShow(info?.farmSpftDesc) ||
+              isShow(info?.brdMthdDesc)
+            "
+          >
+            <Growing
+              :grow-condition="info?.grwEvrntDesc"
+              :annual="info?.rrngType"
+              :grow-special="info?.farmSpftDesc"
+              :breeding="info?.brdMthdDesc"
+            />
+          </DetailsCard>
+          <!-- // 재배 정보 -->
+          <!-- 외형 -->
+          <DetailsCard
+            title="외형"
+            v-if="
+              isShow(info?.shpe) ||
+              isShow(info?.leafDesc) ||
+              isShow(info?.flwrDesc) ||
+              isShow(info?.fritDesc) ||
+              isShow(info?.stemDesc) ||
+              isShow(info?.rootDesc) ||
+              isShow(info?.sz) ||
+              isShow(info?.sporeDesc)
+            "
+          >
+            <Features
+              :shape="info?.shpe"
+              :leaf="info?.leafDesc"
+              :flower="info?.flwrDesc"
+              :fruit="info?.fritDesc"
+              :stem="info?.stemDesc"
+              :root="info?.rootDesc"
+              :size="info?.sz"
+              :spore="info?.sporeDesc"
+            />
+          </DetailsCard>
+          <!-- // 외형 -->
+          <!-- 특징 -->
+          <DetailsCard
+            title="특징"
+            v-if="isShow(info?.spft) || isShow(info?.useMthdDesc) || isShow(info?.note)"
+          >
+            <Signature :special="info?.spft" :use="info?.useMthdDesc" :note="info?.note" />
+          </DetailsCard>
+          <!-- // 특징 -->
+          <!-- 유사식물 -->
+          <DetailsCard title="유사식물" v-if="isShow(info?.smlrPlntDesc)">
+            <Similar :similar-plant="info?.smlrPlntDesc" />
+          </DetailsCard>
+          <!-- //유사식물 -->
+        </div>
+        <!-- // 상세 정보 -->
+        <div class="btn_group right">
+          <router-link to="/guide" class="btn btn_dark">목록으로</router-link>
+        </div>
+      </template>
     </div>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { getGuideDetail } from '@/services/guide'
+import { getGuideDetail, getGuideImage, getShortAttribution } from '@/services/guide'
+import type { INatPhoto } from '@/types/guide'
 import { useAsyncState } from '@vueuse/core'
 import { useIsShow } from '@/composables/useIsShow'
 import { useBookmark } from '@/composables/useBookmark'
@@ -136,6 +154,14 @@ const name = ref(params[0])
 const code = ref(params[1])
 const prevNote = ref('')
 const { isShow } = useIsShow()
+const img = ref<INatPhoto | null>()
+const source = computed(() => getShortAttribution(img.value?.attribution))
+const scientificName: string | undefined = history.state?.scientificName
+
+const loadImage = (scientificName: string) =>
+  getGuideImage(scientificName).then((result) => (img.value = result))
+
+if (scientificName) loadImage(scientificName)
 
 const { isLoading } = useAsyncState(() => getGuideDetail(name.value, code.value), null, {
   onSuccess: (result) => {
@@ -144,6 +170,9 @@ const { isLoading } = useAsyncState(() => getGuideDetail(name.value, code.value)
       router.go(-1)
     } else {
       info.value = result
+      if (scientificName) return
+      if (result && result !== 'error') loadImage(result.plantSpecsScnm)
+      else img.value = null
     }
   }
 })

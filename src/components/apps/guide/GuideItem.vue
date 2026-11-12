@@ -1,10 +1,10 @@
 <template>
   <li>
-    <router-link :to="`/guide/detail/${item?.plantGnrlNm}-${item?.plantPilbkNo}`">
+    <router-link :to="detailLink">
       <div class="wrap_thum">
         <template v-if="item.imgSrc">
           <img :src="item.imgSrc" />
-          <div v-if="item.inatImg?.attribution" class="source">{{ item.inatImg.attribution }}</div>
+          <div v-if="source" class="source">{{ source }}</div>
         </template>
         <div v-else class="no_img">
           <div class="msg">
@@ -26,7 +26,7 @@
           <font-awesome-icon :icon="['fas', 'note-sticky']" />
         </div>
       </div>
-      <router-link :to="`/guide/detail/${item?.plantPilbkNo}`">
+      <router-link :to="detailLink">
         <div class="wrap_title">
           <h3 class="gallery_title">{{ item?.plantGnrlNm }}</h3>
         </div>
@@ -59,13 +59,18 @@ import { useLike } from '@/composables/useLike'
 import { useBookmark } from '@/composables/useBookmark'
 import { useNote } from '@/composables/useNote'
 import { useAsyncState } from '@vueuse/core'
-import { getReadCount } from '@/services/guide'
+import { getReadCount, getShortAttribution } from '@/services/guide'
 import type { GuideListWithImage } from '@/types/guide'
 
 const props = defineProps({
   item: { type: Object as PropType<GuideListWithImage>, default: () => ({}) }
 })
 const readCount = ref(0)
+const source = getShortAttribution(props.item.inatImg?.attribution)
+const detailLink = {
+  path: `/guide/detail/${props.item.plantGnrlNm}-${props.item.plantPilbkNo}`,
+  state: { scientificName: props.item.plantSpecsScnm }
+}
 
 // 좋아요 컴포저블
 const { toggleLike, isLike, likeCount } = useLike(props.item?.plantGnrlNm, props.item?.plantPilbkNo)

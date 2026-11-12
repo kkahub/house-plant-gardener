@@ -5,7 +5,9 @@ import { useAuthStore } from '@/stores/auth'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  extendRoutes: (routes) => setupLayouts(routes)
+  extendRoutes: (routes) => setupLayouts(routes),
+  scrollBehavior: (to, from, savedPosition) =>
+    savedPosition ?? (to.path === from.path ? false : { top: 0 })
 })
 
 router.beforeEach((to, from) => {

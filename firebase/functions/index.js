@@ -64,13 +64,68 @@ exports.guideDetail = functions.region(region).https.onRequest((req, response) =
 
     request(
       {
-        url: apiUrl
+        url: apiUrl,
+        timeout: 15000
       },
       function (error, res, body) {
         if (error) {
           response.status(500).send({ error: '500에러 발생', details: error })
         } else {
-          response.send(body)
+          if (res.statusCode === 200 && body.includes('<resultCode>00</resultCode>')) {
+            response.set('Cache-Control', 'public, max-age=86400, s-maxage=604800')
+          }
+          response.status(res.statusCode).send(body)
+        }
+      }
+    )
+  })
+})
+
+// 식물도감 iNaturalist 이미지 호출
+exports.inaturalistImg = functions.region(region).https.onRequest((req, response) => {
+  cors(req, response, () => {
+    const name = req.query.name
+
+    if (typeof name !== 'string' || name === '') {
+      response.status(400).send({ error: 'name 파라미터가 필요합니다' })
+      return
+    }
+
+    const apiUrl = `https://api.inaturalist.org/v1/taxa?q=${encodeURIComponent(name)}&per_page=5`
+
+    request(
+      {
+        url: apiUrl,
+        headers: { 'User-Agent': 'house-plant-gardener' }
+      },
+      function (error, res, body) {
+        if (error) {
+          logger.error('iNaturalist API request error:', error)
+          response.status(500).send({ error: 'Error calling iNaturalist API', details: error })
+        } else if (res.statusCode !== 200) {
+          // 429 등 오류 응답은 CDN에 캐시되지 않도록 상태 코드만 전달
+          response.status(res.statusCode).send(body)
+        } else {
+          const results = JSON.parse(body).results ?? []
+
+          // 라이선스가 없는 사진 제외
+          const matchedData = results.find(
+            (item) =>
+              (item.name === name || item.matched_term === name) && item.default_photo?.license_code
+          )
+          const photo = matchedData?.default_photo
+
+          response.set('Cache-Control', 'public, max-age=86400, s-maxage=604800')
+          response.json(
+            photo
+              ? {
+                  id: photo.id,
+                  licenseCode: photo.license_code,
+                  mediumUrl: photo.medium_url,
+                  attribution: photo.attribution
+                }
+              : null
+          )
         }
       }
     )
@@ -112,89 +167,6 @@ exports.indoorDetail = functions.region(region).https.onRequest((req, response) 
         response.send(body)
       }
     })
-  })
-})
-
-// 식물도감 Trefle 이미지 호출
-exports.trefleImg = functions.region(region).https.onRequest((req, response) => {
-  cors(req, response, () => {
-    const proxyPathDelete = req.path.replace('/service/guideImg/', '')
-    const baseApiUrl = `https://trefle.io/api/v1/plants/${proxyPathDelete}`
-    const queryParams = Object.entries(req.query)
-      .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
-      .join('&')
-    const token = process.env.TREFLE_TOKEN
-    const apiUrl = `${baseApiUrl}?token=${token}&${queryParams}`
-
-    request(
-      {
-        url: apiUrl
-      },
-      function (error, res, body) {
-        if (error) {
-          logger.error('Trefle API request error:', error)
-          response.status(500).send({ error: 'Error calling Trefle API', details: error })
-        } else {
-          // 성공일 때만 캐시
-          if (res.statusCode === 200) {
-            response.set('Cache-Control', 'public, max-age=86400, s-maxage=604800')
-          }
-          response.status(res.statusCode).send(body)
-        }
-      }
-    )
-  })
-})
-
-// 식물도감 iNaturalist 이미지 호출
-exports.inaturalistImg = functions.region(region).https.onRequest((req, response) => {
-  cors(req, response, () => {
-    const name = req.query.name
-
-    if (typeof name !== 'string' || name === '') {
-      response.status(400).send({ error: 'name 파라미터가 필요합니다' })
-      return
-    }
-
-    const apiUrl = `https://api.inaturalist.org/v1/taxa?q=${encodeURIComponent(name)}&per_page=5`
-
-    request(
-      {
-        url: apiUrl,
-        // iNaturalist API 권장 사항: 호출 주체를 알 수 있는 User-Agent 지정
-        headers: { 'User-Agent': 'house-plant-gardener' }
-      },
-      function (error, res, body) {
-        if (error) {
-          logger.error('iNaturalist API request error:', error)
-          response.status(500).send({ error: 'Error calling iNaturalist API', details: error })
-        } else if (res.statusCode !== 200) {
-          // 429 등 오류 응답은 CDN에 캐시되지 않도록 상태 코드만 전달
-          response.status(res.statusCode).send(body)
-        } else {
-          const results = JSON.parse(body).results ?? []
-
-          // 라이선스가 없는 사진 제외
-          const matchedData = results.find(
-            (item) =>
-              (item.name === name || item.matched_term === name) && item.default_photo?.license_code
-          )
-          const photo = matchedData?.default_photo
-
-          response.set('Cache-Control', 'public, max-age=86400, s-maxage=604800')
-          response.json(
-            photo
-              ? {
-                  id: photo.id,
-                  licenseCode: photo.license_code,
-                  mediumUrl: photo.medium_url,
-                  attribution: photo.attribution
-                }
-              : null
-          )
-        }
-      }
-    )
   })
 })
 

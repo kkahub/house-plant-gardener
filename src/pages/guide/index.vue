@@ -5,7 +5,7 @@
         <div class="title_wrap">
           <h2 class="page_title">식물 도감</h2>
           <p class="title_desc">
-            Trefle에서 제공하는 식물 이미지와<br>국립수목원에서 제공하는 식물의 정보를 자세히 소개합니다.
+            iNaturalist에서 제공하는 식물 이미지와<br>국립수목원에서 제공하는 식물의 정보를 자세히 소개합니다.
           </p>
         </div>
         <SearchBar

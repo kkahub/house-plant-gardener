@@ -25,12 +25,6 @@ export default defineConfig({
       //     rewrite: (path) => path.replace(/^\/service\/indoor/, ''),
       //     secure: false
       //   }
-      // Trefle 식물 이미지 (토큰은 함수에서 붙임)
-      '/service/guideImg': {
-        target: 'https://asia-northeast3-house-plant-gardener.cloudfunctions.net',
-        changeOrigin: true,
-        rewrite: (path) => `/trefleImg${path}`
-      },
       // iNaturalist 식물 이미지
       '/service/guideInat': {
         target: 'https://asia-northeast3-house-plant-gardener.cloudfunctions.net',
