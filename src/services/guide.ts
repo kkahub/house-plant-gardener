@@ -307,7 +307,7 @@ export const getGuideDetail = async (name: string, code: string) => {
     const detailData = detailObject.response.body.item
 
     // 도감 검색 결과 없음
-    if (detailData === undefined) return
+    if (detailData === undefined) return null
 
     // 로그인 회원만 조회수 증가
     if (isAuthenticated.value === true) {

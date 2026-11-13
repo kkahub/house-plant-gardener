@@ -8,7 +8,13 @@
       </div>
     </div>
   </div>
-  <div class="short_info">
+  <div v-if="isError" class="short_info">
+    <div class="reload_notification">
+      <font-awesome-icon :icon="['fas', 'rotate-right']" class="icon_refresh" />
+      정보를 불러오지 못했습니다.<br />잠시 후 다시 한번 시도해주세요.
+    </div>
+  </div>
+  <div v-else class="short_info">
     <div class="wrap_name">
       <h2 class="name_info">
         {{ info.cntntsSj }}<br />
@@ -69,6 +75,10 @@ const props = defineProps({
   info: {
     type: Object,
     default: () => ({})
+  },
+  isError: {
+    type: Boolean,
+    default: false
   }
 })
 

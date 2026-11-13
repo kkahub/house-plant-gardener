@@ -8,12 +8,12 @@
     <div v-else class="inner">
       <!-- 기본 정보 -->
       <div class="card_gallery">
-        <ShortInfo :info="info" />
+        <ShortInfo v-if="info || isError" :info="info" :is-error="isError" />
       </div>
       <!-- // 기본 정보 -->
 
       <!-- 상세정보 -->
-      <div class="card_detail">
+      <div v-if="info" class="card_detail">
         <!-- 외형 v-if="isShow(info.growthAraInfo && info.growthHgInfo)-->
         <BasicCard title="외형">
           <Outline :info="info" />
@@ -36,7 +36,7 @@
         <!-- // 특성 -->
       </div>
 
-      <div class="card_detail">
+      <div v-if="info" class="card_detail">
         <!-- 잎 정보 -->
         <BasicCard
           title="잎"
@@ -61,7 +61,7 @@
         <!-- // 꽃과 열매 -->
       </div>
 
-      <div class="card_detail">
+      <div v-if="info" class="card_detail">
         <!-- 재배조건 -->
         <DetailsCard
           title="재배조건"
@@ -76,7 +76,7 @@
         </DetailsCard>
         <!-- 재배조건 -->
       </div>
-      <div class="card_detail">
+      <div v-if="info" class="card_detail">
         <!-- 재배관리 -->
         <DetailsCard
           title="재배관리"
@@ -97,7 +97,7 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { getIndoorBasic, getIndoorDetail } from '@/services/indoor'
+import { getIndoorBasic } from '@/services/indoor'
 import { useAsyncState } from '@vueuse/core'
 import { useIsShow } from '@/composables/useIsShow'
 import BasicCard from '@/components/base/BasicCard.vue'
@@ -118,15 +118,17 @@ const params = String(route.params.name).split('-')
 const name = ref(params[0])
 const code = ref(params[1])
 const info = ref()
+const isError = ref(false)
 const { isShow } = useIsShow()
 
 // 실내식물정보 데이터 가져오기
 const { isLoading } = useAsyncState(() => getIndoorBasic(name.value, code.value), null, {
-  throwError: true,
   onSuccess: (result) => {
     if (result === null) {
       alert('잘못된 접근입니다.')
       router.go(-1)
+    } else if (result === 'error') {
+      isError.value = true
     } else {
       info.value = result
     }

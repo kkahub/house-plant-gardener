@@ -71,7 +71,11 @@ exports.guideDetail = functions.region(region).https.onRequest((req, response) =
         if (error) {
           response.status(500).send({ error: '500에러 발생', details: error })
         } else {
-          if (res.statusCode === 200 && body.includes('<resultCode>00</resultCode>')) {
+          if (
+            res.statusCode === 200 &&
+            body.includes('<resultCode>00</resultCode>') &&
+            body.includes('<item>')
+          ) {
             response.set('Cache-Control', 'public, max-age=86400, s-maxage=604800')
           }
           response.status(res.statusCode).send(body)
@@ -141,7 +145,7 @@ exports.indoorList = functions.region(region).https.onRequest((req, response) =>
       .join('&')
     const apiUrl = `${baseApiUrl}&${queryParams}`
 
-    request({ url: apiUrl }, function (error, res, body) {
+    request({ url: apiUrl, timeout: 15000 }, function (error, res, body) {
       if (error) {
         response.status(500).send({ error: '500에러 발생', details: error })
       } else {
@@ -160,11 +164,18 @@ exports.indoorDetail = functions.region(region).https.onRequest((req, response) 
       .join('&')
     const apiUrl = `${baseApiUrl}&${queryParams}`
 
-    request({ url: apiUrl }, function (error, res, body) {
+    request({ url: apiUrl, timeout: 15000 }, function (error, res, body) {
       if (error) {
         response.status(500).send({ error: '500에러 발생', details: error })
       } else {
-        response.send(body)
+        if (
+          res.statusCode === 200 &&
+          body.includes('<resultCode>00</resultCode>') &&
+          body.includes('<item>')
+        ) {
+          response.set('Cache-Control', 'public, max-age=86400, s-maxage=604800')
+        }
+        response.status(res.statusCode).send(body)
       }
     })
   })

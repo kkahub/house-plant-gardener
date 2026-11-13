@@ -36,7 +36,7 @@
           :spread-kr="info?.dstrb"
           :spread="info?.osDstrb"
           :copy="info?.cprtCtnt"
-          :is-error="info === 'error'"
+          :is-error="isError"
           :toggle-bookmark="toggleBookmark"
           :is-bookmark="isBookmark"
           :toggle-note="toggleNote"
@@ -46,7 +46,7 @@
         />
       </div>
       <!-- // 기본 정보 -->
-      <template v-if="!isLoading && info !== 'error'">
+      <template v-if="info">
         <!-- 노트 -->
         <ShortNote
           :is-bookmark="isBookmark"
@@ -149,6 +149,7 @@ import Similar from '@/pages/components/guide/details/Similar.vue'
 const route = useRoute()
 const router = useRouter()
 const info = ref()
+const isError = ref(false)
 const params = String(route.params.name).split('-')
 const name = ref(params[0])
 const code = ref(params[1])
@@ -165,14 +166,15 @@ if (scientificName) loadImage(scientificName)
 
 const { isLoading } = useAsyncState(() => getGuideDetail(name.value, code.value), null, {
   onSuccess: (result) => {
-    if (result === undefined) {
+    if (result === null) {
       alert('잘못된 접근입니다.')
       router.go(-1)
+    } else if (result === 'error') {
+      isError.value = true
+      if (!scientificName) img.value = null
     } else {
       info.value = result
-      if (scientificName) return
-      if (result && result !== 'error') loadImage(result.plantSpecsScnm)
-      else img.value = null
+      if (!scientificName) loadImage(result.plantSpecsScnm)
     }
   }
 })

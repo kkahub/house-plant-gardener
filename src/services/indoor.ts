@@ -271,67 +271,43 @@ export const getIndoorBasic = async (name: string, code: string) => {
   }
 
   try {
-    const res = await getIndoorBasicRequest(listParams)
+    const [res, detailData] = await Promise.all([
+      getIndoorBasicRequest(listParams).catch(() => getIndoorBasicRequest(listParams)),
+      getIndoorDetail(code)
+    ])
 
     // 식물 기본 정보 json변환
     const detailBaseString = await res.text()
     const detailBaseNode = new DOMParser().parseFromString(detailBaseString, 'text/xml')
     const detailBaseObject: any = xmlToJson.convertJson(detailBaseNode)
     const detailBaseDatas = detailBaseObject.response.body.items.item
-    let detailBaseData
-    let plantBaseInfo: IndoorList | null = null
-    let detailData
+    const detailBaseData = [detailBaseDatas ?? []]
+      .flat()
+      .find((item: IndoorList) => item.cntntsNo === code)
 
-    if (detailBaseDatas !== undefined) {
-      if (detailBaseDatas.length > 1) {
-        // 이름으로 검색한 결과가 여러 개일 경우
-        detailBaseData = detailBaseDatas.filter((item: IndoorList) => {
-          if (code === item.cntntsNo) return item
-        })
+    if (detailBaseData === undefined) return null
 
-        // 기본 정보 편집
-        const {
-          rtnFileSeCode,
-          rtnFileSn,
-          rtnOrginlFileNm,
-          rtnStreFileNm,
-          rtnFileCours,
-          rtnImageDc,
-          rtnThumbFileNm,
-          rtnImgSeCode,
-          rtnThumbFileUrl,
-          ...IndoorList
-        } = detailBaseData[0]
+    // 기본 정보 편집
+    const {
+      rtnFileSeCode,
+      rtnFileSn,
+      rtnOrginlFileNm,
+      rtnStreFileNm,
+      rtnFileCours,
+      rtnImageDc,
+      rtnThumbFileNm,
+      rtnImgSeCode,
+      rtnThumbFileUrl,
+      ...plantBaseInfo
+    } = detailBaseData
 
-        IndoorList.rtnFileUrl = IndoorList.rtnFileUrl.split('|')
-        plantBaseInfo = IndoorList
-      } else {
-        // 기본 정보 편집
-        const {
-          rtnFileSeCode,
-          rtnFileSn,
-          rtnOrginlFileNm,
-          rtnStreFileNm,
-          rtnFileCours,
-          rtnImageDc,
-          rtnThumbFileNm,
-          rtnImgSeCode,
-          rtnThumbFileUrl,
-          ...IndoorList
-        } = detailBaseDatas
+    plantBaseInfo.rtnFileUrl = plantBaseInfo.rtnFileUrl.split('|')
 
-        IndoorList.rtnFileUrl = IndoorList.rtnFileUrl.split('|')
-        plantBaseInfo = IndoorList
-      }
-    }
+    if (detailData === undefined || detailData === 'error') return 'error'
 
-    // 상세정보 가져오기
-    if (plantBaseInfo !== null) {
-      detailData = await getIndoorDetail(plantBaseInfo.cntntsNo)
-    }
     return { ...plantBaseInfo, ...detailData }
   } catch (error) {
-    return null
+    return 'error'
   }
 }
 
@@ -359,7 +335,7 @@ export const getIndoorDetail = async (code: string) => {
   }
 
   try {
-    const res = await getIndoorDetailRequest(params)
+    const res = await getIndoorDetailRequest(params).catch(() => getIndoorDetailRequest(params))
 
     // 식물 상세 정보 json변환
     const detailString = await res.text()
@@ -368,7 +344,7 @@ export const getIndoorDetail = async (code: string) => {
     const detailData = detailObject.response.body.item
 
     // 도감 검색 결과 없음
-    if (detailData === undefined) return
+    if (detailData?.cntntsNo === undefined) return
 
     // 오브젝트 값은 빈 텍스트로 변경(값이 없을 경우 빈 오브젝트로 들어오는 중)
     Object.entries(detailData).map(([key, val]) => {
