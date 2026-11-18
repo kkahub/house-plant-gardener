@@ -70,19 +70,22 @@ const getGuideInatRequest = async (params: string): Promise<INatPhoto | null> =>
   return data
 }
 
-export const getGuideImage = (scientificName: string) => {
-  const [genus, species] = scientificName.split(' ')
-  return getGuideInatRequest(`${genus} ${species}`).catch(() => null)
-}
+const getSpeciesName = (scientificName: string) =>
+  scientificName
+    .split(' ')
+    .filter((word) => word !== '×')
+    .slice(0, 2)
+    .join(' ')
 
-export const getGuideObservations = (scientificName: string): Promise<INatObservations | null> => {
-  const [genus, species] = scientificName.split(' ')
-  return fetch(
-    `/service/guideObs/record?name=${encodeURIComponent(`${genus} ${species}`)}&v=${__APP_VERSION__}`
+export const getGuideImage = (scientificName: string) =>
+  getGuideInatRequest(getSpeciesName(scientificName)).catch(() => null)
+
+export const getGuideObservations = (scientificName: string): Promise<INatObservations | null> =>
+  fetch(
+    `/service/guideObs/record?name=${encodeURIComponent(getSpeciesName(scientificName))}&v=${__APP_VERSION__}`
   )
     .then((response) => (response.ok ? response.json() : null))
     .catch(() => null)
-}
 
 export const getShortAttribution = (attribution = '') => {
   const cutIndex = attribution.search(/(^|, )(some|no) /i)

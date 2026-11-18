@@ -63,7 +63,7 @@
         <!-- 상세 정보 -->
         <div class="card_detail">
           <!-- 관찰 기록 -->
-          <DetailsCard title="관찰 기록" v-if="info?.observationsCount !== undefined">
+          <DetailsCard title="관찰 기록" v-if="info?.observationsCount || info?.observationsCountKr || info?.monthOfYear">
             <ObserveRecord
               :observations-count="info?.observationsCount"
               :observations-count-kr="info?.observationsCountKr"
