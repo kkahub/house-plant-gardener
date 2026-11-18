@@ -22,6 +22,7 @@ declare module 'vue-router/auto-routes' {
     '/[...path]': RouteRecordInfo<'/[...path]', '/:path(.*)', { path: ParamValue<true> }, { path: ParamValue<false> }>,
     '/components/guide/details/Features': RouteRecordInfo<'/components/guide/details/Features', '/components/guide/details/Features', Record<never, never>, Record<never, never>>,
     '/components/guide/details/Growing': RouteRecordInfo<'/components/guide/details/Growing', '/components/guide/details/Growing', Record<never, never>, Record<never, never>>,
+    '/components/guide/details/ObserveRecord': RouteRecordInfo<'/components/guide/details/ObserveRecord', '/components/guide/details/ObserveRecord', Record<never, never>, Record<never, never>>,
     '/components/guide/details/ShortInfo': RouteRecordInfo<'/components/guide/details/ShortInfo', '/components/guide/details/ShortInfo', Record<never, never>, Record<never, never>>,
     '/components/guide/details/ShortNote': RouteRecordInfo<'/components/guide/details/ShortNote', '/components/guide/details/ShortNote', Record<never, never>, Record<never, never>>,
     '/components/guide/details/Signature': RouteRecordInfo<'/components/guide/details/Signature', '/components/guide/details/Signature', Record<never, never>, Record<never, never>>,

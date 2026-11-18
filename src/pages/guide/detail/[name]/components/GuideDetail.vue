@@ -62,6 +62,16 @@
         <!-- // 노트 -->
         <!-- 상세 정보 -->
         <div class="card_detail">
+          <!-- 관찰 기록 -->
+          <DetailsCard title="관찰 기록" v-if="info?.observationsCount !== undefined">
+            <ObserveRecord
+              :observations-count="info?.observationsCount"
+              :observations-count-kr="info?.observationsCountKr"
+              :month-of-year="info?.monthOfYear"
+              :observations-by-month="info?.observationsByMonth"
+            />
+          </DetailsCard>
+          <!-- // 관찰 기록 -->
           <!-- 재배 정보 -->
           <DetailsCard
             title="재배 정보"
@@ -132,8 +142,13 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { getGuideDetail, getGuideImage, getShortAttribution } from '@/services/guide'
-import type { INatPhoto } from '@/types/guide'
+import {
+  getGuideDetail,
+  getGuideImage,
+  getGuideObservations,
+  getShortAttribution
+} from '@/services/guide'
+import type { INatObservations, INatPhoto } from '@/types/guide'
 import { useAsyncState } from '@vueuse/core'
 import { useIsShow } from '@/composables/useIsShow'
 import { useBookmark } from '@/composables/useBookmark'
@@ -145,6 +160,7 @@ import Growing from '@/pages/components/guide/details/Growing.vue'
 import Features from '@/pages/components/guide/details/Features.vue'
 import Signature from '@/pages/components/guide/details/Signature.vue'
 import Similar from '@/pages/components/guide/details/Similar.vue'
+import ObserveRecord from '@/pages/components/guide/details/ObserveRecord.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -158,11 +174,14 @@ const { isShow } = useIsShow()
 const img = ref<INatPhoto | null>()
 const source = computed(() => getShortAttribution(img.value?.attribution))
 const scientificName: string | undefined = history.state?.scientificName
+let observations: Promise<INatObservations | null> | undefined
 
-const loadImage = (scientificName: string) =>
+const loadInat = (scientificName: string) => {
   getGuideImage(scientificName).then((result) => (img.value = result))
+  observations = getGuideObservations(scientificName)
+}
 
-if (scientificName) loadImage(scientificName)
+if (scientificName) loadInat(scientificName)
 
 const { isLoading } = useAsyncState(() => getGuideDetail(name.value, code.value), null, {
   onSuccess: (result) => {
@@ -174,7 +193,8 @@ const { isLoading } = useAsyncState(() => getGuideDetail(name.value, code.value)
       if (!scientificName) img.value = null
     } else {
       info.value = result
-      if (!scientificName) loadImage(result.plantSpecsScnm)
+      if (!scientificName) loadInat(result.plantSpecsScnm)
+      observations?.then((result) => (info.value = { ...info.value, ...result }))
     }
   }
 })

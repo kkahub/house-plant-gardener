@@ -57,6 +57,14 @@ export interface INatPhoto {
   attribution: string
 }
 
+/* iNaturalist 관찰 수 (monthOfYear: 가장 많이 관찰된 달 1~12) */
+export interface INatObservations {
+  observationsCount: number
+  observationsCountKr: number
+  monthOfYear: number | null
+  observationsByMonth: number[]
+}
+
 export type GuideList = Pick<
   GuideListData,
   | 'familyKorNm'

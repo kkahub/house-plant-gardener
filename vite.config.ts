@@ -9,6 +9,11 @@ import Layouts from 'vite-plugin-vue-layouts'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [VueRouter({}), vue(), Pages(), Layouts()],
+  define: {
+    __APP_VERSION__: JSON.stringify(
+      new Date().toLocaleString('sv-SE').replace(/\D/g, '').slice(0, 12)
+    )
+  },
   server: {
     proxy: {
       // // 산림청 국립수목원 식물자원 서비스
@@ -30,6 +35,12 @@ export default defineConfig({
         target: 'https://asia-northeast3-house-plant-gardener.cloudfunctions.net',
         changeOrigin: true,
         rewrite: (path) => `/inaturalistImg${path}`
+      },
+      // iNaturalist 관찰 수
+      '/service/guideObs': {
+        target: 'https://asia-northeast3-house-plant-gardener.cloudfunctions.net',
+        changeOrigin: true,
+        rewrite: (path) => `/inaturalistObs${path}`
       }
     }
   },

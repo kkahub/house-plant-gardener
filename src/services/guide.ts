@@ -4,6 +4,7 @@ import {
   type GuideList,
   type GuideListWithImage,
   type INatPhoto,
+  type INatObservations,
   type GuideDetail,
   type GuideListResponse,
   type GuideDetailResponse
@@ -53,9 +54,12 @@ const getGuideInatRequest = async (params: string): Promise<INatPhoto | null> =>
     return inatCache.get(params)!
   }
 
-  const response = await fetch(`/service/guideInat/photo?name=${encodeURIComponent(params)}`, {
-    mode: 'cors'
-  })
+  const response = await fetch(
+    `/service/guideInat/photo?name=${encodeURIComponent(params)}&v=${__APP_VERSION__}`,
+    {
+      mode: 'cors'
+    }
+  )
 
   if (!response.ok) return null
 
@@ -69,6 +73,15 @@ const getGuideInatRequest = async (params: string): Promise<INatPhoto | null> =>
 export const getGuideImage = (scientificName: string) => {
   const [genus, species] = scientificName.split(' ')
   return getGuideInatRequest(`${genus} ${species}`).catch(() => null)
+}
+
+export const getGuideObservations = (scientificName: string): Promise<INatObservations | null> => {
+  const [genus, species] = scientificName.split(' ')
+  return fetch(
+    `/service/guideObs/record?name=${encodeURIComponent(`${genus} ${species}`)}&v=${__APP_VERSION__}`
+  )
+    .then((response) => (response.ok ? response.json() : null))
+    .catch(() => null)
 }
 
 export const getShortAttribution = (attribution = '') => {
@@ -286,7 +299,7 @@ export const getGuideDetail = async (name: string, code: string) => {
       .join('&')
 
     const response = await fetch(
-      `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/guideDetail?${queryString}`,
+      `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/guideDetail?${queryString}&v=${__APP_VERSION__}`,
       { mode: 'cors' }
     )
 

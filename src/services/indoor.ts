@@ -323,7 +323,7 @@ export const getIndoorDetail = async (code: string) => {
       .join('&')
 
     const response = await fetch(
-      `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/indoorDetail?${queryString}`,
+      `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/indoorDetail?${queryString}&v=${__APP_VERSION__}`,
       { mode: 'cors' }
     )
 

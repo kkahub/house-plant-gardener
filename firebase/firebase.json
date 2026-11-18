@@ -31,6 +31,10 @@
         "function": "inaturalistImg"
       },
       {
+        "source": "/service/guideObs/**",
+        "function": "inaturalistObs"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }
