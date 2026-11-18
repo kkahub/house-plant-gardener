@@ -39,7 +39,7 @@ import { ref } from 'vue'
 import { useAsyncState } from '@vueuse/core'
 import getGuideList from '@/services/guide'
 import getIndoorList from '@/services/indoor'
-import MainSlider from '@/pages/components/main/MainSlider.vue'
+import MainSlider from '@/components/apps/main/MainSlider.vue'
 import GuideList from '@/components/apps/guide/GuideList.vue'
 import IndoorList from '@/components/apps/indoor/IndoorList.vue'
 

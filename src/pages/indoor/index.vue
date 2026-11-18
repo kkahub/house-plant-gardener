@@ -64,7 +64,7 @@ import { usePagination } from '@/composables/usePagination'
 import { storeToRefs } from 'pinia'
 import { usePageStore } from '@/stores/pagination'
 import getIndoorList from '@/services/indoor'
-import SearchBarDetail from '@/pages/components/indoor/SearchBarDetail.vue'
+import SearchBarDetail from '@/components/apps/indoor/SearchBarDetail.vue'
 import IndoorList from '@/components/apps/indoor/IndoorList.vue'
 import Pagination from '@/components/pagination/Pagination.vue'
 

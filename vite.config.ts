@@ -8,7 +8,7 @@ import Layouts from 'vite-plugin-vue-layouts'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [VueRouter({}), vue(), Pages(), Layouts()],
+  plugins: [VueRouter({ exclude: ['src/pages/**/components/**'] }), vue(), Pages(), Layouts()],
   define: {
     __APP_VERSION__: JSON.stringify(
       new Date().toLocaleString('sv-SE').replace(/\D/g, '').slice(0, 12)

@@ -14,7 +14,7 @@
 </template>
 
 <script setup lang="ts">
-import IndoorThumbnailSwiper from '@/pages/components/indoor/IndoorThumbnailSwiper.vue'
+import IndoorThumbnailSwiper from '@/components/apps/indoor/IndoorThumbnailSwiper.vue'
 
 defineProps({
   item: {
