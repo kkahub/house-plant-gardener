@@ -25,19 +25,33 @@
         <div v-else>
           <div v-if="!isNoData" class="guide_list_inner">
             <GuideList :plant-items="plantItems" />
-            <Pagination
-              :page-array="pageArray"
-              :start-page="startPage"
-              :current-page="currentPage"
-              :prev-page="prevPage"
-              :next-page="nextPage"
-              :get-page="getPage"
-              :guide-keyword="keyword"
-              :is-prev="isPrev"
-              :is-next="isNext"
-              :loading="isLoading"
-              path="/guide?page="
-            />
+            <div class="pagination_wrap">
+              <Pagination
+                :page-array="pageArray"
+                :start-page="startPage"
+                :current-page="currentPage"
+                :prev-page="prevPage"
+                :next-page="nextPage"
+                :get-page="getPage"
+                :guide-keyword="keyword"
+                :is-prev="isPrev"
+                :is-next="isNext"
+                :loading="isLoading"
+                path="/guide?page="
+              />
+              <form class="flex_group page_jump" @submit.prevent="jumpPage">
+                <input
+                  type="text"
+                  :value="jumpPageNum"
+                  @input="onlyDigits"
+                  inputmode="numeric"
+                  maxlength="4"
+                  :placeholder="String(currentPage)"
+                  aria-label="이동할 페이지 번호"
+                />
+                <button type="submit" class="btn btn_dark">이동</button>
+              </form>
+            </div>
           </div>
           <div v-else class="no_data">검색된 식물이 없습니다.</div>
         </div>
@@ -106,11 +120,29 @@ const executePage = async () => {
 }
 
 // Pagination
-const { pageArray, prevPage, nextPage, getPage, total, startPage, isPrev, isNext } = usePagination(
-  pageSize.value,
-  keyword.value,
-  executePage
-)
+const { pageArray, prevPage, nextPage, getPage, total, totalPage, startPage, isPrev, isNext } =
+  usePagination(pageSize.value, keyword.value, executePage)
+
+const jumpPageNum = ref(String(currentPage.value))
+
+watch(currentPage, (page) => (jumpPageNum.value = String(page)))
+
+const onlyDigits = (e: Event) => {
+  const input = e.target as HTMLInputElement
+  input.value = input.value.replace(/\D/g, '')
+  jumpPageNum.value = input.value
+}
+
+const jumpPage = () => {
+  const page = Number(jumpPageNum.value)
+
+  if (page < 1 || page > totalPage.value) {
+    alert(`1 ~ ${totalPage.value} 사이의 페이지 번호를 입력해주세요.`)
+    return
+  }
+
+  router.push({ path: route.matched[0].path, query: { page } })
+}
 
 // 검색
 const handleSearch = () => {

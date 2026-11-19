@@ -177,6 +177,27 @@
   .gallery_title {
     max-width: 170px;
   }
+  .pagination_wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+  }
+  .flex_group {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .page_jump {
+    input {
+      width: 64px;
+      text-align: center;
+    }
+    .btn {
+      min-width: auto;
+      padding: 8px 12px;
+    }
+  }
 }
 
 // ** 식물도감 상세
