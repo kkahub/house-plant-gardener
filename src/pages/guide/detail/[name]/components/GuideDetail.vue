@@ -132,7 +132,7 @@
         </div>
         <!-- // 상세 정보 -->
         <div class="btn_group right">
-          <router-link to="/guide" class="btn btn_dark">목록으로</router-link>
+          <router-link :to="listPath" class="btn btn_dark">목록으로</router-link>
         </div>
       </template>
     </div>
@@ -174,6 +174,8 @@ const { isShow } = useIsShow()
 const img = ref<INatPhoto | null>()
 const source = computed(() => getShortAttribution(img.value?.attribution))
 const scientificName: string | undefined = history.state?.scientificName
+const back: string | null = history.state?.back
+const listPath = back && /^\/guide\/?(\?|$)/.test(back) ? back : '/guide'
 let observations: Promise<INatObservations | null> | undefined
 
 const loadInat = (scientificName: string) => {

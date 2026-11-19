@@ -28,7 +28,7 @@
       </div>
       <router-link :to="detailLink">
         <div class="wrap_title">
-          <h3 class="gallery_title">{{ item?.plantGnrlNm }}</h3>
+          <h3 class="gallery_title" :title="item?.plantGnrlNm">{{ item?.plantGnrlNm }}</h3>
         </div>
         <div class="family_genus">
           <dfn>{{ item?.familyKorNm + ' ' + item?.genusKorNm }}</dfn>

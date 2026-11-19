@@ -6,7 +6,7 @@
       </div>
       <div class="info_gallery">
         <div class="wrap_title">
-          <h3 class="gallery_title">{{ item?.cntntsSj }}</h3>
+          <h3 class="gallery_title" :title="item?.cntntsSj">{{ item?.cntntsSj }}</h3>
         </div>
       </div>
     </router-link>

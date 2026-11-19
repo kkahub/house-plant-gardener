@@ -30,7 +30,7 @@
         <!-- // 난이도 -->
 
         <!-- 특성 -->
-        <BasicCard title="특성" v-if="isShow(info.smellCodeNm) && isShow(info.toxctyInfo)">
+        <BasicCard title="특성" v-if="isShow(info.smellCodeNm) || isShow(info.toxctyInfo)">
           <IndoorCharacter :info="info" />
         </BasicCard>
         <!-- // 특성 -->
@@ -88,7 +88,7 @@
       </div>
       <!-- // 상세정보 -->
       <div class="btn_group right">
-        <router-link to="/indoor" class="btn btn_dark">목록으로</router-link>
+        <router-link :to="listPath" class="btn btn_dark">목록으로</router-link>
       </div>
     </div>
   </section>
@@ -120,6 +120,8 @@ const code = ref(params[1])
 const info = ref()
 const isError = ref(false)
 const { isShow } = useIsShow()
+const back: string | null = history.state?.back
+const listPath = back && /^\/indoor\/?(\?|$)/.test(back) ? back : '/indoor'
 
 // 실내식물정보 데이터 가져오기
 const { isLoading } = useAsyncState(() => getIndoorBasic(name.value, code.value), null, {

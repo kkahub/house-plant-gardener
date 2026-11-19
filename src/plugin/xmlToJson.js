@@ -3,6 +3,14 @@
  * text의 경우 xml.nodeType === 3
  * <!CDATA[[...]] >의 경우 xml.nodeType === 4
  */
+const entityDecoder = document.createElement('textarea')
+
+const decodeEntities = (text) =>
+  text.replace(/&(#\d+|#x[\da-f]+|[a-z][a-z\d]*);/gi, (entity) => {
+    entityDecoder.innerHTML = entity
+    return entityDecoder.value
+  })
+
 export const convertJson = (xml) => {
   let obj = {}
 
@@ -19,17 +27,15 @@ export const convertJson = (xml) => {
     }
   } else if (xml.nodeType === 3 || xml.nodeType === 4) {
     // text or cdata node type
-    obj = xml.nodeValue
+    obj = decodeEntities(xml.nodeValue)
   }
 
   const isTextNode = xml.hasChildNodes() && xml.childNodes.length === 1
 
   // do children
   // If just one text node inside
-  if (isTextNode && xml.childNodes[0].nodeType === 3) {
-    obj = xml.childNodes[0].nodeValue
-  } else if (isTextNode && xml.childNodes[0].nodeType === 4) {
-    obj = xml.childNodes[0].nodeValue
+  if (isTextNode && (xml.childNodes[0].nodeType === 3 || xml.childNodes[0].nodeType === 4)) {
+    obj = decodeEntities(xml.childNodes[0].nodeValue)
   } else if (xml.hasChildNodes()) {
     for (let i = 0; i < xml.childNodes.length; i += 1) {
       const item = xml.childNodes.item(i)

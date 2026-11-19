@@ -8,6 +8,17 @@ import * as xmlToJson from '../plugin/xmlToJson'
 import { db } from '@/firebase/firebase'
 import { deleteDoc, doc, getDoc, increment, serverTimestamp, setDoc } from 'firebase/firestore'
 
+const DETAIL_TIMEOUT = 4000
+
+const withRetry = async <T>(request: () => Promise<T>, tries = 3): Promise<T> => {
+  try {
+    return await request()
+  } catch (error) {
+    if (tries <= 1) throw error
+    return withRetry(request, tries - 1)
+  }
+}
+
 // 실내식물 리스트
 const getIndoorList = async ({
   currentPage,
@@ -260,24 +271,23 @@ export const getIndoorBasic = async (name: string, code: string) => {
 
     const response = await fetch(
       `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/indoorList?sType=sCntntsSj&wordType=sCntntsSj&${queryString}`,
-      { mode: 'cors' }
+      { mode: 'cors', signal: AbortSignal.timeout(DETAIL_TIMEOUT) }
     )
 
     if (!response.ok) {
       throw new Error(`API 요청 실패 사유: ${response.statusText}`)
     }
 
-    return response
+    return response.text()
   }
 
   try {
-    const [res, detailData] = await Promise.all([
-      getIndoorBasicRequest(listParams).catch(() => getIndoorBasicRequest(listParams)),
+    const [detailBaseString, detailData] = await Promise.all([
+      withRetry(() => getIndoorBasicRequest(listParams)),
       getIndoorDetail(code)
     ])
 
     // 식물 기본 정보 json변환
-    const detailBaseString = await res.text()
     const detailBaseNode = new DOMParser().parseFromString(detailBaseString, 'text/xml')
     const detailBaseObject: any = xmlToJson.convertJson(detailBaseNode)
     const detailBaseDatas = detailBaseObject.response.body.items.item
@@ -324,21 +334,20 @@ export const getIndoorDetail = async (code: string) => {
 
     const response = await fetch(
       `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/indoorDetail?${queryString}&v=${__APP_VERSION__}`,
-      { mode: 'cors' }
+      { mode: 'cors', signal: AbortSignal.timeout(DETAIL_TIMEOUT) }
     )
 
     if (!response.ok) {
       throw new Error(`API 요청 실패 사유: ${response.statusText}`)
     }
 
-    return response
+    return response.text()
   }
 
   try {
-    const res = await getIndoorDetailRequest(params).catch(() => getIndoorDetailRequest(params))
+    const detailString = await withRetry(() => getIndoorDetailRequest(params))
 
     // 식물 상세 정보 json변환
-    const detailString = await res.text()
     const detailNode = new DOMParser().parseFromString(detailString, 'text/xml')
     const detailObject: any = xmlToJson.convertJson(detailNode)
     const detailData = detailObject.response.body.item
