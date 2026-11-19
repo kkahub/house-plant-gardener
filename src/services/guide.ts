@@ -4,7 +4,7 @@ import {
   type GuideList,
   type GuideListWithImage,
   type INatPhoto,
-  type INatObservations,
+  type INatDetail,
   type GuideDetail,
   type GuideListResponse,
   type GuideDetailResponse
@@ -80,9 +80,9 @@ const getSpeciesName = (scientificName: string) =>
 export const getGuideImage = (scientificName: string) =>
   getGuideInatRequest(getSpeciesName(scientificName)).catch(() => null)
 
-export const getGuideObservations = (scientificName: string): Promise<INatObservations | null> =>
+export const getGuideInat = (scientificName: string): Promise<INatDetail | null> =>
   fetch(
-    `/service/guideObs/record?name=${encodeURIComponent(getSpeciesName(scientificName))}&v=${__APP_VERSION__}`
+    `/service/inat/detail?name=${encodeURIComponent(getSpeciesName(scientificName))}&v=${__APP_VERSION__}`
   )
     .then((response) => (response.ok ? response.json() : null))
     .catch(() => null)

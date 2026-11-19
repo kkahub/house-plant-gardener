@@ -202,6 +202,31 @@
 
 // ** 식물도감 상세
 .wrap_guide_detail {
+  .wrap_img {
+    .swiper-wrapper {
+      align-items: center;
+    }
+    .swiper_prev,
+    .swiper_next {
+      margin-top: -15px;
+      width: 30px;
+      height: 30px;
+
+      .material-symbols-rounded {
+        font-size: 30px;
+        text-shadow:
+          0 0 1px #000,
+          0 0 2px #000,
+          0 0 6px #000;
+      }
+    }
+    .swiper_prev {
+      left: 10px;
+    }
+    .swiper_next {
+      right: 10px;
+    }
+  }
   .note {
     overflow: hidden;
     margin-bottom: 15px;
@@ -610,10 +635,15 @@
 .wrap_scrapbook {
   .list_gallery {
     grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
     padding: 5px 0 30px;
 
     > li {
-      width: 230px;
+      width: auto;
+    }
+    .wrap_thum {
+      width: 235px;
+      height: 235px;
     }
   }
 }
@@ -625,10 +655,15 @@
   }
   .list_gallery {
     grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
     padding: 5px 0 30px;
 
     > li {
-      width: 230px;
+      width: auto;
+    }
+    .wrap_thum {
+      width: 235px;
+      height: 235px;
     }
   }
 }

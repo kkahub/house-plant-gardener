@@ -4,14 +4,11 @@
       <!-- 기본 정보 -->
       <div class="card_gallery">
         <div class="wrap_img">
-          <div class="inner_img">
-            <div v-if="img === undefined" class="loader_inner">
+          <GuideThumbnailSwiper v-if="photos?.length" :photos="photos" :name="name" />
+          <div v-else class="inner_img">
+            <div v-if="photos === undefined" class="loader_inner">
               <div class="loader">로딩중...</div>
             </div>
-            <template v-else-if="img">
-              <img :src="img.mediumUrl" :alt="name + ' 사진'" />
-              <div v-if="source" class="source">{{ source }}</div>
-            </template>
             <div v-else class="no_img">
               <div class="msg">
                 <font-awesome-icon :icon="['fas', 'seedling']" />
@@ -140,15 +137,10 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import {
-  getGuideDetail,
-  getGuideImage,
-  getGuideObservations,
-  getShortAttribution
-} from '@/services/guide'
-import type { INatObservations, INatPhoto } from '@/types/guide'
+import { getGuideDetail, getGuideInat } from '@/services/guide'
+import type { INatDetail, INatPhoto } from '@/types/guide'
 import { useAsyncState } from '@vueuse/core'
 import { useIsShow } from '@/composables/useIsShow'
 import { useBookmark } from '@/composables/useBookmark'
@@ -161,6 +153,7 @@ import Features from '@/components/apps/guide/details/Features.vue'
 import Signature from '@/components/apps/guide/details/Signature.vue'
 import Similar from '@/components/apps/guide/details/Similar.vue'
 import ObserveRecord from '@/components/apps/guide/details/ObserveRecord.vue'
+import GuideThumbnailSwiper from '@/components/apps/guide/details/GuideThumbnailSwiper.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -171,16 +164,15 @@ const name = ref(params[0])
 const code = ref(params[1])
 const prevNote = ref('')
 const { isShow } = useIsShow()
-const img = ref<INatPhoto | null>()
-const source = computed(() => getShortAttribution(img.value?.attribution))
+const photos = ref<INatPhoto[]>()
 const scientificName: string | undefined = history.state?.scientificName
 const back: string | null = history.state?.back
 const listPath = back && /^\/guide\/?(\?|$)/.test(back) ? back : '/guide'
-let observations: Promise<INatObservations | null> | undefined
+let inat: Promise<INatDetail | null> | undefined
 
 const loadInat = (scientificName: string) => {
-  getGuideImage(scientificName).then((result) => (img.value = result))
-  observations = getGuideObservations(scientificName)
+  inat = getGuideInat(scientificName)
+  inat.then((result) => (photos.value = result?.photos ?? []))
 }
 
 if (scientificName) loadInat(scientificName)
@@ -192,11 +184,11 @@ const { isLoading } = useAsyncState(() => getGuideDetail(name.value, code.value)
       router.go(-1)
     } else if (result === 'error') {
       isError.value = true
-      if (!scientificName) img.value = null
+      if (!scientificName) photos.value = []
     } else {
       info.value = result
       if (!scientificName) loadInat(result.plantSpecsScnm)
-      observations?.then((result) => (info.value = { ...info.value, ...result }))
+      inat?.then((result) => (info.value = { ...info.value, ...result }))
     }
   }
 })

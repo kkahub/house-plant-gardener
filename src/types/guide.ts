@@ -57,8 +57,9 @@ export interface INatPhoto {
   attribution: string
 }
 
-/* iNaturalist 관찰 수 (monthOfYear: 가장 많이 관찰된 달 1~12) */
-export interface INatObservations {
+/* iNaturalist 상세 사진과 관찰 기록 (monthOfYear: 가장 많이 관찰된 달 1~12) */
+export interface INatDetail {
+  photos: INatPhoto[]
   observationsCount: number
   observationsCountKr: number
   monthOfYear: number | null

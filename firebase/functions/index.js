@@ -137,8 +137,20 @@ exports.inaturalistImg = functions.region(region).https.onRequest((req, response
   })
 })
 
-// 식물도감 iNaturalist 관찰 수 호출
-exports.inaturalistObs = functions.region(region).https.onRequest((req, response) => {
+// 라이선스 없는(All rights reserved) 사진 제외
+const INAT_PHOTO_LICENSES = [
+  'cc0',
+  'cc-by',
+  'cc-by-sa',
+  'cc-by-nc',
+  'cc-by-nc-sa',
+  'cc-by-nd',
+  'cc-by-nc-nd'
+]
+const INAT_PHOTO_MAX = 10
+
+// 식물도감 상세 iNaturalist 사진과 관찰 기록 호출
+exports.inaturalist = functions.region(region).https.onRequest((req, response) => {
   cors(req, response, async () => {
     const name = req.query.name
 
@@ -148,7 +160,7 @@ exports.inaturalistObs = functions.region(region).https.onRequest((req, response
     }
 
     const getJson = async (path) => {
-      const res = await fetch(`https://api.inaturalist.org/v1/${path}`, {
+      const res = await fetch(`https://api.inaturalist.org/v2/${path}`, {
         headers: { 'User-Agent': 'house-plant-gardener' }
       })
       if (!res.ok) throw new Error(`iNaturalist ${res.status}`)
@@ -156,7 +168,9 @@ exports.inaturalistObs = functions.region(region).https.onRequest((req, response
     }
 
     try {
-      const { results = [] } = await getJson(`taxa?q=${encodeURIComponent(name)}&per_page=5`)
+      const { results = [] } = await getJson(
+        `taxa?q=${encodeURIComponent(name)}&per_page=5&fields=id,name,matched_term,observations_count,default_photo.id,default_photo.medium_url,default_photo.license_code,default_photo.attribution`
+      )
       const taxon = results.find((item) => item.name === name || item.matched_term === name)
 
       response.set('Cache-Control', 'public, max-age=86400, s-maxage=604800')
@@ -166,25 +180,52 @@ exports.inaturalistObs = functions.region(region).https.onRequest((req, response
         return
       }
 
-      // 6891: 대한민국
-      const [kr, histogram] = await Promise.all([
+      // 6891: 대한민국. 라이선스 필터는 관찰 수를 바꾸므로 사진은 따로 조회
+      const [kr, histogram, photoObservations] = await Promise.all([
         getJson(`observations?taxon_id=${taxon.id}&place_id=6891&per_page=0`),
         getJson(
           `observations/histogram?taxon_id=${taxon.id}&interval=month_of_year&date_field=observed`
+        ),
+        getJson(
+          `observations?taxon_id=${taxon.id}&photo_license=${INAT_PHOTO_LICENSES.join(',')}&quality_grade=research&order_by=votes&per_page=${INAT_PHOTO_MAX}&fields=photos.id,photos.url,photos.license_code,photos.attribution`
         )
       ])
       const months = histogram.results?.month_of_year ?? {}
       const observationsByMonth = Array.from({ length: 12 }, (_, i) => months[i + 1] ?? 0)
       const maxCount = Math.max(...observationsByMonth)
 
+      const photos = [
+        { ...taxon.default_photo },
+        ...photoObservations.results.flatMap((item) =>
+          (item.photos ?? []).map((photo) => ({
+            ...photo,
+            medium_url: photo.url?.replace('/square.', '/medium.')
+          }))
+        )
+      ]
+        .filter(
+          (photo, index, list) =>
+            INAT_PHOTO_LICENSES.includes(photo.license_code) &&
+            photo.medium_url &&
+            list.findIndex((item) => item.id === photo.id) === index
+        )
+        .slice(0, INAT_PHOTO_MAX)
+        .map((photo) => ({
+          id: photo.id,
+          licenseCode: photo.license_code,
+          mediumUrl: photo.medium_url,
+          attribution: photo.attribution
+        }))
+
       response.json({
+        photos,
         observationsCount: taxon.observations_count,
         observationsCountKr: kr.total_results,
         monthOfYear: maxCount > 0 ? observationsByMonth.indexOf(maxCount) + 1 : null,
         observationsByMonth
       })
     } catch (error) {
-      logger.error('iNaturalist observations request error:', error)
+      logger.error('iNaturalist request error:', error)
       response.removeHeader('Cache-Control')
       response.status(500).send({ error: 'Error calling iNaturalist API' })
     }

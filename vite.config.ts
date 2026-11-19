@@ -36,11 +36,11 @@ export default defineConfig({
         changeOrigin: true,
         rewrite: (path) => `/inaturalistImg${path}`
       },
-      // iNaturalist 관찰 수
-      '/service/guideObs': {
+      // iNaturalist 상세 사진과 관찰 기록
+      '/service/inat': {
         target: 'https://asia-northeast3-house-plant-gardener.cloudfunctions.net',
         changeOrigin: true,
-        rewrite: (path) => `/inaturalistObs${path}`
+        rewrite: (path) => `/inaturalist${path}`
       }
     }
   },
