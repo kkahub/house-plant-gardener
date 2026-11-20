@@ -31,4 +31,10 @@ app.directive('focus', focus)
 library.add(fas, far)
 app.component('font-awesome-icon', FontAwesomeIcon)
 
+document.addEventListener(
+  'submit',
+  () => document.activeElement instanceof HTMLElement && document.activeElement.blur(),
+  true
+)
+
 app.mount('#app')

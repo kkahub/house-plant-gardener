@@ -1,5 +1,7 @@
+import type { XmlValue } from '@/types/common'
+
 export const useIsShow = () => {
-  const isShow = (val: unknown) => typeof val === 'string' && val.trim() !== ''
+  const isShow = (val: XmlValue) => typeof val === 'string' && val.trim() !== ''
 
   return { isShow }
 }

@@ -2,8 +2,9 @@ import { ref, watch } from 'vue'
 import { usePageStore } from '@/stores/pagination'
 import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
+import type { PageExecute } from '@/types/common'
 
-export const usePagination = (size: number, keyword: string, execute: any) => {
+export const usePagination = (size: number, execute: PageExecute) => {
   const pageSize = ref(size) // 한 페이지에 보여줄 아이템 수
   const total = ref(0) // 전체 아이템 수
   const startPage = ref(1) // 페이시 넘버 처음 숫자
@@ -72,7 +73,7 @@ export const usePagination = (size: number, keyword: string, execute: any) => {
   const routeChange = () => {
     currentPage.value = startPage.value
     router
-      .push({ path: `${route.matched[0].path}`, query: { page: `${currentPage.value}` } })
+      .push({ path: route.path, query: { page: `${currentPage.value}` } })
       .catch(() => {})
   }
 
@@ -83,7 +84,6 @@ export const usePagination = (size: number, keyword: string, execute: any) => {
     if (startPage.value > pageCount.value) {
       startPage.value -= pageCount.value
       routeChange()
-      getPage(startPage.value, execute)
     }
   }
 
@@ -93,20 +93,13 @@ export const usePagination = (size: number, keyword: string, execute: any) => {
 
     startPage.value += pageCount.value
     routeChange()
-    getPage(startPage.value, execute)
   }
 
-  // 페이지 리스트 호출
-  const getPage = async (num: number, e: MouseEvent) => {
+  // 페이지 번호 클릭
+  const getPage = (num: number) => {
     if (route.query.page === undefined || currentPage.value === num) return
 
     currentPage.value = num
-
-    await execute(0, {
-      currentPage: currentPage.value,
-      currentPageSize: pageSize.value,
-      searchWord: keyword
-    })
     window.scrollTo(0, 0)
   }
 

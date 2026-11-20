@@ -36,16 +36,15 @@
           <div v-if="!isNoData" class="indoor_list_inner">
             <IndoorList :plant-items="plantItems" />
             <Pagination
+              v-if="totalPage > 1"
               :page-array="pageArray"
               :start-page="startPage"
               :current-page="currentPage"
               :prev-page="prevPage"
               :next-page="nextPage"
               :get-page="getPage"
-              :guide-keyword="keyword"
               :is-prev="isPrev"
               :is-next="isNext"
-              :loading="isLoading"
               path="/indoor?page="
             />
           </div>
@@ -147,11 +146,8 @@ const executePage = async () => {
 }
 
 // Pagination
-const { pageArray, prevPage, nextPage, getPage, total, startPage, isPrev, isNext } = usePagination(
-  pageSize.value,
-  keyword.value,
-  executePage
-)
+const { pageArray, prevPage, nextPage, getPage, total, totalPage, startPage, isPrev, isNext } =
+  usePagination(pageSize.value, executePage)
 
 // 검색
 const handleSearch = () => {

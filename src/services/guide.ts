@@ -7,7 +7,9 @@ import {
   type INatDetail,
   type GuideDetail,
   type GuideListResponse,
-  type GuideDetailResponse
+  type GuideDetailResponse,
+  type BookmarkList,
+  type NoteList
 } from '@/types/guide'
 import * as xmlToJson from '../plugin/xmlToJson'
 import { db } from '@/firebase/firebase'
@@ -26,24 +28,36 @@ import {
 } from 'firebase/firestore'
 import { useAuthStore } from '@/stores/auth'
 import { storeToRefs } from 'pinia'
+import { withRetry } from '@/utils/withRetry'
 
 const { uid, isAuthenticated } = storeToRefs(useAuthStore())
 
-const getGuideListRequest = async (params: GuideListParams) => {
+const LIST_TIMEOUT = 15000
+
+const assertNormalService = (text: string) => {
+  if (!text.includes('<resultCode>00</resultCode>')) {
+    throw new Error(`API 응답 오류: ${text.slice(0, 200)}`)
+  }
+  return text
+}
+
+const getGuideListRequest = (params: GuideListParams) => {
   const queryString = Object.entries(params)
     .map(([key, value]) => `${key}=${encodeURIComponent(value)}`)
     .join('&')
 
-  const response = await fetch(
-    `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/guideList?${queryString}`,
-    { mode: 'cors' }
-  )
+  return withRetry(async () => {
+    const response = await fetch(
+      `https://asia-northeast3-house-plant-gardener.cloudfunctions.net/guideList?${queryString}`,
+      { mode: 'cors', signal: AbortSignal.timeout(LIST_TIMEOUT) }
+    )
 
-  if (!response.ok) {
-    throw new Error(`API 요청 실패 사유: ${response.statusText}`)
-  }
+    if (!response.ok) {
+      throw new Error(`API 요청 실패 사유: ${response.statusText}`)
+    }
 
-  return response
+    return assertNormalService(await response.text())
+  }, 2)
 }
 
 const inatCache = new Map<string, INatPhoto | null>()
@@ -109,10 +123,8 @@ const getGuideList = async ({
   }
 
   try {
-    const res = await getGuideListRequest(listParams)
-
     // 식물 기본 정보 json변환
-    const listString = await res.text()
+    const listString = await getGuideListRequest(listParams)
     const listNode = new DOMParser().parseFromString(listString, 'text/xml')
     const listObject = xmlToJson.convertJson(listNode) as GuideListResponse
     const listData = listObject.response.body.items.item
@@ -310,14 +322,12 @@ export const getGuideDetail = async (name: string, code: string) => {
       throw new Error(`API 요청 실패 사유: ${response.statusText}`)
     }
 
-    return response
+    return assertNormalService(await response.text())
   }
 
   try {
-    const res = await getGuideDetailRequest(params).catch(() => getGuideDetailRequest(params))
-
     // 식물 상세 정보 json변환
-    const detailString = await res.text()
+    const detailString = await withRetry(() => getGuideDetailRequest(params), 2)
     const detailNode = new DOMParser().parseFromString(detailString, 'text/xml')
     const detailObject = xmlToJson.convertJson(detailNode) as GuideDetailResponse
     const detailData = detailObject.response.body.item
@@ -408,35 +418,22 @@ export const getBookmarkID = async () => {
   )
   const querySnapshot = await getDocs(q)
 
-  return querySnapshot.docs.map((docu) => docu.data())
+  return querySnapshot.docs.map((docu) => docu.data() as BookmarkList)
 }
 
-export const getBookmarkList = async ({
-  currentPage,
-  currentPageSize,
-  searchWord
-}: {
-  currentPage: number
-  currentPageSize: number
-  searchWord: string | string[]
-}) => {
-  const searchName = Object.values(searchWord).map((item) => item.split('_')[0])
-  const searchCode = Object.values(searchWord).map((item) => item.split('_')[1])
+export const getBookmarkList = async (searchWord: string[]) => {
+  const searchName = searchWord.map((item) => item.split('_')[0])
+  const searchCode = searchWord.map((item) => item.split('_')[1])
 
   const listParams = {
-    pageNo: currentPage,
-    numOfRows: currentPageSize,
-    reqSearchWrd: searchWord
+    pageNo: 1,
+    numOfRows: 16
   }
 
-  const res = await Promise.all(
-    searchName.map((keyword) => getGuideListRequest({ ...listParams, reqSearchWrd: keyword }))
-  )
-
-  const resArray = await Promise.all(
-    res.map(async (item, index) => {
+  const resArray = await Promise.allSettled(
+    searchName.map(async (keyword, index) => {
       // 식물 기본 정보 json변환
-      const listString = await item.text()
+      const listString = await getGuideListRequest({ ...listParams, reqSearchWrd: keyword })
       const listNode = new DOMParser().parseFromString(listString, 'text/xml')
       const listObject = xmlToJson.convertJson(listNode) as GuideListResponse
       const listData = listObject.response.body.items.item
@@ -473,7 +470,9 @@ export const getBookmarkList = async ({
     })
   )
 
-  return resArray.filter((item): item is GuideListWithImage => item !== null)
+  return resArray.flatMap((item) =>
+    item.status === 'fulfilled' && item.value !== null ? [item.value] : []
+  )
 }
 
 export const getNoteID = async () => {
@@ -485,5 +484,5 @@ export const getNoteID = async () => {
   )
   const querySnapshot = await getDocs(q)
 
-  return querySnapshot.docs.map((docu) => docu.data())
+  return querySnapshot.docs.map((docu) => docu.data() as NoteList)
 }

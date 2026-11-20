@@ -63,17 +63,9 @@ defineProps({
       return null
     }
   },
-  guideKeyword: {
-    type: [String, Array],
-    default: ''
-  },
-  pageSize: {
-    type: Number,
-    default: 16
-  },
   currentPage: {
     type: Number,
-    detault: 0
+    default: 0
   },
   isPrev: {
     type: Boolean

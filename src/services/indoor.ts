@@ -7,17 +7,9 @@ import {
 import * as xmlToJson from '../plugin/xmlToJson'
 import { db } from '@/firebase/firebase'
 import { deleteDoc, doc, getDoc, increment, serverTimestamp, setDoc } from 'firebase/firestore'
+import { withRetry } from '@/utils/withRetry'
 
 const DETAIL_TIMEOUT = 4000
-
-const withRetry = async <T>(request: () => Promise<T>, tries = 3): Promise<T> => {
-  try {
-    return await request()
-  } catch (error) {
-    if (tries <= 1) throw error
-    return withRetry(request, tries - 1)
-  }
-}
 
 // 실내식물 리스트
 const getIndoorList = async ({

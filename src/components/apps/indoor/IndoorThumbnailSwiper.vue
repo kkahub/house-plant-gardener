@@ -5,7 +5,7 @@
       :space-between="0"
       :modules="modules"
       :pagination="{ clickable: true }"
-      :loop="true"
+      :loop="item?.rtnFileUrl?.length > 1"
     >
       <swiper-slide v-for="slide in item?.rtnFileUrl" :key="slide">
         <div class="inner_img">

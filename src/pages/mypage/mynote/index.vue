@@ -19,6 +19,18 @@
             <div v-else>
               <div v-if="!isNoData" class="guide_list_inner">
                 <GuideList :plant-items="plantItems" />
+                <Pagination
+                  v-if="totalPage > 1"
+                  :page-array="pageArray"
+                  :start-page="startPage"
+                  :current-page="currentPage"
+                  :prev-page="prevPage"
+                  :next-page="nextPage"
+                  :get-page="getPage"
+                  :is-prev="isPrev"
+                  :is-next="isNext"
+                  path="/mypage/mynote?page="
+                />
               </div>
               <div v-else class="no_data">노트를 작성한 식물도감이 없습니다.</div>
             </div>
@@ -30,72 +42,26 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch } from 'vue'
-import { useAsyncState } from '@vueuse/core'
-import { storeToRefs } from 'pinia'
-import { usePageStore } from '@/stores/pagination'
-import { getNoteID, getBookmarkList } from '@/services/guide'
+import { getNoteID } from '@/services/guide'
+import { useMypageList } from '@/composables/useMypageList'
 import Sidebar from '@/layouts/mypage/Sidebar.vue'
 import GuideList from '@/components/apps/guide/GuideList.vue'
-import type { NoteList } from '@/types/guide'
+import Pagination from '@/components/pagination/Pagination.vue'
 
-const guidePageStore = usePageStore()
-const { keyword, currentPage } = storeToRefs(guidePageStore)
-
-const plantItems = ref()
-const isNoData = ref(false)
-const pageSize = ref(16)
-const userNote = ref()
-const total = ref(0)
-
-// 노트한 식물 ID 가져오기
-useAsyncState(getNoteID, [], {
-  throwError: true,
-  onSuccess: (result) => {
-    if (result?.length === 0 || result === null) {
-      isNoData.value = true
-    } else {
-      isNoData.value = false
-      userNote.value = result
-    }
-  }
-})
-
-watch(userNote, () => {
-  keyword.value = userNote.value.map((item: NoteList) => item.plantId)
-  executePage()
-})
-
-// 식물도감정보 데이터 가져오기
-const { isLoading, execute } = useAsyncState(
-  () =>
-    getBookmarkList({
-      currentPage: currentPage.value,
-      currentPageSize: pageSize.value,
-      searchWord: keyword.value
-    }),
-  null,
-  {
-    immediate: false,
-    throwError: true,
-    onSuccess: (result) => {
-      if (result?.length === 0 || result === null) {
-        isNoData.value = true
-      } else {
-        isNoData.value = false
-        plantItems.value = result
-
-        if (result) {
-          total.value = result[0].total
-        }
-      }
-    }
-  }
-)
-
-const executePage = async () => {
-  await execute()
-}
+const {
+  plantItems,
+  isNoData,
+  isLoading,
+  currentPage,
+  pageArray,
+  prevPage,
+  nextPage,
+  getPage,
+  totalPage,
+  startPage,
+  isPrev,
+  isNext
+} = useMypageList(getNoteID)
 </script>
 
 <style scoped></style>

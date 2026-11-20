@@ -25,7 +25,7 @@
         <div v-else>
           <div v-if="!isNoData" class="guide_list_inner">
             <GuideList :plant-items="plantItems" />
-            <div class="pagination_wrap">
+            <div v-if="totalPage > 1" class="pagination_wrap">
               <Pagination
                 :page-array="pageArray"
                 :start-page="startPage"
@@ -33,10 +33,8 @@
                 :prev-page="prevPage"
                 :next-page="nextPage"
                 :get-page="getPage"
-                :guide-keyword="keyword"
                 :is-prev="isPrev"
                 :is-next="isNext"
-                :loading="isLoading"
                 path="/guide?page="
               />
               <form class="flex_group page_jump" @submit.prevent="jumpPage">
@@ -79,7 +77,7 @@ const { keyword, currentPage } = storeToRefs(guidePageStore)
 const plantItems = ref<GuideListWithImage[]>([])
 const prevKeyword = ref('')
 const isNoData = ref(false)
-const pageSize = ref(8)
+const pageSize = ref(12)
 
 const route = useRoute()
 const router = useRouter()
@@ -121,7 +119,7 @@ const executePage = async () => {
 
 // Pagination
 const { pageArray, prevPage, nextPage, getPage, total, totalPage, startPage, isPrev, isNext } =
-  usePagination(pageSize.value, keyword.value, executePage)
+  usePagination(pageSize.value, executePage)
 
 const jumpPageNum = ref(String(currentPage.value))
 
