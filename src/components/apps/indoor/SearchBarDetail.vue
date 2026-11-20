@@ -85,7 +85,6 @@ const fruitColorBundle = ref(sessionStorage.getItem('fruitColor') || '')
 const floweringBundle = ref(sessionStorage.getItem('flowering') || '')
 const minTempBundle = ref(sessionStorage.getItem('minTemp') || '')
 const waterCycleBundle = ref(sessionStorage.getItem('waterCycle') || '')
-const isConditionChange = ref(false)
 
 const emit = defineEmits([
   'update:keyword',
@@ -107,49 +106,37 @@ const keywordModel = computed({
 })
 
 const handleSubmit = async () => {
-  if (props.prevKeyword === props.keyword && isConditionChange.value === false) {
+  if (props.prevKeyword === props.keyword) {
     return
   }
   emit('submit')
-  isConditionChange.value = false
 }
 
-watch(lightBundle, () => {
-  emit('update:light', lightBundle.value)
-  isConditionChange.value = true
-})
-watch(growFormBundle, () => {
-  emit('update:growForm', growFormBundle.value)
-  isConditionChange.value = true
-})
-watch(leafColorBundle, () => {
-  emit('update:leafColor', leafColorBundle.value)
-  isConditionChange.value = true
-})
-watch(leafPatternBundle, () => {
-  emit('update:leafPattern', leafPatternBundle.value)
-  isConditionChange.value = true
-})
-watch(flowerColorBundle, () => {
-  emit('update:flowerColor', flowerColorBundle.value)
-  isConditionChange.value = true
-})
-watch(fruitColorBundle, () => {
-  emit('update:fruitColor', fruitColorBundle.value)
-  isConditionChange.value = true
-})
-watch(floweringBundle, () => {
-  emit('update:flowering', floweringBundle.value)
-  isConditionChange.value = true
-})
-watch(minTempBundle, () => {
-  emit('update:minTemp', minTempBundle.value)
-  isConditionChange.value = true
-})
-watch(waterCycleBundle, () => {
-  emit('update:waterCycle', waterCycleBundle.value)
-  isConditionChange.value = true
-})
+watch(
+  [
+    lightBundle,
+    growFormBundle,
+    leafColorBundle,
+    leafPatternBundle,
+    flowerColorBundle,
+    fruitColorBundle,
+    floweringBundle,
+    minTempBundle,
+    waterCycleBundle
+  ],
+  () => {
+    emit('update:light', lightBundle.value)
+    emit('update:growForm', growFormBundle.value)
+    emit('update:leafColor', leafColorBundle.value)
+    emit('update:leafPattern', leafPatternBundle.value)
+    emit('update:flowerColor', flowerColorBundle.value)
+    emit('update:fruitColor', fruitColorBundle.value)
+    emit('update:flowering', floweringBundle.value)
+    emit('update:minTemp', minTempBundle.value)
+    emit('update:waterCycle', waterCycleBundle.value)
+    emit('submit')
+  }
+)
 </script>
 
 <style scoped></style>

@@ -5,6 +5,7 @@ import { storeToRefs } from 'pinia'
 import { usePageStore } from '@/stores/pagination'
 import { usePagination } from '@/composables/usePagination'
 import { getBookmarkList } from '@/services/guide'
+import { latestOnly } from '@/utils/latestOnly'
 import type { BookmarkList, GuideListWithImage } from '@/types/guide'
 
 const PAGE_SIZE = 12
@@ -19,9 +20,11 @@ export const useMypageList = (getPlantIDs: () => Promise<Pick<BookmarkList, 'pla
 
   currentPage.value = Number(route.query.page ?? 1)
 
+  const getLatestBookmarkList = latestOnly(getBookmarkList)
+
   const { isLoading: isListLoading, execute } = useAsyncState(
     () =>
-      getBookmarkList(
+      getLatestBookmarkList(
         (plantIds.value ?? []).slice(
           (currentPage.value - 1) * PAGE_SIZE,
           currentPage.value * PAGE_SIZE

@@ -66,6 +66,7 @@ import { usePagination } from '@/composables/usePagination'
 import { storeToRefs } from 'pinia'
 import { usePageStore } from '@/stores/pagination'
 import getGuideList from '@/services/guide'
+import { latestOnly } from '@/utils/latestOnly'
 import SearchBar from '@/components/apps/guide/SearchBar.vue'
 import GuideList from '@/components/apps/guide/GuideList.vue'
 import Pagination from '@/components/pagination/Pagination.vue'
@@ -75,7 +76,7 @@ const guidePageStore = usePageStore()
 const { keyword, currentPage } = storeToRefs(guidePageStore)
 
 const plantItems = ref<GuideListWithImage[]>([])
-const prevKeyword = ref('')
+const prevKeyword = ref<string | undefined>('')
 const isNoData = ref(false)
 const pageSize = ref(12)
 
@@ -83,14 +84,14 @@ const route = useRoute()
 const router = useRouter()
 
 // 쿼리 주소를 이용해 다이렉트 접속 시 페이지 값 설정
-if (route.query.page !== undefined) {
-  currentPage.value = Number(route.query.page)
-}
+currentPage.value = Number(route.query.page ?? 1)
+
+const getLatestGuideList = latestOnly(getGuideList)
 
 // 식물도감정보 데이터 가져오기
 const { isLoading, execute } = useAsyncState(
   () =>
-    getGuideList({
+    getLatestGuideList({
       currentPage: currentPage.value,
       currentPageSize: pageSize.value,
       searchWord: keyword.value
@@ -101,6 +102,7 @@ const { isLoading, execute } = useAsyncState(
     onSuccess: (result) => {
       if (result?.length === 0 || result === null) {
         isNoData.value = true
+        prevKeyword.value = undefined
       } else {
         isNoData.value = false
         plantItems.value = result
@@ -139,31 +141,30 @@ const jumpPage = () => {
     return
   }
 
-  router.push({ path: route.matched[0].path, query: { page } })
+  router.push({ path: route.path, query: { page } })
 }
 
 // 검색
 const handleSearch = () => {
   currentPage.value = 1
-  executePage()
   prevKeyword.value = keyword.value
   startPage.value = 1
 
   // 라우팅
-  router.push({ path: `${route.matched[0].path}` })
+  if (route.query.page === undefined) {
+    executePage()
+  } else {
+    router.push({ path: route.path })
+  }
 }
 
 // 뒤로가기 할 때 페이지 값 없으면 1로 설정
-watch(
-  route,
-  () => {
-    if (route.query.page === undefined) {
-      currentPage.value = 1
-      executePage()
-    }
-  },
-  { immediate: true }
-)
+watch(route, () => {
+  if (route.query.page === undefined) {
+    currentPage.value = 1
+    executePage()
+  }
+})
 </script>
 
 <style scoped></style>

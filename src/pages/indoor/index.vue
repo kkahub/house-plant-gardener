@@ -63,6 +63,7 @@ import { usePagination } from '@/composables/usePagination'
 import { storeToRefs } from 'pinia'
 import { usePageStore } from '@/stores/pagination'
 import getIndoorList from '@/services/indoor'
+import { latestOnly } from '@/utils/latestOnly'
 import SearchBarDetail from '@/components/apps/indoor/SearchBarDetail.vue'
 import IndoorList from '@/components/apps/indoor/IndoorList.vue'
 import Pagination from '@/components/pagination/Pagination.vue'
@@ -71,7 +72,7 @@ const indoorPageStore = usePageStore()
 const { keyword, currentPage } = storeToRefs(indoorPageStore)
 
 const plantItems = ref()
-const prevKeyword = ref('')
+const prevKeyword = ref<string | undefined>('')
 const isNoData = ref(false)
 const pageSize = ref(16)
 const light = ref('')
@@ -88,9 +89,7 @@ const route = useRoute()
 const router = useRouter()
 
 // 쿼리 주소를 이용해 다이렉트 접속 시 페이지 값 설정
-if (route.query.page !== undefined) {
-  currentPage.value = Number(route.query.page)
-}
+currentPage.value = Number(route.query.page ?? 1)
 
 // 검색 조건 유지
 const getFilter = async () => {
@@ -106,10 +105,12 @@ const getFilter = async () => {
 }
 getFilter()
 
+const getLatestIndoorList = latestOnly(getIndoorList)
+
 // 실내식물정보 데이터 가져오기
 const { isLoading, execute } = useAsyncState(
   () =>
-    getIndoorList({
+    getLatestIndoorList({
       currentPage: currentPage.value,
       currentPageSize: pageSize.value,
       searchWord: keyword.value,
@@ -129,6 +130,7 @@ const { isLoading, execute } = useAsyncState(
     onSuccess: (result) => {
       if (result?.length === 0 || result === null) {
         isNoData.value = true
+        prevKeyword.value = undefined
       } else {
         isNoData.value = false
         plantItems.value = result
@@ -152,12 +154,15 @@ const { pageArray, prevPage, nextPage, getPage, total, totalPage, startPage, isP
 // 검색
 const handleSearch = () => {
   currentPage.value = 1
-  executePage()
   prevKeyword.value = keyword.value
   startPage.value = 1
 
   // 라우팅
-  router.push({ path: `${route.matched[0].path}` })
+  if (route.query.page === undefined) {
+    executePage()
+  } else {
+    router.push({ path: route.path })
+  }
 
   // 검색 조건 세션 저장
   sessionStorage.setItem('light', light.value)
@@ -172,16 +177,12 @@ const handleSearch = () => {
 }
 
 // 뒤로가기 할 때 페이지 값 없으면 1로 설정
-watch(
-  route,
-  () => {
-    if (route.query.page === undefined) {
-      currentPage.value = 1
-      executePage()
-    }
-  },
-  { immediate: true }
-)
+watch(route, () => {
+  if (route.query.page === undefined) {
+    currentPage.value = 1
+    executePage()
+  }
+})
 </script>
 
 <style scoped></style>
